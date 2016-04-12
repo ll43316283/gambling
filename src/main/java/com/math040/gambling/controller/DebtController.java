@@ -26,7 +26,7 @@ public class DebtController {
 	/**
 	 *   
 	 * @return
-	 */
+	 */  
 	@RequestMapping(value="/put", method = RequestMethod.GET)
 	@ResponseBody
 	public Long put(){
