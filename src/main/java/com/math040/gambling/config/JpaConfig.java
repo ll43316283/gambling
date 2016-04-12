@@ -14,7 +14,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
-@Configuration 
+@Configuration  
 @EnableJpaRepositories(basePackages="com.math040.gambling.repository")
 public class JpaConfig {
 	  @Bean

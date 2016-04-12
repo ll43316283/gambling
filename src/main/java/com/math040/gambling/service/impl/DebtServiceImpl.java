@@ -21,4 +21,8 @@ public class DebtServiceImpl implements DebtService {
 	public Long save(Debt debt){
 		return debtDao.save(debt).getId();
 	}
+	
+	public Debt findById(Long id){
+		return debtDao.findOne(id);
+	}
 }
