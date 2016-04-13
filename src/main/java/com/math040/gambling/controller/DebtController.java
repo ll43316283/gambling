@@ -22,7 +22,11 @@ public class DebtController {
 	public List<Debt> list(){
 		return debtService.findAll();
 	}
-		
+	
+	/**
+	 *   
+	 * @return
+	 */  
 	@RequestMapping(value="/put", method = RequestMethod.GET)
 	@ResponseBody
 	public Long put(){
