@@ -95,7 +95,7 @@
                     <port>8080</port>
                     <path>/gambling</path>  
                     <server>tomcat7</server>
-                     <tomcatLoggingFile>src/main/resources/log4j.properties</tomcatLoggingFile>
+                    
                 </configuration>
             </plugin>
     </plugins>
