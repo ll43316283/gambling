@@ -11,28 +11,30 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
+ 
 import com.math040.gambling.config.JpaConfig;
 import com.math040.gambling.dto.Debt;
-import com.math040.gambling.repository.DebtRepository;
+
+import config.TestBasedConfig; 
  
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes={JpaConfig.class})
+@ContextConfiguration(classes={TestBasedConfig.class,JpaConfig.class})
 @Transactional
 @TestExecutionListeners(                
 	    { DependencyInjectionTestExecutionListener.class,  
 	    	TransactionalTestExecutionListener.class })  
 public class DebtServiceTest {
 	@Autowired
-	private DebtRepository debtRepository;
-	 
+	private DebtService debtService;
+	   
 	@Test
 	@Rollback(true)
 	public void testSave(){
 		Debt debt = new Debt();
 		debt.setTitle("testDebt");
-		Debt debtsaved = debtRepository.save(debt);
-		Debt debtFind = debtRepository.findOne(debtsaved.getId()); 
+		Long id = debtService.save(debt);
+		Debt debtFind = debtService.findById(id); 
 		Assert.assertEquals("testDebt", debtFind.getTitle());
 	}
 	
