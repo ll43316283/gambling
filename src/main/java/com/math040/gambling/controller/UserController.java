@@ -11,39 +11,28 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.math040.gambling.dto.DebtDto;
+import com.math040.gambling.dto.UserDto;
 import com.math040.gambling.service.DebtService;
 import com.math040.gambling.service.UserService;
 
 @Controller
-@RequestMapping("/debt")
-public class DebtController {
+@RequestMapping("/user")
+public class UserController {
 	
-	private static Logger logger = LoggerFactory.getLogger(DebtController.class);
-	
-	@Autowired
-	private DebtService debtService;
+	public static Logger logger = LoggerFactory.getLogger(UserController.class);
 	
 	@Autowired
 	private UserService userService;
 	
-	@RequestMapping(value="/list", method = RequestMethod.GET)
-	@ResponseBody
-	public List<DebtDto> list(){
-		logger.error("DebtController.list");
-		return debtService.findAll();
-	}
-	
-	/**
-	 *   
-	 * @return
-	 */  
 	@RequestMapping(value="/put", method = RequestMethod.GET)
 	@ResponseBody
-	public Long put(){
-		DebtDto debt = new DebtDto();
-		debt.setTitle("first debt");
-		debt.setUser(userService.findByUserName("admin"));
-		return debtService.save(debt);
+	public UserDto create(){ 
+		UserDto user = new UserDto();
+		user.setUserName("admin");
+		user.setPassword("admin");
+		user.setRole(UserDto.ROLE_ADMIN);
+		return userService.save(user);
 	}
+	  
 
 }

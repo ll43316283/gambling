@@ -13,7 +13,7 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.transaction.annotation.Transactional;
  
 import com.math040.gambling.config.JpaConfig;
-import com.math040.gambling.dto.Debt;
+import com.math040.gambling.dto.DebtDto;
 
 import config.TestBasedConfig; 
  
@@ -31,10 +31,10 @@ public class DebtServiceTest {
 	@Test
 	@Rollback(true)
 	public void testSave(){
-		Debt debt = new Debt();
+		DebtDto debt = new DebtDto();
 		debt.setTitle("testDebt");
 		Long id = debtService.save(debt);
-		Debt debtFind = debtService.findById(id); 
+		DebtDto debtFind = debtService.findById(id); 
 		Assert.assertEquals("testDebt", debtFind.getTitle());
 	}
 	
