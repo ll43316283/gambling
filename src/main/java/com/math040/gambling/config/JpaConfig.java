@@ -44,6 +44,6 @@ public class JpaConfig {
 	  @Bean
 	  public DataSource dataSource()
 	  { 
-	    return JdbcConnectionPool.create("jdbc:h2:file:D:/h2/gambling;MODE=ORACLE","liang","test");
+	    return JdbcConnectionPool.create("jdbc:h2:file:D:/h2/gambling;MODE=Oracle;TRACE_LEVEL_SYSTEM_OUT=2","liang","test");
 	  }
 }
