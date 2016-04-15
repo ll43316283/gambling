@@ -8,7 +8,7 @@ import javax.sql.DataSource;
 import org.h2.jdbcx.JdbcConnectionPool;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories; 
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -44,6 +44,6 @@ public class JpaConfig {
 	  @Bean
 	  public DataSource dataSource()
 	  { 
-	    return JdbcConnectionPool.create("jdbc:h2:file:D:/h2/gambling;MODE=ORACLE","liang","test");
+	    return JdbcConnectionPool.create("jdbc:h2:file:D:/h2/gambling;MODE=Oracle;TRACE_LEVEL_SYSTEM_OUT=2","liang","test");
 	  }
 }
