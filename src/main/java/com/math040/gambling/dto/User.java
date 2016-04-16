@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "TR_USER") 
-public class UserDto {   
+public class User {   
 	public final static String ROLE_USER="ROLE_USER";
 	public final static String ROLE_ADMIN="ROLE_ADMIN";
 	
@@ -18,13 +18,13 @@ public class UserDto {
     @GeneratedValue(generator="SEQ_USER")
 	private Long id;
 	
-	@Column
+	@Column(length=20)
 	private String userName;
 	
-	@Column
+	@Column(length=50)
 	private String password;
 	 
-	@Column
+	@Column(length=20)
 	private String role;
 
 	public Long getId() {

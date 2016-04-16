@@ -1,10 +1,10 @@
 package com.math040.gambling.service;
  
 
-import com.math040.gambling.dto.UserDto;
+import com.math040.gambling.dto.User;
  
 
 public interface UserService { 
-	public UserDto save(UserDto user); 
-	public UserDto findByUserName(String userName );
+	public User save(User user); 
+	public User findByUserName(String userName );
 }
