@@ -3,31 +3,22 @@ package com.math040.gambling.dto;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.Entity; 
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.ManyToOne; 
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "TR_DEBT") 
-public class Debt { 
+public class Debt extends BaseDto{ 
 	public final static String RESULT_YES="Y";
 	public final static String RESULT_NO="N";
 	public final static String RESULT_DEALER_LOSE="D";
 	
 	public final static String STATUS_OPEN="O";
 	public final static String STATUS_CLOSE="C";
-	public final static String STATUS_CANCEL="E";
-	
-	
-	
-	@SequenceGenerator(name = "SEQ_DEBT", sequenceName = "SEQ_DEBT")
-    @Id
-    @GeneratedValue(generator="SEQ_DEBT")
-	private Long id;
+	public final static String STATUS_CANCEL="E"; 
+	 
 	
 	@Column(name="title", length=100)
 	private String title;
@@ -50,14 +41,10 @@ public class Debt {
     
 	@Column(name="create_Date")
     private Date createDate;
-     
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
+	 
+	@Column
+	private int season;
+      
 
 	public String getTitle() {
 		return title;
@@ -114,5 +101,14 @@ public class Debt {
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
+
+	public int getSeason() {
+		return season;
+	}
+
+	public void setSeason(int season) {
+		this.season = season;
+	}
   
+	
 }

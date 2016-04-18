@@ -47,28 +47,30 @@ public class TransactionServiceTest {
 	@Test
 	@Rollback
 	public void testCreateTrans() throws GamblingException { 
-		Debt debt = initDebt();
-		User user = userService.findByUserName("admin"); 
+		Debt debt = initDebt(); 
+		User gambler = initGambler();
 		Transaction trans = new Transaction();
 		trans.setDebt(debt);
-		trans.setGambler(user);
+		trans.setGambler(gambler);
 		trans.setPredict(Transaction.PREDICT_YES);
 		trans.setAmount(29);
 		Transaction savedTrans = transService.create(trans);
 		Assert.assertNotNull(savedTrans.getId());
 		Assert.assertEquals(29, savedTrans.getAmount());
 		Assert.assertEquals(trans.getPredict(), savedTrans.getPredict());
+		Assert.assertEquals(Transaction.NOT_DEALER, savedTrans.getIsDealer());
 	}
 	 
 	
 	@Test
 	@Rollback
 	public void testCreateTrans_with_2_same_amount_predict_throw_amount_not_correct_exception() throws GamblingException { 
-		Debt debt = initDebt();
-		User user = userService.findByUserName("admin"); 
+		Debt debt = initDebt(); 
+		User gambler = initGambler();
+		User gambler2 = initGambler2();
 		Transaction trans1 = new Transaction();
 		trans1.setDebt(debt);
-		trans1.setGambler(user);
+		trans1.setGambler(gambler);
 		trans1.setPredict(Transaction.PREDICT_YES);
 		trans1.setAmount(29);
 		transService.create(trans1);
@@ -76,10 +78,10 @@ public class TransactionServiceTest {
 		thrown.expectMessage(GamblingException.TRANS_AMOUNT_NOT_CORRECT); 
 		Transaction trans2 = new Transaction();
 		trans2.setDebt(debt);
-		trans2.setGambler(user);
+		trans2.setGambler(gambler2);
 		trans2.setPredict(Transaction.PREDICT_YES);
 		trans2.setAmount(29);
-		transService.create(trans1);
+		transService.create(trans2);
 	}
 	
 	@Rollback
@@ -91,5 +93,57 @@ public class TransactionServiceTest {
 		debt.setDeadline(new Date());
 		return debtService.create(debt);
 	}
-
+	
+	@Rollback
+	private User initGambler() throws GamblingException {
+		User gambler = new User();
+		gambler.setUserName("liang");
+		gambler.setPassword("123");
+		gambler.setRole(User.ROLE_USER); 
+		return userService.save(gambler);
+	}
+	@Rollback
+	private User initGambler2() throws GamblingException {
+		User gambler = new User();
+		gambler.setUserName("liang2");
+		gambler.setPassword("123");
+		gambler.setRole(User.ROLE_USER); 
+		return userService.save(gambler);
+	}
+	@Test
+	@Rollback
+	public void testCreateTrans_throw_debt_should_not_gamble_exception() throws GamblingException { 
+		Debt debt = initDebt();
+		User dealer = userService.findByUserName("admin");
+		thrown.expect(GamblingException.class);
+		thrown.expectMessage(GamblingException.TRANS_DEBT_SHOULD_NOT_GAMBLE);
+		Transaction trans1 = new Transaction();
+		trans1.setDebt(debt);
+		trans1.setGambler(dealer);
+		trans1.setPredict(Transaction.PREDICT_YES);
+		trans1.setAmount(29);
+		transService.create(trans1); 
+	}
+	
+	
+	@Test
+	@Rollback
+	public void testCreateTrans_throw_GAMBLER_SHOULD_GAMBLE_ONCE_IN_ONE_GAME_exception() throws GamblingException { 
+		Debt debt = initDebt(); 
+		User gambler = initGambler(); 
+		Transaction trans1 = new Transaction();
+		trans1.setDebt(debt);
+		trans1.setGambler(gambler);
+		trans1.setPredict(Transaction.PREDICT_YES);
+		trans1.setAmount(29);
+		transService.create(trans1);
+		thrown.expect(GamblingException.class);
+		thrown.expectMessage(GamblingException.TRANS_GAMBLER_SHOULD_GAMBLE_ONCE_IN_ONE_GAME); 
+		Transaction trans2 = new Transaction();
+		trans2.setDebt(debt);
+		trans2.setGambler(gambler);
+		trans2.setPredict(Transaction.PREDICT_YES);
+		trans2.setAmount(29);
+		transService.create(trans2);
+	}
 }

@@ -39,7 +39,10 @@ public class DebtServiceTest {
 	
 	@Autowired
 	private UserService userService;
-	   
+	
+	@Autowired
+	private SeasonService seasonService;
+	    
 	@Test
 	@Rollback(true)
 	public void testCreateDebtThrowGamblingException_USER_ID_SHOULD_NOT_NULL() throws GamblingException {
@@ -72,6 +75,7 @@ public class DebtServiceTest {
 		Assert.assertNotNull(debtSaved.getId());
 		Assert.assertNotNull(debtSaved.getCreateDate());
 		Assert.assertEquals(Debt.STATUS_OPEN, debtSaved.getStatus());
+		Assert.assertEquals(seasonService.getCurrent().getSeason(), debtSaved.getSeason());
 	}
 	
 	

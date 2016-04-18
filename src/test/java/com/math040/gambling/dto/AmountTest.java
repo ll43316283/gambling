@@ -74,7 +74,7 @@ public class AmountTest extends TestCase{
 		amounts.add(1);
 		assertTrue( Amount.validate(amounts, 1));
 		
-	}
+	} 
 	
 	@Test
 	public void testValidate_all_predicted_validate_1(){

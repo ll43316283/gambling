@@ -1,22 +1,14 @@
 package com.math040.gambling.dto;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.Entity; 
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "TR_USER") 
-public class User {   
+public class User extends BaseDto{   
 	public final static String ROLE_USER="ROLE_USER";
-	public final static String ROLE_ADMIN="ROLE_ADMIN";
-	
-	@SequenceGenerator(name = "SEQ_USER", sequenceName = "SEQ_USER")
-    @Id
-    @GeneratedValue(generator="SEQ_USER")
-	private Long id;
+	public final static String ROLE_ADMIN="ROLE_ADMIN"; 
 	
 	@Column(length=20)
 	private String userName;
@@ -26,15 +18,7 @@ public class User {
 	 
 	@Column(length=20)
 	private String role;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
+ 
 	public String getUserName() {
 		return userName;
 	}

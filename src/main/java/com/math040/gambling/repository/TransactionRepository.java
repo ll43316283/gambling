@@ -10,4 +10,5 @@ import com.math040.gambling.dto.Transaction;
 @Transactional
 public interface TransactionRepository extends JpaRepository<Transaction, Long> { 
 	List<Transaction> findByDebt_IdAndPredict(Long debtId,String predict);
+	List<Transaction> findByDebt_idAndGambler_id(Long debtId,Long userId);
 }

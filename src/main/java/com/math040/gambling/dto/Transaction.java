@@ -3,24 +3,18 @@ package com.math040.gambling.dto;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.Entity; 
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.ManyToOne; 
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "TR_TRANSACTION") 
-public class Transaction {
+public class Transaction extends BaseDto{
 	public final static String PREDICT_YES="Y";
 	public final static String PREDICT_NO="N";
-	
-	@SequenceGenerator(name = "SEQ_TRANSCATION", sequenceName = "SEQ_TRANSCATION")
-    @Id
-    @GeneratedValue(generator="SEQ_TRANSCATION")
-	private Long id;
+	public final static String IS_DEALER="Y";
+	public final static String NOT_DEALER="N";
 	
 	@ManyToOne
 	@JoinColumn(name="debt_id", nullable=false, updatable=false)
@@ -38,15 +32,13 @@ public class Transaction {
 	
 	@Column(name="amount")
 	private int amount;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
+ 
+	@Column(name="win_amount")
+	private int winAmount;
+	
+	@Column(name="is_dealer",length=1)
+	private String isDealer;
+	
 	public Debt getDebt() {
 		return debt;
 	}
@@ -93,5 +85,22 @@ public class Transaction {
 		}
 		return false;
 	}
+
+	public int getWinAmount() {
+		return winAmount;
+	}
+
+	public void setWinAmount(int winAmount) {
+		this.winAmount = winAmount;
+	}
+
+	public String getIsDealer() {
+		return isDealer;
+	}
+
+	public void setIsDealer(String isDealer) {
+		this.isDealer = isDealer;
+	}
 	 
+	
 }
