@@ -60,14 +60,19 @@ public class DebtServiceImpl implements DebtService {
 	public Debt end(Debt debt)throws GamblingException{
 		Assert.assertNotNull(" debt should not null ", debt);  
 		Assert.assertNotNull(" debt should not null ", debt.getId()); 
-		Debt savedDebt = debtDao.findOne(debt.getId());
 		if(!StringUtils.hasText(debt.getResult())){
 			throw new GamblingException(GamblingException.DEBT_RESULT_SHOULD_NOT_NULL_WHEN_END_DEBT);
+		}
+		Debt savedDebt = debtDao.findOne(debt.getId());
+		if(!Debt.STATUS_OPEN.equals(savedDebt.getStatus())){
+			throw new GamblingException(GamblingException.DEBT_IS_CLOSED_OR_CANCELED);
 		}
 		savedDebt.setEndDate(new Date());
 		savedDebt.setResult(debt.getResult());
 		savedDebt.setStatus(Debt.STATUS_CLOSE);
-		return debtDao.save(savedDebt);
+		Debt result = debtDao.save(savedDebt);
+		
+		return result;
 	}
 	
 	public Debt findById(Long id){

@@ -78,4 +78,25 @@ public class TransactionServiceImpl implements TransactionService {
 		}
 		return false;
 	}
+
+	@Override
+	public void end(Debt debt) throws GamblingException {
+		 Assert.assertNotNull(debt);
+		 Assert.assertNotNull(debt.getId()); 
+		 if(Debt.RESULT_YES.equals(debt.getResult())){
+			 transDao.setWinAmountWhenWin(debt, Debt.RESULT_YES);
+			 transDao.setWinAmountWhenLose(debt, Debt.RESULT_NO);
+			 return;
+		 } 
+		 if(Debt.RESULT_NO.equals(debt.getResult())){
+			 transDao.setWinAmountWhenWin(debt, Debt.RESULT_NO);
+			 transDao.setWinAmountWhenLose(debt, Debt.RESULT_YES);
+			 return;
+		 } 
+		 if(Debt.RESULT_DEALER_LOSE.equals(debt.getResult())){
+			 transDao.setWinAmountWhenWin(debt, Debt.RESULT_NO);
+			 transDao.setWinAmountWhenWin(debt, Debt.RESULT_YES);
+			 return;
+		 } 
+	}
 }

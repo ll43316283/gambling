@@ -65,7 +65,7 @@ public class SeasonServiceTest {
 	
 	@Rollback
 	@Test
-	public void testGetActiveSeasonThrow_no_avaliable_season() throws GamblingException{
+	public void testGetActiveSeasonWithNoActiveSeason() throws GamblingException{
 		seasonDao.deleteAll();
 		Season s1 = new Season();
 		s1.setActive(Season.ACTIVE_N);
@@ -74,9 +74,9 @@ public class SeasonServiceTest {
 		Season s2 = new Season();
 		s2.setActive(Season.ACTIVE_N);
 		s2.setSeason(2);
-		seasonDao.save(s2); 
-		thrown.expect(GamblingException.class);
-		thrown.expectMessage(GamblingException.SEASON_NO_AVAILABLE_SEASON);
-		seasonService.getCurrent(); 
+		seasonDao.save(s2);
+		Season season = seasonService.getCurrent();
+		Assert.assertEquals(3, season.getSeason());
+		Assert.assertEquals(Season.ACTIVE_Y, season.getActive());
 	}
 }

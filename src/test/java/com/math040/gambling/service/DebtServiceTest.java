@@ -119,6 +119,17 @@ public class DebtServiceTest {
 	
 	@Test
 	@Rollback(true)
+	public void testEndDebtThrowGamblingException_DEBT_HAS_BEEN_CANCELED_OR_CLOSED() throws GamblingException { 
+		Debt savedDebt = initDebt(); 
+		savedDebt.setResult(Debt.RESULT_YES);
+		savedDebt.setStatus(Debt.STATUS_CLOSE); 
+		thrown.expect(GamblingException.class); 
+		thrown.expectMessage(GamblingException.DEBT_IS_CLOSED_OR_CANCELED);
+	    debtService.end(savedDebt);
+	}
+	
+	@Test
+	@Rollback(true)
 	public void testEndDebt() throws GamblingException { 
 		Debt savedDebt = initDebt();  
 		savedDebt.setResult(Debt.RESULT_YES);

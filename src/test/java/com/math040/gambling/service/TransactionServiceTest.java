@@ -1,6 +1,7 @@
 package com.math040.gambling.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Rule;
@@ -8,6 +9,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -21,6 +23,7 @@ import com.math040.gambling.config.JpaConfig;
 import com.math040.gambling.dto.Debt;
 import com.math040.gambling.dto.Transaction;
 import com.math040.gambling.dto.User;
+import com.math040.gambling.repository.TransactionRepository;
 
 import config.TestBasedConfig; 
  
@@ -43,6 +46,9 @@ public class TransactionServiceTest {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private TransactionRepository transDao;
 	   
 	@Test
 	@Rollback
@@ -145,5 +151,84 @@ public class TransactionServiceTest {
 		trans2.setPredict(Transaction.PREDICT_YES);
 		trans2.setAmount(29);
 		transService.create(trans2);
+	}
+	
+	@Test
+	@Rollback
+	public void testEndTransWhenOneWin29AndTheOtherWin23()throws GamblingException{
+		Debt debt = initDebt(); 
+		User gambler = initGambler(); 
+		User gambler2 = initGambler2(); 
+		Transaction trans1 = new Transaction();
+		trans1.setDebt(debt);
+		trans1.setGambler(gambler);
+		trans1.setPredict(Transaction.PREDICT_YES);
+		trans1.setAmount(29);
+		transService.create(trans1);  
+		Transaction trans2 = new Transaction();
+		trans2.setDebt(debt);
+		trans2.setGambler(gambler2);
+		trans2.setPredict(Transaction.PREDICT_YES);
+		trans2.setAmount(23);
+		transService.create(trans2);
+		
+		debt.setResult(Debt.RESULT_YES);
+		transService.end(debt);
+		List<Transaction> transList = transDao.findAll(new Sort(Sort.Direction.DESC,"amount"));
+		Assert.assertEquals(29, transList.get(0).getWinAmount());
+		Assert.assertEquals(23, transList.get(1).getWinAmount());
+	}
+	
+	@Test
+	@Rollback
+	public void testEndTransWhenOneWin29AndTheOtherLose23()throws GamblingException{
+		Debt debt = initDebt(); 
+		User gambler = initGambler(); 
+		User gambler2 = initGambler2(); 
+		Transaction trans1 = new Transaction();
+		trans1.setDebt(debt);
+		trans1.setGambler(gambler);
+		trans1.setPredict(Transaction.PREDICT_YES);
+		trans1.setAmount(29);
+		transService.create(trans1);  
+		Transaction trans2 = new Transaction();
+		trans2.setDebt(debt);
+		trans2.setGambler(gambler2);
+		trans2.setPredict(Transaction.PREDICT_NO);
+		trans2.setAmount(23);
+		transService.create(trans2);
+		
+		debt.setResult(Debt.RESULT_YES);
+		transService.end(debt);
+		List<Transaction> transList = transDao.findAll(new Sort(Sort.Direction.DESC,"amount"));
+		Assert.assertEquals(29, transList.get(0).getWinAmount());
+		Assert.assertEquals(-23, transList.get(1).getWinAmount());
+	}
+	
+	
+	@Test
+	@Rollback
+	public void testEndTransWhenDealerLoseOneWin29AndTheOtherLose29()throws GamblingException{
+		Debt debt = initDebt(); 
+		User gambler = initGambler(); 
+		User gambler2 = initGambler2(); 
+		Transaction trans1 = new Transaction();
+		trans1.setDebt(debt);
+		trans1.setGambler(gambler);
+		trans1.setPredict(Transaction.PREDICT_YES);
+		trans1.setAmount(29);
+		transService.create(trans1);  
+		Transaction trans2 = new Transaction();
+		trans2.setDebt(debt);
+		trans2.setGambler(gambler2);
+		trans2.setPredict(Transaction.PREDICT_NO);
+		trans2.setAmount(23);
+		transService.create(trans2);
+		
+		debt.setResult(Debt.RESULT_DEALER_LOSE);
+		transService.end(debt);
+		List<Transaction> transList = transDao.findAll(new Sort(Sort.Direction.DESC,"amount"));
+		Assert.assertEquals(29, transList.get(0).getWinAmount());
+		Assert.assertEquals(23, transList.get(1).getWinAmount());
 	}
 }

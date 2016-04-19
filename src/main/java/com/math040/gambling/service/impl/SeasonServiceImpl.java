@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -21,15 +24,17 @@ public class SeasonServiceImpl implements SeasonService {
 	public Season getCurrent() throws GamblingException { 
 		List<Season> seasons = seasonDao.findByActive(Season.ACTIVE_Y);
 		if(CollectionUtils.isEmpty(seasons)){
-			seasons = seasonDao.findAll();
-			if(CollectionUtils.isEmpty(seasons)){
-				Season season = new Season();
-				season.setActive(Season.ACTIVE_Y);
-				season.setStartDate(new Date());
-				season.setSeason(1); 
-				return seasonDao.save(season);
-			}
-			throw new GamblingException(GamblingException.SEASON_NO_AVAILABLE_SEASON);
+			Page<Season> seasonPage = seasonDao.findAll(new PageRequest(0, 1,new Sort(Sort.Direction.DESC,"season")));
+			Season season = new Season();
+			season.setActive(Season.ACTIVE_Y);
+			season.setStartDate(new Date());
+			if(seasonPage==null || CollectionUtils.isEmpty(seasonPage.getContent())){  
+				season.setSeason(1);  
+			}else{
+				Season lastSeason = seasonPage.getContent().get(0) ;
+				season.setSeason(lastSeason.getSeason()+1); 
+			} 
+			return seasonDao.save(season); 
 		}
 		return seasons.get(0);
 	}

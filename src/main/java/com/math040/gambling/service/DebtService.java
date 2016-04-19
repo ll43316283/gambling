@@ -6,9 +6,9 @@ import com.math040.gambling.GamblingException;
 import com.math040.gambling.dto.Debt;
 
 public interface DebtService {
-	public List<Debt> findAll();
-	public Debt create(Debt debt) throws GamblingException;
-	public Debt findById(Long id);
-	public Debt cancel(Debt debt)throws GamblingException;
-	public Debt end(Debt debt)throws GamblingException;
+	 List<Debt> findAll();
+	 Debt create(Debt debt) throws GamblingException;
+	 Debt findById(Long id);
+	 Debt cancel(Debt debt)throws GamblingException;
+	 Debt end(Debt debt)throws GamblingException; 
 }
