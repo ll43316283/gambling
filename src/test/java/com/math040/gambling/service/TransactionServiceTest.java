@@ -8,8 +8,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
+import org.springframework.beans.factory.annotation.Autowired; 
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -174,9 +173,22 @@ public class TransactionServiceTest {
 		
 		debt.setResult(Debt.RESULT_YES);
 		transService.end(debt);
-		List<Transaction> transList = transDao.findAll(new Sort(Sort.Direction.DESC,"amount"));
+		List<Transaction> transList = transDao.findByDebtOrderByAmountDesc(debt);
 		Assert.assertEquals(29, transList.get(0).getWinAmount());
 		Assert.assertEquals(23, transList.get(1).getWinAmount());
+		Assert.assertEquals(Transaction.IS_DEALER, transList.get(2).getIsDealer());
+		Assert.assertEquals(debt.getDealer(), transList.get(2).getGambler());
+		Assert.assertEquals(-52, transList.get(2).getWinAmount());
+	}
+	
+	
+	@Test
+	@Rollback
+	public void testEndTransWhenThereIsNoTrans()throws GamblingException{
+		Debt debt = initDebt();  
+		transService.end(debt);
+		Integer count = transDao.countByDebt(debt);
+		Assert.assertEquals(new Integer(0), count); 
 	}
 	
 	@Test
@@ -200,15 +212,16 @@ public class TransactionServiceTest {
 		
 		debt.setResult(Debt.RESULT_YES);
 		transService.end(debt);
-		List<Transaction> transList = transDao.findAll(new Sort(Sort.Direction.DESC,"amount"));
+		List<Transaction> transList = transDao.findByDebtOrderByAmountDesc(debt);
 		Assert.assertEquals(29, transList.get(0).getWinAmount());
 		Assert.assertEquals(-23, transList.get(1).getWinAmount());
+		Assert.assertEquals(-6, transList.get(2).getWinAmount());
 	}
 	
 	
 	@Test
 	@Rollback
-	public void testEndTransWhenDealerLoseOneWin29AndTheOtherLose29()throws GamblingException{
+	public void testEndTransWhenDealerLoseOneWin29AndTheOtherWin29()throws GamblingException{
 		Debt debt = initDebt(); 
 		User gambler = initGambler(); 
 		User gambler2 = initGambler2(); 
@@ -227,8 +240,12 @@ public class TransactionServiceTest {
 		
 		debt.setResult(Debt.RESULT_DEALER_LOSE);
 		transService.end(debt);
-		List<Transaction> transList = transDao.findAll(new Sort(Sort.Direction.DESC,"amount"));
+		List<Transaction> transList = transDao.findByDebtOrderByAmountDesc(debt);
 		Assert.assertEquals(29, transList.get(0).getWinAmount());
 		Assert.assertEquals(23, transList.get(1).getWinAmount());
+		Assert.assertEquals(-52, transList.get(2).getWinAmount());
 	}
+	
+	
+	
 }

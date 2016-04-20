@@ -1,6 +1,7 @@
 package com.math040.gambling.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Assert;
@@ -39,8 +40,11 @@ public class TransactionServiceImpl implements TransactionService {
 		if(debt.getDealer().equals(transaction.getGambler())){
 			throw new GamblingException(GamblingException.TRANS_DEBT_SHOULD_NOT_GAMBLE);
 		}
+		
 		transaction.setDebt(debt);
 		transaction.setIsDealer(Transaction.NOT_DEALER);
+		transaction.setCreateDate(new Date());
+		
 		if(!validateOneShouldDebtOnceInOneDebt(transaction)){
 			throw new GamblingException(GamblingException.TRANS_GAMBLER_SHOULD_GAMBLE_ONCE_IN_ONE_GAME);
 		}
@@ -82,21 +86,35 @@ public class TransactionServiceImpl implements TransactionService {
 	@Override
 	public void end(Debt debt) throws GamblingException {
 		 Assert.assertNotNull(debt);
-		 Assert.assertNotNull(debt.getId()); 
+		 Assert.assertNotNull(debt.getId());  
+		 Integer count = transDao.countByDebt(debt);
+		 if(count == 0){
+			 return;
+		 }
 		 if(Debt.RESULT_YES.equals(debt.getResult())){
 			 transDao.setWinAmountWhenWin(debt, Debt.RESULT_YES);
-			 transDao.setWinAmountWhenLose(debt, Debt.RESULT_NO);
-			 return;
+			 transDao.setWinAmountWhenLose(debt, Debt.RESULT_NO); 
 		 } 
 		 if(Debt.RESULT_NO.equals(debt.getResult())){
 			 transDao.setWinAmountWhenWin(debt, Debt.RESULT_NO);
-			 transDao.setWinAmountWhenLose(debt, Debt.RESULT_YES);
-			 return;
+			 transDao.setWinAmountWhenLose(debt, Debt.RESULT_YES); 
 		 } 
 		 if(Debt.RESULT_DEALER_LOSE.equals(debt.getResult())){
 			 transDao.setWinAmountWhenWin(debt, Debt.RESULT_NO);
-			 transDao.setWinAmountWhenWin(debt, Debt.RESULT_YES);
-			 return;
+			 transDao.setWinAmountWhenWin(debt, Debt.RESULT_YES); 
 		 } 
+		 createDealerTrans(debt);
+	}
+	
+	private void createDealerTrans(Debt debt){
+		Integer gamblerWinAmount = transDao.sumWinSumAmountByDebt(debt);
+		Transaction trans = new Transaction();
+		trans.setAmount(-1*gamblerWinAmount); 
+		trans.setWinAmount(-1*gamblerWinAmount); 
+		trans.setIsDealer(Transaction.IS_DEALER);
+		trans.setCreateDate(new Date());
+		trans.setDebt(debt);
+		trans.setGambler(debt.getDealer());  
+		transDao.save(trans);
 	}
 }

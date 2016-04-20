@@ -14,6 +14,7 @@ import com.math040.gambling.dto.Debt;
 import com.math040.gambling.repository.DebtRepository;
 import com.math040.gambling.service.DebtService;
 import com.math040.gambling.service.SeasonService;
+import com.math040.gambling.service.TransactionService;
 
 @Service
 @Transactional
@@ -23,6 +24,9 @@ public class DebtServiceImpl implements DebtService {
 	
 	@Autowired
 	SeasonService seasonService;
+	
+	@Autowired
+	TransactionService transactionService;
 	
 	public List<Debt> findAll(){
 		return debtDao.findAll();
@@ -71,7 +75,7 @@ public class DebtServiceImpl implements DebtService {
 		savedDebt.setResult(debt.getResult());
 		savedDebt.setStatus(Debt.STATUS_CLOSE);
 		Debt result = debtDao.save(savedDebt);
-		
+		transactionService.end(result);
 		return result;
 	}
 	

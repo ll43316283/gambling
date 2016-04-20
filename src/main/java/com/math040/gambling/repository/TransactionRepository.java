@@ -16,6 +16,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 	List<Transaction> findByDebt_IdAndPredict(Long debtId,String predict);
 	List<Transaction> findByDebt_idAndGambler_id(Long debtId,Long userId);
 	List<Transaction> findByDebt(Debt debt);
+	List<Transaction> findByDebtOrderByAmountDesc(Debt debt);
 	
 	@Modifying(clearAutomatically=true)
 	@Query("update Transaction trans set trans.winAmount=trans.amount where trans.debt=:debt and trans.predict=:predict")
@@ -24,4 +25,10 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 	@Modifying(clearAutomatically=true)
 	@Query("update Transaction trans set trans.winAmount=-1*trans.amount where trans.debt=:debt and trans.predict=:predict")
 	void setWinAmountWhenLose(@Param("debt") Debt debt, @Param("predict") String predict);
+	
+	@Query("select sum(trans.winAmount) from Transaction trans where trans.debt=:debt  ")
+	Integer sumWinSumAmountByDebt(@Param("debt") Debt debt); 
+	
+	@Query("select count(trans.id) from Transaction trans where trans.debt=:debt")
+	Integer countByDebt(@Param("debt") Debt debt);
 }
