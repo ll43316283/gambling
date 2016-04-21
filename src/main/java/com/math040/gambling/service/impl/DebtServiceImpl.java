@@ -2,11 +2,11 @@ package com.math040.gambling.service.impl;
 
 import java.util.Date;
 import java.util.List;
-
-import org.junit.Assert;
+ 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import com.math040.gambling.GamblingException;
@@ -33,7 +33,7 @@ public class DebtServiceImpl implements DebtService {
 	}
 	
 	public Debt create(Debt debt)throws GamblingException{
-		Assert.assertNotNull(" debt should not null ", debt);  
+		Assert.notNull(debt," debt should not null " );  
 		if(debt.getDealer()==null || debt.getDealer().getId()==null){
 			throw new GamblingException(GamblingException.DEBT_USER_ID_SHOULD_NOT_NULL);
 		}
@@ -50,8 +50,8 @@ public class DebtServiceImpl implements DebtService {
 	}
 	
 	public Debt cancel(Debt debt)throws GamblingException{
-		Assert.assertNotNull(" debt should not null ", debt);  
-		Assert.assertNotNull(" debt should not null ", debt.getId()); 
+		Assert.notNull(debt," debt should not null " );  
+		Assert.notNull(debt.getId()," debt should not null "); 
 		Debt savedDebt = debtDao.findOne(debt.getId());
 		if(Debt.STATUS_CLOSE.equalsIgnoreCase(savedDebt.getStatus())){
 			throw new GamblingException(GamblingException.DEBT_CANNOT_CANCLE_A_CLOSED_DEBT);
@@ -62,8 +62,8 @@ public class DebtServiceImpl implements DebtService {
 	}
 	
 	public Debt end(Debt debt)throws GamblingException{
-		Assert.assertNotNull(" debt should not null ", debt);  
-		Assert.assertNotNull(" debt should not null ", debt.getId()); 
+		Assert.notNull(debt," debt should not null " );  
+		Assert.notNull(debt.getId()," debt should not null "); 
 		if(!StringUtils.hasText(debt.getResult())){
 			throw new GamblingException(GamblingException.DEBT_RESULT_SHOULD_NOT_NULL_WHEN_END_DEBT);
 		}

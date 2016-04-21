@@ -3,10 +3,10 @@ package com.math040.gambling.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.junit.Assert;
+ 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 import com.math040.gambling.GamblingException;
@@ -26,7 +26,7 @@ public class TransactionServiceImpl implements TransactionService {
 	DebtRepository debtDao;
 	 
 	public Transaction create(Transaction transaction) throws GamblingException{
-		Assert.assertNotNull(transaction);
+		Assert.notNull(transaction);
 		if(transaction.getGambler()==null || transaction.getGambler().getId()==null){
 			throw new GamblingException(GamblingException.TRANS_USER_ID_SHOULD_NOT_NULL);
 		}
@@ -59,9 +59,9 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 	
 	private boolean checkAmountAvailable(Transaction transaction) throws GamblingException {
-		Assert.assertNotNull(transaction);
-		Assert.assertNotNull(transaction.getDebt());
-		Assert.assertNotNull(transaction.getDebt().getId()); 
+		Assert.notNull(transaction);
+		Assert.notNull(transaction.getDebt());
+		Assert.notNull(transaction.getDebt().getId()); 
 		if(!transaction.validatePredict()){
 			throw new GamblingException(GamblingException.TRANS_PREDICT_NOT_CORRECT);
 		}
@@ -85,8 +85,8 @@ public class TransactionServiceImpl implements TransactionService {
 
 	@Override
 	public void end(Debt debt) throws GamblingException {
-		 Assert.assertNotNull(debt);
-		 Assert.assertNotNull(debt.getId());  
+		 Assert.notNull(debt);
+		 Assert.notNull(debt.getId());  
 		 Integer count = transDao.countByDebt(debt);
 		 if(count == 0){
 			 return;
