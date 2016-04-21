@@ -1,6 +1,5 @@
 package com.math040.gambling.service;
-
-import java.util.Date;
+ 
 
 import org.junit.Assert;
 import org.junit.Rule;
@@ -30,7 +29,7 @@ import config.TestBasedConfig;
 @TestExecutionListeners(                
 	    { DependencyInjectionTestExecutionListener.class,  
 	    	TransactionalTestExecutionListener.class })  
-public class DebtServiceTest {
+public class DebtServiceTest extends BaseTest{
 	@Rule
 	public ExpectedException thrown= ExpectedException.none();
 	
@@ -97,16 +96,7 @@ public class DebtServiceTest {
 	    Debt canceledDebt = debtService.findById(savedDebt.getId());
 	    Assert.assertEquals(Debt.STATUS_CANCEL, canceledDebt.getStatus());
 	}
-
-	@Rollback
-	private Debt initDebt() throws GamblingException {
-		Debt debt = new Debt();
-		debt.setTitle("first test debt");
-		User user = userService.findByUserName("admin");
-		debt.setDealer(user); 
-		debt.setDeadline(new Date());
-		return debtService.create(debt);
-	}
+ 
 	
 	@Test
 	@Rollback(true)

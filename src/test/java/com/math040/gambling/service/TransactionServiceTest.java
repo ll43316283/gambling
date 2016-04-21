@@ -1,6 +1,5 @@
 package com.math040.gambling.service;
-
-import java.util.Date;
+ 
 import java.util.List;
 
 import org.junit.Assert;
@@ -33,15 +32,13 @@ import config.TestBasedConfig;
 @TestExecutionListeners(                
 	    { DependencyInjectionTestExecutionListener.class,  
 	    	TransactionalTestExecutionListener.class })  
-public class TransactionServiceTest {
+public class TransactionServiceTest extends BaseTest{
 	@Rule
 	public ExpectedException thrown= ExpectedException.none();
 	
 	@Autowired
 	private TransactionService transService;
-	
-	@Autowired
-	private DebtService debtService;
+	 
 	
 	@Autowired
 	private UserService userService;
@@ -89,32 +86,7 @@ public class TransactionServiceTest {
 		transService.create(trans2);
 	}
 	
-	@Rollback
-	private Debt initDebt() throws GamblingException {
-		Debt debt = new Debt();
-		debt.setTitle("first test debt");
-		User user = userService.findByUserName("admin");
-		debt.setDealer(user); 
-		debt.setDeadline(new Date());
-		return debtService.create(debt);
-	}
-	
-	@Rollback
-	private User initGambler() throws GamblingException {
-		User gambler = new User();
-		gambler.setUserName("liang");
-		gambler.setPassword("123");
-		gambler.setRole(User.ROLE_USER); 
-		return userService.save(gambler);
-	}
-	@Rollback
-	private User initGambler2() throws GamblingException {
-		User gambler = new User();
-		gambler.setUserName("liang2");
-		gambler.setPassword("123");
-		gambler.setRole(User.ROLE_USER); 
-		return userService.save(gambler);
-	}
+ 
 	@Test
 	@Rollback
 	public void testCreateTrans_throw_debt_should_not_gamble_exception() throws GamblingException { 

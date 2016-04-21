@@ -73,10 +73,9 @@ public class DebtServiceImpl implements DebtService {
 		}
 		savedDebt.setEndDate(new Date());
 		savedDebt.setResult(debt.getResult());
-		savedDebt.setStatus(Debt.STATUS_CLOSE);
-		Debt result = debtDao.save(savedDebt);
-		transactionService.end(result);
-		return result;
+		savedDebt.setStatus(Debt.STATUS_CLOSE); 
+		transactionService.end(savedDebt);
+		return debtDao.save(savedDebt);
 	}
 	
 	public Debt findById(Long id){

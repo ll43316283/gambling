@@ -1,11 +1,8 @@
 package com.math040.gambling.service;
+ 
 
-import java.util.Date;
-
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.Assert; 
+import org.junit.Test; 
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
@@ -19,8 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.math040.gambling.GamblingException;
 import com.math040.gambling.config.JpaConfig;
 import com.math040.gambling.dto.Debt;
+import com.math040.gambling.dto.Transaction;
 import com.math040.gambling.dto.User;
 import com.math040.gambling.dto.UserStatistics;
+import com.math040.gambling.repository.DebtRepository;
+import com.math040.gambling.repository.TransactionRepository;
+import com.math040.gambling.repository.UserStatisticsRepository;
 
 import config.TestBasedConfig; 
  
@@ -31,33 +32,65 @@ import config.TestBasedConfig;
 @TestExecutionListeners(                
 	    { DependencyInjectionTestExecutionListener.class,  
 	    	TransactionalTestExecutionListener.class })  
-public class UserStatisticsServiceTest {
+public class UserStatisticsServiceTest extends BaseTest {
 	 
 	
 	@Autowired
 	private UserStatisticsService usService;
-	 
+	
 	@Autowired
-	private UserService userService;
+	TransactionRepository transDao;
 	
+	@Autowired
+	DebtRepository debtDao;
+	  
+	@Autowired
+	private UserStatisticsRepository usDao;
+	
+	@Autowired
+	private TransactionService transService;
+ 
+	@Autowired
+	private DebtService debtService;
+	 
+	 
+	
+	@Rollback
 	@Test
-	@Rollback
-	public void testSave()throws GamblingException{
-		UserStatistics us = new UserStatistics();
+	public void testDoStatisticsAmountsWhenOneWin29AnotherLose23() throws GamblingException{
+		Debt debt = initDebt(); 
 		User gambler = initGambler(); 
-		us.setWinningRate(11.123);
-		us.setGambler(gambler);
-		UserStatistics savedUs = usService.create(us);
-		System.out.println(savedUs.getWinningRate());
-//		Assert.assertEquals(expected, actual);
+		User gambler2 = initGambler2(); 
+		
+		Transaction trans1 = new Transaction();
+		trans1.setDebt(debt);
+		trans1.setGambler(gambler);
+		trans1.setPredict(Transaction.PREDICT_YES);
+		trans1.setAmount(29);
+		transService.create(trans1);  
+		Transaction trans2 = new Transaction();
+		trans2.setDebt(debt);
+		trans2.setGambler(gambler2);
+		trans2.setPredict(Transaction.PREDICT_NO);
+		trans2.setAmount(23);
+		transService.create(trans2); 
+		  
+		debt.setResult(Debt.RESULT_YES);
+		debtService.end(debt);   
+		usService.doStatistics();
+		
+		
+		
+		UserStatistics liang = usDao.findByGamblerAndSeason(gambler, debt.getSeason());
+		UserStatistics liang2 = usDao.findByGamblerAndSeason(gambler2, debt.getSeason());
+		UserStatistics admin = usDao.findByGamblerAndSeason(debt.getDealer(), debt.getSeason());
+		
+		Assert.assertEquals(29,liang.getAmount());
+		Assert.assertEquals(-23,liang2.getAmount());
+		Assert.assertEquals(-6,admin.getAmount());
+		
+		
 	}
 	
-	@Rollback
-	private User initGambler() throws GamblingException {
-		User gambler = new User();
-		gambler.setUserName("liang");
-		gambler.setPassword("123");
-		gambler.setRole(User.ROLE_USER); 
-		return userService.save(gambler);
-	}
+	
 }
