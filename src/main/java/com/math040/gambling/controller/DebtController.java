@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.math040.gambling.dto.DebtDto;
+import com.math040.gambling.GamblingException;
+import com.math040.gambling.dto.Debt;
 import com.math040.gambling.service.DebtService;
 import com.math040.gambling.service.UserService;
 
@@ -28,7 +29,7 @@ public class DebtController {
 	
 	@RequestMapping(value="/list", method = RequestMethod.GET)
 	@ResponseBody
-	public List<DebtDto> list(){
+	public List<Debt> list(){
 		logger.error("DebtController.list");
 		return debtService.findAll();
 	}
@@ -39,11 +40,11 @@ public class DebtController {
 	 */  
 	@RequestMapping(value="/put", method = RequestMethod.GET)
 	@ResponseBody
-	public Long put(){
-		DebtDto debt = new DebtDto();
+	public Debt put()throws GamblingException{
+		Debt debt = new Debt();
 		debt.setTitle("first debt");
-		debt.setUser(userService.findByUserName("admin"));
-		return debtService.save(debt);
+		debt.setDealer(userService.findByUserName("admin"));
+		return debtService.create(debt);
 	}
 
 }
