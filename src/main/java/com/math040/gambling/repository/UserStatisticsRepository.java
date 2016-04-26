@@ -22,4 +22,6 @@ public interface UserStatisticsRepository extends JpaRepository<UserStatistics, 
 	UserStatistics findBySeasonAndGambler_id(int season, Long gamblerId );
 	
 	UserStatistics findByGamblerAndSeason(User gambler, int season);
+	
+	List<UserStatistics> findBySeason(int season);
 }

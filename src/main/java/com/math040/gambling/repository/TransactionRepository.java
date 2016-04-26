@@ -9,7 +9,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.math040.gambling.dto.Debt;
-import com.math040.gambling.dto.Transaction; 
+import com.math040.gambling.dto.Transaction;
+import com.math040.gambling.dto.User; 
 
 @Transactional
 public interface TransactionRepository extends JpaRepository<Transaction, Long> { 
@@ -31,4 +32,12 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 	
 	@Query("select count(trans.id) from Transaction trans where trans.debt=:debt")
 	Integer countByDebt(@Param("debt") Debt debt);
+	
+	@Query("select count(trans.id) from Transaction trans where trans.gambler=:gambler and trans.debt.season=:season "
+			+ "   and trans.winAmount>0  and trans.debt.status='"+Debt.STATUS_CLOSE+"'")
+	Integer countWinTransBySeasonAndGambler(@Param("season") int season, @Param("gambler") User gambler);
+	
+	@Query("select count(trans.id) from Transaction trans where trans.gambler=:gambler and trans.debt.season=:season "
+			+ "   and trans.debt.status='"+Debt.STATUS_CLOSE+"'")
+	Integer countTransBySeasonAndGambler(@Param("season") int season, @Param("gambler") User gambler);
 }

@@ -1,5 +1,6 @@
 package com.math040.gambling.service.impl;
  
+ 
 import java.util.Date;
 import java.util.List;
 
@@ -10,8 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import com.math040.gambling.GamblingException; 
+import com.math040.gambling.GamblingException;
 import com.math040.gambling.dto.UserStatistics;
+import com.math040.gambling.repository.TransactionRepository;
 import com.math040.gambling.repository.UserRepository;
 import com.math040.gambling.repository.UserStatisticsRepository;
 import com.math040.gambling.service.SeasonService;
@@ -31,11 +33,21 @@ public class UserStatisticsServiceImpl implements UserStatisticsService {
 	@Autowired
 	UserRepository userDao;
 	
+	@Autowired
+	TransactionRepository transDao;
+	
 	@Override
 	public void doStatistics() throws GamblingException{
 		int season = seasonService.getCurrent().getSeason();
 	    doStatisticsAmounts(season);
+	    List<UserStatistics> usList = usDao.findBySeason(season); 
+		if(CollectionUtils.isEmpty(usList)){
+			return;
+		}
+	    doStatisticsWinRate(season,usList);
+	    doStatisticsTitles(season,usList);
 	}
+
 
 	private void doStatisticsAmounts(int season) throws GamblingException {
 		List<Object[]> userAmounts = usDao.findUserAmountsBySeason(season);
@@ -64,8 +76,35 @@ public class UserStatisticsServiceImpl implements UserStatisticsService {
 				newUs.setUpdateDate(new Date()); 
 				usDao.save(newUs);
 			}else{ 
-				us.setAmount(winningAmounts.intValue()); 
+				us.setAmount(winningAmounts.intValue());
+				us.setUpdateDate(new Date());
 			}
 		}
+	}
+	
+	private void doStatisticsWinRate(int season,List<UserStatistics> usList){ 
+		for(UserStatistics us:usList){
+			Integer totalTrans = transDao.countTransBySeasonAndGambler(season, us.getGambler());
+			Integer totalWinTrans = transDao.countWinTransBySeasonAndGambler(season, us.getGambler());
+			if(totalTrans.equals(new Integer(0))){
+				us.setWinningRate(0.0);
+			}else{
+				double winRate = totalWinTrans.doubleValue()/totalTrans.doubleValue();  
+				us.setWinningRate(winRate);
+			}  
+			us.setUpdateDate(new Date()); 
+		}
+	}
+	
+	
+
+	private void doStatisticsTitles(int season,List<UserStatistics> usList) {  
+		for(UserStatistics us:usList){
+			if(!CollectionUtils.isEmpty(us.getTitles())){
+				us.getTitles().clear();
+			} 
+		}
+		
+		
 	}
 }

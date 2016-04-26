@@ -58,10 +58,11 @@ public class TransactionServiceTest extends BaseTest{
 		trans.setAmount(29);
 		Transaction savedTrans = transService.create(trans);
 		Assert.assertNotNull(savedTrans.getId());
+		Assert.assertEquals(TEST_SEASON, savedTrans.getDebt().getSeason());
 		Assert.assertEquals(29, savedTrans.getAmount());
 		Assert.assertEquals(trans.getPredict(), savedTrans.getPredict());
 		Assert.assertEquals(Transaction.NOT_DEALER, savedTrans.getIsDealer());
-	}
+	} 
 	 
 	
 	@Test

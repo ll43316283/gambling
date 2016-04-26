@@ -2,11 +2,16 @@ package com.math040.gambling.dto;
  
  
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -27,6 +32,11 @@ public class UserStatistics extends BaseDto{
 
 	@Column(name="update_date")
 	private Date updateDate;
+	
+	@ManyToMany
+	@JoinTable(name="TR_USERSTAT_TITLE_MAP", joinColumns=@JoinColumn(name="us_id"),
+	inverseJoinColumns=@JoinColumn(name="title_id"))
+	List<Title> titles = new ArrayList<>();
 	
 	public User getGambler() {
 		return gambler;
@@ -49,7 +59,13 @@ public class UserStatistics extends BaseDto{
 	}
 
 	public void setWinningRate(Double winningRate) {
-		this.winningRate = winningRate;
+		if(winningRate==null){
+			this.winningRate = winningRate;
+		}else{
+			BigDecimal   b   =   new   BigDecimal(winningRate);  
+			this.winningRate   =   b.setScale(2,   BigDecimal.ROUND_HALF_UP).doubleValue();   
+		}
+		 
 	}
 
 	public int getSeason() {
@@ -66,6 +82,14 @@ public class UserStatistics extends BaseDto{
 
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
+	}
+
+	public List<Title> getTitles() {
+		return titles;
+	}
+
+	public void setTitles(List<Title> titles) {
+		this.titles = titles;
 	}
 	
 	

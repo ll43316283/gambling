@@ -53,12 +53,17 @@ public class UserStatisticsServiceTest extends BaseTest {
 	@Autowired
 	private DebtService debtService;
 	 
-	 
+	@Rollback
+	@Test
+	public void testDoStatisticsAmountsWhenNoDebts() throws GamblingException{
+		usService.doStatistics(); 
+	}
 	
 	@Rollback
 	@Test
-	public void testDoStatisticsAmountsWhenOneWin29AnotherLose23() throws GamblingException{
+	public void testDoStatisticsAmountsWhenOneWin58AnotherWin0() throws GamblingException{
 		Debt debt = initDebt(); 
+		Debt debt2 = initDebt2();
 		User gambler = initGambler(); 
 		User gambler2 = initGambler2(); 
 		
@@ -73,23 +78,38 @@ public class UserStatisticsServiceTest extends BaseTest {
 		trans2.setGambler(gambler2);
 		trans2.setPredict(Transaction.PREDICT_NO);
 		trans2.setAmount(23);
-		transService.create(trans2); 
-		  
+		transService.create(trans2);  
 		debt.setResult(Debt.RESULT_YES);
 		debtService.end(debt);   
-		usService.doStatistics();
+		 
+		Transaction trans3 = new Transaction();
+		trans3.setDebt(debt2);
+		trans3.setGambler(gambler);
+		trans3.setPredict(Transaction.PREDICT_YES);
+		trans3.setAmount(29);
+		transService.create(trans3);  
+		Transaction trans4 = new Transaction();
+		trans4.setDebt(debt2);
+		trans4.setGambler(gambler2);
+		trans4.setPredict(Transaction.PREDICT_YES);
+		trans4.setAmount(23);
+		transService.create(trans4);  
+		debt2.setResult(Debt.RESULT_YES);
+		debtService.end(debt2);   
 		
+		usService.doStatistics(); 
 		
-		
+		Assert.assertEquals(TEST_SEASON,debt2.getSeason());
 		UserStatistics liang = usDao.findByGamblerAndSeason(gambler, debt.getSeason());
 		UserStatistics liang2 = usDao.findByGamblerAndSeason(gambler2, debt.getSeason());
 		UserStatistics admin = usDao.findByGamblerAndSeason(debt.getDealer(), debt.getSeason());
 		
-		Assert.assertEquals(29,liang.getAmount());
-		Assert.assertEquals(-23,liang2.getAmount());
-		Assert.assertEquals(-6,admin.getAmount());
-		
-		
+		Assert.assertEquals(58,liang.getAmount());
+		Assert.assertEquals(new Double(1),liang.getWinningRate());
+		Assert.assertEquals(0,liang2.getAmount());
+		Assert.assertEquals(new Double(0.5),liang2.getWinningRate());
+		Assert.assertEquals(-58,admin.getAmount());
+		Assert.assertEquals(new Double(0),admin.getWinningRate()); 
 	}
 	
 	

@@ -73,6 +73,7 @@ public class DebtServiceTest extends BaseTest{
 		Debt debtSaved = initDebt();
 		Assert.assertNotNull(debtSaved.getId());
 		Assert.assertNotNull(debtSaved.getCreateDate());
+		Assert.assertEquals(TEST_SEASON, debtSaved.getSeason());
 		Assert.assertEquals(Debt.STATUS_OPEN, debtSaved.getStatus());
 		Assert.assertEquals(seasonService.getCurrent().getSeason(), debtSaved.getSeason());
 	}
