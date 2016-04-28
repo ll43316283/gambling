@@ -25,13 +25,14 @@ public class DebtController {
 	private DebtService debtService;
 	
 	@Autowired
-	private UserService userService;
+	private UserService userService; 
 	
 	@RequestMapping(value="/list", method = RequestMethod.GET)
-	@ResponseBody
-	public List<Debt> list(){
+//	@ResponseBody
+	public String list(){
 		logger.error("DebtController.list");
-		return debtService.findAll();
+//		return debtService.findAll();
+		return "home";
 	}
 	
 	/**

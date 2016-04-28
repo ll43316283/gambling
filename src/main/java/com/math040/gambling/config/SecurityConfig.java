@@ -23,13 +23,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      public void configure(WebSecurity web) throws Exception {
        web
          .ignoring()
-            .antMatchers("/resources/**").antMatchers("/console/**");
+            .antMatchers("/resources/**").antMatchers("/console/**").antMatchers("/js/**");
      }
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.formLogin().permitAll() 
 		.and().authorizeRequests().antMatchers("/console/**").permitAll()
+		.and().authorizeRequests().antMatchers("/js/**").permitAll()
 			.and().csrf().disable()
 			.authorizeRequests().antMatchers("/**").hasRole("USER").anyRequest().authenticated()
 			;
