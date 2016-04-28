@@ -34,10 +34,10 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 	Integer countByDebt(@Param("debt") Debt debt);
 	
 	@Query("select count(trans.id) from Transaction trans where trans.gambler=:gambler and trans.debt.season=:season "
-			+ "   and trans.winAmount>0  and trans.debt.status='"+Debt.STATUS_CLOSE+"'")
-	Integer countWinTransBySeasonAndGambler(@Param("season") int season, @Param("gambler") User gambler);
+	+ "   and trans.winAmount>0  and trans.debt.status='"+Debt.STATUS_CLOSE+"'  and trans.isDealer ='"+Transaction.NOT_DEALER+"'  ")
+	Integer countWinTransBySeasonAndGamblerAndNotDealer(@Param("season") int season, @Param("gambler") User gambler);
 	
 	@Query("select count(trans.id) from Transaction trans where trans.gambler=:gambler and trans.debt.season=:season "
-			+ "   and trans.debt.status='"+Debt.STATUS_CLOSE+"'")
-	Integer countTransBySeasonAndGambler(@Param("season") int season, @Param("gambler") User gambler);
+	+ "   and trans.debt.status='"+Debt.STATUS_CLOSE+"'  and trans.isDealer ='"+Transaction.NOT_DEALER+"'  ")
+	Integer countTransBySeasonAndGamblerAndNotDealer(@Param("season") int season, @Param("gambler") User gambler);
 }

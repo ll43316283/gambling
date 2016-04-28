@@ -3,8 +3,7 @@ package com.math040.gambling.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired; 
-import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
+import org.springframework.stereotype.Service; 
 import org.springframework.util.StringUtils;
 
 import com.math040.gambling.GamblingException; 
@@ -30,8 +29,8 @@ public class TitleServiceImpl implements TitleService {
 		if(!StringUtils.hasText(title.getCode())){
 			throw new GamblingException(GamblingException.TITLE_TITLE_CODE_SHOULD_NOT_BE_NULL);
 		}
-		List<Title> checkCodeExisted = titleDao.findByCode(title.getCode());
-		if(!CollectionUtils.isEmpty(checkCodeExisted)){
+		Title checkCodeExisted = titleDao.findByCode(title.getCode());
+		if(checkCodeExisted != null){
 			throw new GamblingException(GamblingException.TITLE_TITLE_CODE_SHOULD_BE_UNIQUE);
 		}
 		return titleDao.save(title);

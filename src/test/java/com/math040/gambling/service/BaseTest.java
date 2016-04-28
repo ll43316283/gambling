@@ -2,7 +2,9 @@ package com.math040.gambling.service;
 
 import java.util.Date;
 
+import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
@@ -88,6 +90,11 @@ public class BaseTest {
 		s1.setActive(Season.ACTIVE_Y);
 		s1.setSeason(TEST_SEASON);
 		seasonDao.save(s1);
+	}
+	
+	@Test
+	public void testTrue(){
+		Assert.assertTrue(true);
 	}
 
 }

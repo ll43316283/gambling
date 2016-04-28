@@ -1,6 +1,9 @@
 package com.math040.gambling.service.impl;
  
  
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -8,11 +11,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Transactional; 
 import org.springframework.util.CollectionUtils;
 
 import com.math040.gambling.GamblingException;
+import com.math040.gambling.dto.Title;
 import com.math040.gambling.dto.UserStatistics;
+import com.math040.gambling.repository.TitleRepository;
 import com.math040.gambling.repository.TransactionRepository;
 import com.math040.gambling.repository.UserRepository;
 import com.math040.gambling.repository.UserStatisticsRepository;
@@ -35,6 +40,9 @@ public class UserStatisticsServiceImpl implements UserStatisticsService {
 	
 	@Autowired
 	TransactionRepository transDao;
+	
+	@Autowired
+	TitleRepository titleDao;
 	
 	@Override
 	public void doStatistics() throws GamblingException{
@@ -84,8 +92,8 @@ public class UserStatisticsServiceImpl implements UserStatisticsService {
 	
 	private void doStatisticsWinRate(int season,List<UserStatistics> usList){ 
 		for(UserStatistics us:usList){
-			Integer totalTrans = transDao.countTransBySeasonAndGambler(season, us.getGambler());
-			Integer totalWinTrans = transDao.countWinTransBySeasonAndGambler(season, us.getGambler());
+			Integer totalTrans = transDao.countTransBySeasonAndGamblerAndNotDealer(season, us.getGambler());
+			Integer totalWinTrans = transDao.countWinTransBySeasonAndGamblerAndNotDealer(season, us.getGambler());
 			if(totalTrans.equals(new Integer(0))){
 				us.setWinningRate(0.0);
 			}else{
@@ -101,10 +109,71 @@ public class UserStatisticsServiceImpl implements UserStatisticsService {
 	private void doStatisticsTitles(int season,List<UserStatistics> usList) {  
 		for(UserStatistics us:usList){
 			if(!CollectionUtils.isEmpty(us.getTitles())){
-				us.getTitles().clear();
+				us.setTitles(new ArrayList<>());
 			} 
-		}
-		
-		
+		} 
+		setHighestAmountTitle(usList); 
+		setHighestRateTitle(usList);
 	}
+
+
+	private void setHighestAmountTitle(List<UserStatistics> usList) {
+		
+		Collections.sort(usList, new Comparator<UserStatistics>(){ 
+			@Override
+			public int compare(UserStatistics o1, UserStatistics o2) { 
+				return o2.getAmount()-o1.getAmount();
+			}
+		});
+		
+		Title title = titleDao.findByCode(Title.TITLE_CODE_RICHEST_PERSON)  ; 
+		
+		if(usList.get(0).getAmount()!=0){ 
+			usList.get(0).getTitles().add(title);
+			int i =0;
+			int max = usList.size()-1;
+			boolean end = false;
+			do{
+				if(usList.get(i).getAmount() == usList.get(i+1).getAmount()){
+					usList.get(i+1).getTitles().add(title);
+				}else{
+					end = true;
+				}
+				i++;
+			}while( !end && i< max-1);
+		}
+	}
+	
+	private void setHighestRateTitle(List<UserStatistics> usList) {
+		
+		Collections.sort(usList, new Comparator<UserStatistics>(){ 
+			@Override
+			public int compare(UserStatistics o1, UserStatistics o2) { 
+				Double t2 = o2.getWinningRate()==null?0:o2.getWinningRate();
+				Double t1 = o1.getWinningRate()==null?0:o1.getWinningRate();
+				return t2.compareTo(t1);
+			}
+		});
+		
+		Title title = titleDao.findByCode(Title.TITLE_CODE_HIGHEST_RATE)  ; 
+		
+		if(usList.get(0).getWinningRate()!=null 
+				&& usList.get(0).getWinningRate().compareTo(0.0)!=0){ 
+			usList.get(0).getTitles().add(title);
+			int i =0;
+			int max = usList.size()-1;
+			boolean end = false;
+			do{
+				if(usList.get(i).getWinningRate().equals(usList.get(i+1).getWinningRate())){
+					usList.get(i+1).getTitles().add(title);
+				}else{
+					end = true;
+				}
+				i++;
+			}while( !end && i< max-1);
+		}
+	}
+
+
+	 
 }
