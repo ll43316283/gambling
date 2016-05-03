@@ -2,7 +2,7 @@ package com.math040.gambling.service.impl;
 
 import java.util.Date;
 import java.util.List;
- 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +11,7 @@ import org.springframework.util.StringUtils;
 
 import com.math040.gambling.GamblingException;
 import com.math040.gambling.dto.Debt;
+import com.math040.gambling.dto.Season;
 import com.math040.gambling.repository.DebtRepository;
 import com.math040.gambling.service.DebtService;
 import com.math040.gambling.service.SeasonService;
@@ -80,5 +81,11 @@ public class DebtServiceImpl implements DebtService {
 	
 	public Debt findById(Long id){
 		return debtDao.findOne(id);
+	}
+
+	@Override
+	public List<Debt> findCurrentSeasonInProcss() throws GamblingException {
+		Season season = seasonService.getCurrent(); 
+		return debtDao.findBySeasonAndStatus(season.getSeason(), Debt.STATUS_OPEN);
 	}
 }
