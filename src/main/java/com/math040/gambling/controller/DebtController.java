@@ -36,6 +36,11 @@ public class DebtController {
 		return "debt_in_process";
 	}
 	
+	@RequestMapping(value="/new", method = RequestMethod.GET) 
+	public String goToNew() throws GamblingException{  
+		return "add_debt";
+	}
+	
 	/**
 	 *   
 	 * @return
