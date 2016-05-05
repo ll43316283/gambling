@@ -113,7 +113,7 @@
 		                    <port>8080</port>
 		                    <path>/gambling</path>  
 		                    <server>tomcat7</server>
-		                    
+		                    <uriEncoding>UTF-8</uriEncoding>
 		                </configuration>
 		      </plugin>
     </plugins>

@@ -2,6 +2,9 @@ package com.math040.gambling.service;
 
 import java.util.Date;
 
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
@@ -15,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.math040.gambling.GamblingException;
 import com.math040.gambling.config.JpaConfig;
 import com.math040.gambling.dto.Debt;
+import com.math040.gambling.dto.Season;
 import com.math040.gambling.dto.User;
+import com.math040.gambling.repository.SeasonRepository;
 
 import config.TestBasedConfig;
 
@@ -26,7 +31,7 @@ import config.TestBasedConfig;
 	    { DependencyInjectionTestExecutionListener.class,  
 	    	TransactionalTestExecutionListener.class })  
 public class BaseTest {
-	
+	public final static int TEST_SEASON =1000;
 	@Autowired
 	private DebtService debtService;
 	
@@ -59,6 +64,37 @@ public class BaseTest {
 		debt.setDealer(user); 
 		debt.setDeadline(new Date());
 		return debtService.create(debt);
+	}
+	
+	
+	@Rollback
+	public Debt initDebt2() throws GamblingException {
+		Debt debt = new Debt();
+		debt.setTitle("second test debt");
+		User user = userService.findByUserName("admin");
+		debt.setDealer(user); 
+		debt.setDeadline(new Date());
+		return debtService.create(debt);
+	}
+	
+	@Autowired
+	private SeasonService seasonService;
+	@Autowired
+	private SeasonRepository seasonDao;
+	@Before
+	@Rollback
+	public void setCurrentSeasonTo1000() throws GamblingException{
+		Season season = seasonService.getCurrent();
+		season.setActive(Season.ACTIVE_N);
+		Season s1 = new Season();
+		s1.setActive(Season.ACTIVE_Y);
+		s1.setSeason(TEST_SEASON);
+		seasonDao.save(s1);
+	}
+	
+	@Test
+	public void testTrue(){
+		Assert.assertTrue(true);
 	}
 
 }

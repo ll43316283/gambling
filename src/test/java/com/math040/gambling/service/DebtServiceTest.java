@@ -1,6 +1,8 @@
 package com.math040.gambling.service;
  
 
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -73,6 +75,7 @@ public class DebtServiceTest extends BaseTest{
 		Debt debtSaved = initDebt();
 		Assert.assertNotNull(debtSaved.getId());
 		Assert.assertNotNull(debtSaved.getCreateDate());
+		Assert.assertEquals(TEST_SEASON, debtSaved.getSeason());
 		Assert.assertEquals(Debt.STATUS_OPEN, debtSaved.getStatus());
 		Assert.assertEquals(seasonService.getCurrent().getSeason(), debtSaved.getSeason());
 	}
@@ -130,4 +133,12 @@ public class DebtServiceTest extends BaseTest{
 	    Assert.assertNotNull(endedDebt.getEndDate());
 	}
 
+	
+	@Test
+	@Rollback(true)
+	public void testFindCurrentSeasonInProcss() throws GamblingException { 
+		 initDebt();  
+	    List<Debt> debtList = debtService.findCurrentSeasonInProcss();
+	    Assert.assertEquals(1, debtList.size()); 
+	}
 }

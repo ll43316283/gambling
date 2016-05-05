@@ -7,8 +7,10 @@ import com.math040.gambling.dto.Debt;
 
 public interface DebtService {
 	 List<Debt> findAll();
+	 List<Debt> findCurrentSeasonInProcss() throws GamblingException;
 	 Debt create(Debt debt) throws GamblingException;
 	 Debt findById(Long id);
 	 Debt cancel(Debt debt)throws GamblingException;
 	 Debt end(Debt debt)throws GamblingException; 
+	 
 }
