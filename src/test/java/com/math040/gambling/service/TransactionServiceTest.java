@@ -64,7 +64,20 @@ public class TransactionServiceTest extends BaseTest{
 		Assert.assertEquals(Transaction.NOT_DEALER, savedTrans.getIsDealer());
 	} 
 	 
-	
+	@Test
+	@Rollback
+	public void testCreateTransThrowGamblerShouldNotGambleAfterDeadLine() throws GamblingException { 
+		Debt debt = initDeadLineInValidDebt(); 
+		User gambler = initGambler();
+		Transaction trans = new Transaction();
+		trans.setDebt(debt);
+		trans.setGambler(gambler);
+		trans.setPredict(Transaction.PREDICT_YES);
+		trans.setAmount(29);
+		thrown.expect(GamblingException.class);
+		thrown.expectMessage(GamblingException.TRANS_SHOULD_NOT_GAMBLE_AFTER_DEADLINE); 
+		transService.create(trans);
+	}
 	@Test
 	@Rollback
 	public void testCreateTrans_with_2_same_amount_predict_throw_amount_not_correct_exception() throws GamblingException { 

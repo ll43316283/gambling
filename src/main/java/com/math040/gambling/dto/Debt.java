@@ -7,6 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne; 
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.springframework.util.StringUtils;
+
+import com.math040.gambling.util.DateUtil;
 
 @Entity
 @Table(name = "TR_DEBT") 
@@ -45,7 +50,18 @@ public class Debt extends BaseDto{
 	@Column
 	private int season;
       
+	@Transient
+	private String deadLineStr;
+	 
+	
+	public String getDeadLineStr() {
+		return deadLineStr;
+	}
 
+	public void setDeadLineStr(String deadLineStr) {
+		this.deadLineStr = deadLineStr;
+	}
+		
 	public String getTitle() {
 		return title;
 	}
@@ -110,5 +126,12 @@ public class Debt extends BaseDto{
 		this.season = season;
 	}
   
-	
+	public void convertStrToDate(){
+		if(StringUtils.hasText(deadLineStr)){
+			try {
+				this.deadline=DateUtil.parse(deadLineStr);
+			} catch (Exception e) { 
+			}
+		}
+	}
 }

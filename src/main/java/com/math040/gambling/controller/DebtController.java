@@ -31,8 +31,7 @@ public class DebtController {
 	@RequestMapping(value="/list", method = RequestMethod.GET) 
 	public String list(ModelMap model) throws GamblingException{ 
 		List<Debt> debts = debtService.findCurrentSeasonInProcss();
-		model.addAttribute("debts", debts);
-		model.addAttribute("ss", 12);
+		model.addAttribute("debts", debts); 
 		return "debt_in_process";
 	}
 	
@@ -45,13 +44,10 @@ public class DebtController {
 	 *   
 	 * @return
 	 */  
-	@RequestMapping(value="/put", method = RequestMethod.GET)
+	@RequestMapping(method=RequestMethod.POST) 
 	@ResponseBody
-	public Debt put()throws GamblingException{
-		Debt debt = new Debt();
-		debt.setTitle("first debt");
-		debt.setDealer(userService.findByUserName("admin"));
-		return debtService.create(debt);
+	public Debt create(Debt req){ 
+		req.convertStrToDate();
+		return req;
 	}
-
 }

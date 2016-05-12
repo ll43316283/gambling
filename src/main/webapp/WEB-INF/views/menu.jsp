@@ -5,6 +5,7 @@
 <%@ page isELIgnored="false"%><html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>math040</title>
 </head>
 <body>
@@ -15,13 +16,13 @@
 				</h1>
 			</div>
 			<ul class="nav nav-tabs">
-				<li class="active">
-					<a href="#">进行中</a>
+				<li class="menu_debtList active">
+					<a href='<c:url value="/debt/list"/>'>进行中</a>
 				</li>
 				<li>
 					<a href="#">已完结</a>
 				</li>
-				<li >
+				<li class="menu_add">
 					<a href='<c:url value="/debt/new"/>'>我要开盘</a>
 				</li>
 				<li class="dropdown ">
@@ -45,8 +46,12 @@
 				</li>
 			</ul>
 		<script type="text/javascript">
-    	var menu = <%=request.getParameter("menu")%>;
-    	alert(menu);
+    	var menu = '${menu}'; 
+    	console.log(menu); 
+    	if(menu != '' ){
+    		$(".nav-tabs .active").removeClass("active");
+    		$(".menu_"+menu).addClass("active"); 
+    	}
     </script>
 </body>
 </html>

@@ -41,9 +41,15 @@ public class TransactionServiceImpl implements TransactionService {
 			throw new GamblingException(GamblingException.TRANS_DEBT_SHOULD_NOT_GAMBLE);
 		}
 		
+		
+		
 		transaction.setDebt(debt);
 		transaction.setIsDealer(Transaction.NOT_DEALER);
 		transaction.setCreateDate(new Date());
+		
+		if(debt.getDeadline().before(transaction.getCreateDate())){
+			throw new GamblingException(GamblingException.TRANS_SHOULD_NOT_GAMBLE_AFTER_DEADLINE);
+		}
 		
 		if(!validateOneShouldDebtOnceInOneDebt(transaction)){
 			throw new GamblingException(GamblingException.TRANS_GAMBLER_SHOULD_GAMBLE_ONCE_IN_ONE_GAME);

@@ -10,36 +10,42 @@
 <link href="../resources/bootstrap/css/bootstrap.min.css" rel="stylesheet"> 
  <script src="../resources/bootstrap/js/bootstrap.min.js"></script>
 <title>math040</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-
-  <jsp:include page="menu.jsp"></jsp:include>  
-  <c:if test="${debts.size()==0 }">
-  	<h3 contenteditable="true">好萧条啊， 连盘口都没有。。。你们蛀虫都不当了？</h3>
-  </c:if>
-  <c:if test="${debts.size()>0 }">
-	<table class="table" contenteditable="true">
-		<thead>
-			<tr> 
-				<th>盘口</th>
-				<th>截至时间</th>
-				<th>庄家</th>
-			</tr>
-		</thead>
-	
-		<tbody> 
-			 <c:forEach var="debt"  items="${debts}" >
-				<tr> 
-					<td>${debt.title} }</td>
-					<td>${debt.deadline} }</td> 
-					<td>${debt.dealer.userName} }</td> 
-				</tr> 
-			</c:forEach>
-		</tbody>
-	</table>
-  </c:if>
+	<c:set var="menu" scope="request" value="debtList"/>  
+ <div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span12"> 	
+			   <jsp:include page="menu.jsp" flush="true">
+				 	<jsp:param name="menu" value="${menu}"/> 
+				 </jsp:include>  
+			  <c:if test="${debts.size()==0 }">
+			  	<h3 contenteditable="true">好萧条啊， 连盘口都没有。。。你们蛀虫都不当了？</h3>
+			  </c:if>
+			  <c:if test="${debts.size()>0 }">
+				<table class="table" contenteditable="true">
+					<thead>
+						<tr> 
+							<th>盘口</th>
+							<th>截至时间</th>
+							<th>庄家</th>
+						</tr>
+					</thead>
+				
+					<tbody> 
+						 <c:forEach var="debt"  items="${debts}" >
+							<tr> 
+								<td>${debt.title} }</td>
+								<td>${debt.deadline} }</td> 
+								<td>${debt.dealer.userName} }</td> 
+							</tr> 
+						</c:forEach>
+					</tbody>
+				</table>
+			  </c:if>
  
-  
+  </div></div></div>
    
 </body>
 </html>
