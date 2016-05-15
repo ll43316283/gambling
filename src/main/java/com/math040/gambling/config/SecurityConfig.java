@@ -1,12 +1,16 @@
 package com.math040.gambling.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
+import com.math040.gambling.service.impl.SimpleLoginSucessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -28,12 +32,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.formLogin().permitAll() 
-		.and().authorizeRequests().antMatchers("/console/**").permitAll()
-		.and().authorizeRequests().antMatchers("/js/**").permitAll()
-			.and().csrf().disable()
+		http.csrf().disable()
 			.authorizeRequests().antMatchers("/**").hasRole("USER").anyRequest().authenticated()
-			;
+			; 
+		http.csrf().disable().formLogin().loginPage("/login")  
+        .failureUrl("/login?error=error")  
+        .loginProcessingUrl("/j_spring_security_check")  
+        .successHandler(getSuccessHandler())
+        .usernameParameter("username")  
+        .passwordParameter("password").permitAll()
+        .and().authorizeRequests().antMatchers("/**").hasRole("USER");  
+
+ 
+		http.logout().logoutUrl("/j_spring_security_logout").logoutSuccessUrl("/login")  
+        .invalidateHttpSession(true);  
+		http.rememberMe();
 		
+	}
+	
+	@Bean
+	public AuthenticationSuccessHandler getSuccessHandler(){
+		return new SimpleLoginSucessHandler();
 	}
 }

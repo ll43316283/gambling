@@ -44,10 +44,12 @@
 						</li>
 					</ul>
 				</li>
+				<li class="logout pull-right">
+					<a href='<c:url value='/j_spring_security_logout' />'>Log Out</a>
+				</li>
 			</ul>
 		<script type="text/javascript">
-    	var menu = '${menu}'; 
-    	console.log(menu); 
+    	var menu = '${menu}';  
     	if(menu != '' ){
     		$(".nav-tabs .active").removeClass("active");
     		$(".menu_"+menu).addClass("active"); 

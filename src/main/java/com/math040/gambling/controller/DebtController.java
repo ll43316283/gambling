@@ -7,9 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.math040.gambling.GamblingException;
 import com.math040.gambling.dto.Debt;
@@ -18,7 +19,7 @@ import com.math040.gambling.service.UserService;
 
 @Controller
 @RequestMapping("/debt")
-public class DebtController {
+public class DebtController extends BaseController{
 	
 	public static Logger logger = LoggerFactory.getLogger(DebtController.class);
 	
@@ -39,15 +40,17 @@ public class DebtController {
 	public String goToNew() throws GamblingException{  
 		return "add_debt";
 	}
-	
-	/**
-	 *   
-	 * @return
-	 */  
-	@RequestMapping(method=RequestMethod.POST) 
-	@ResponseBody
-	public Debt create(Debt req){ 
+	 
+	@RequestMapping(method=RequestMethod.POST)  
+	public String create(Debt req) throws GamblingException{ 
 		req.convertStrToDate();
-		return req;
+		req.setDealer(userService.getCurrent()); 
+	    debtService.create(req);
+	    return "redirect:/debt/list";
+	}
+	
+	@RequestMapping(value="/{id}", method = RequestMethod.GET) 
+	public ModelAndView get(@PathVariable Long id) throws GamblingException{  
+		return new ModelAndView("view_debt","debtInfo",debtService.findById(id));
 	}
 }

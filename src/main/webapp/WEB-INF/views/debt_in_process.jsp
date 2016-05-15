@@ -6,13 +6,40 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
- <script src="../resources/jquery/jquery-1.12.3.min.js"></script>
+ <script src="../resources/jquery/jquery-1.9.1.min.js"></script>
 <link href="../resources/bootstrap/css/bootstrap.min.css" rel="stylesheet"> 
  <script src="../resources/bootstrap/js/bootstrap.min.js"></script>
 <title>math040</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style type="text/css">
+ 
+.cursor-point{  
+cursor: pointer
+}
+</style>
 </head>
 <body>
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <p>One fine body&hellip;</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
 	<c:set var="menu" scope="request" value="debtList"/>  
  <div class="container-fluid">
 	<div class="row-fluid">
@@ -24,7 +51,7 @@
 			  	<h3 contenteditable="true">好萧条啊， 连盘口都没有。。。你们蛀虫都不当了？</h3>
 			  </c:if>
 			  <c:if test="${debts.size()>0 }">
-				<table class="table" contenteditable="true">
+				<table class="table table-hover" contenteditable="true">
 					<thead>
 						<tr> 
 							<th>盘口</th>
@@ -33,12 +60,14 @@
 						</tr>
 					</thead>
 				
-					<tbody> 
+					<tbody > 
 						 <c:forEach var="debt"  items="${debts}" >
-							<tr> 
-								<td>${debt.title} }</td>
-								<td>${debt.deadline} }</td> 
-								<td>${debt.dealer.userName} }</td> 
+							<tr class="cursor-point">  
+								<td>${debt.title} 
+									<input type="hidden" class="debt-id" value="${debt.id}"/>
+								</td>
+								<td>${debt.deadline} </td> 
+								<td>${debt.dealer.userName} </td> 
 							</tr> 
 						</c:forEach>
 					</tbody>
@@ -46,6 +75,16 @@
 			  </c:if>
  
   </div></div></div>
-   
+   <script type="text/javascript"> 
+   $(document).ready(function() { 
+	   var $jq = jQuery.noConflict();
+	   $jq('.cursor-point').on("click",function(){   
+		   var debtId = $jq(this).find(".debt-id").val();
+		   //$jq.get("<%=request.getContextPath()%>/debt/"+debtId);
+		  // window.location.href = "<%=request.getContextPath()%>/debt/"+debtId;
+		  $jq('#myModal').modal();
+	   });
+   });
+   </script>
 </body>
 </html>
