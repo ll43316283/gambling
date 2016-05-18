@@ -22,6 +22,22 @@ public class Amount {
 		}
 		return result;
 	}
+	
+	public static List<Integer> getAvailableAmountByTransList(List<Transaction> transList){
+		ArrayList<Integer> result = new ArrayList<>(Arrays.asList(AVALIABLE_AMOUNTS));
+		if(CollectionUtils.isEmpty(transList)){
+			return result;
+		} 
+		for(Transaction trans : transList){ 
+			Integer amount = trans.getAmount();
+				if(1==amount.intValue()){
+					continue;
+				}
+				result.remove(amount);
+		}
+		return result;
+	}
+	
 	public static boolean validate(List<Integer> predictedAmounts, Integer validateAmount){ 
 		List<Integer> avaliableAmount = getAvailableAmount(predictedAmounts);
 		return avaliableAmount.contains(validateAmount);

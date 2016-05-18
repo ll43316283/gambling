@@ -1,6 +1,7 @@
 package com.math040.gambling.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.math040.gambling.GamblingException;
 import com.math040.gambling.dto.Debt;
+import com.math040.gambling.dto.Transaction;
 import com.math040.gambling.service.DebtService;
+import com.math040.gambling.service.TransactionService;
 import com.math040.gambling.service.UserService;
 
 @Controller
@@ -27,13 +30,14 @@ public class DebtController extends BaseController{
 	private DebtService debtService;
 	
 	@Autowired
+	private TransactionService transService;
+	
+	@Autowired
 	private UserService userService; 
 	
 	@RequestMapping(value="/list", method = RequestMethod.GET) 
-	public String list(ModelMap model) throws GamblingException{ 
-		List<Debt> debts = debtService.findCurrentSeasonInProcss();
-		model.addAttribute("debts", debts); 
-		return "debt_in_process";
+	public ModelAndView list() throws GamblingException{ 
+		return new ModelAndView("debt_in_process","debts",debtService.findCurrentSeasonInProcss());
 	}
 	
 	@RequestMapping(value="/new", method = RequestMethod.GET) 
@@ -50,7 +54,13 @@ public class DebtController extends BaseController{
 	}
 	
 	@RequestMapping(value="/{id}", method = RequestMethod.GET) 
-	public ModelAndView get(@PathVariable Long id) throws GamblingException{  
-		return new ModelAndView("view_debt","debtInfo",debtService.findById(id));
+	public String get(@PathVariable Long id,ModelMap model) throws GamblingException{
+		Debt debt = debtService.findById(id);
+		List<Transaction> transList = transService.findByDebt(debt);
+		Map<String, List<Integer>> predicts = transService.getAvailablePredictAmounts(debt);
+		model.put("debt", debt);
+		model.put("transList", transList); 
+		model.put("predicts", predicts);
+		return "wager_a_debt";
 	}
 }

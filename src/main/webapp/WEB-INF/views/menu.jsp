@@ -46,7 +46,7 @@
 					</ul>
 				</li>
 				<li class="logout pull-right">
-					<a href='<c:url value='/j_spring_security_logout' />'><sec:authentication property="principal.username" />     Log Out</a>
+					<a href='<c:url value='/j_spring_security_logout' />'><sec:authentication property="principal.username" />     Logout</a>
 				</li>
 			</ul>
 		<script type="text/javascript">

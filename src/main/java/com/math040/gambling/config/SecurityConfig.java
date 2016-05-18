@@ -50,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public AuthenticationSuccessHandler getSuccessHandler(){
 		return new SimpleLoginSucessHandler();
 	}
-	
+		
 	@Autowired
 	UserService userService; 
 	
