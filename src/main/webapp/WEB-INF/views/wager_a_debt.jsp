@@ -30,7 +30,7 @@
 			</div>
   			  
   			  
-			 <form class="form-horizontal" id="newDebtForm" role="form" method="post" action='<c:url value="/transaction"/>'>
+			 <form class="form-horizontal" id="debtForm" role="form" >
 				   <div class="form-group">
 				      <label for="title" class="col-md-2 col-sm-2 control-label">盘口</label>
 				      <div class="col-md-6 col-sm-6">
@@ -45,8 +45,30 @@
 		                    <input class="form-control" size="16" type="text" name="deadLine" value="${debt.deadline}" readonly>
 		                </div>
 				   </div> 
-		             
-				   
+		    </form>
+		    
+			<form   id="wagerForm" role="form" method="post" action='<c:url value="/transaction"/>'>
+		          <div class="form-group">    
+					   <div class="col-sm-offset-1  col-md-offset-1 btn-group" data-toggle="buttons">
+						    <label class="btn btn-success disabled">
+							    <input type="radio" name="bt"  /> 是
+							  </label>
+						   <c:forEach var="item" items='${predicts.get("Y")}'>
+							  <label class="btn btn-success active">
+							    <input type="radio" name="options"  value="Y<c:out value='${item }'/>"   /> <c:out value='${item }'/> 
+							  </label>
+							</c:forEach> 
+							 <label class="btn btn-danger disabled">
+							    <input type="radio" name="bt"  /> 否
+							  </label>
+							<c:forEach var="item" items='${predicts.get("N")}'>
+							  <label class="btn btn-danger active">
+							    <input type="radio" name="options"  value="N<c:out value='${item }'/>" /> <c:out value='${item }'/> 
+							  </label>
+							</c:forEach> 
+						</div>
+					</div>
+					 
 				   <div class="form-group">
 				      <div class="col-sm-offset-2 col-sm-10 col-md-offset-2 col-md-10">
 				         <button type="submit" class="btn btn-primary">提交</button>
@@ -56,10 +78,24 @@
    		</div>
 	</div>
 </div>
- <script type="text/javascript"> 
-  
- 
- 
+ <script type="text/javascript">  
+ $('#wagerForm').bootstrapValidator({
+	 message: 'This value is not valid',
+     feedbackIcons: {
+         valid: 'glyphicon glyphicon-ok',
+         invalid: 'glyphicon glyphicon-remove',
+         validating: 'glyphicon glyphicon-refresh'
+     },
+     fields: {
+    	 options:{ 
+             validators: {
+                 notEmpty: {
+                     message: '你傻啊！赌博不下注啊！'
+                 } 
+             }
+         }
+     }
+ });
   </script>
 </body>
 </html>
