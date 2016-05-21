@@ -1,6 +1,8 @@
 package com.math040.gambling.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.math040.gambling.dto.User;
@@ -23,7 +25,11 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getCurrent() {  
-		User user = this.findByUserName("liang");
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
+			    .getAuthentication()
+			    .getPrincipal(); 
+		User user = this.findByUserName(userDetails.getUsername());
+//		System.out.println("current user:"+userDetails.getUsername());
 		return user ;
 	}
 	 

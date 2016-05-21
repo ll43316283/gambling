@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;  
 import com.math040.gambling.GamblingException; 
 import com.math040.gambling.dto.Transaction; 
-import com.math040.gambling.service.TransactionService; 
+import com.math040.gambling.service.TransactionService;
+import com.math040.gambling.service.UserService; 
 
 @Controller
 @RequestMapping("/transaction")
@@ -22,13 +23,14 @@ public class TransactionController extends BaseController{
 	@Autowired
 	private TransactionService transService;
 	 
+	@Autowired
+	private UserService userService;
 	
 	@RequestMapping( method = RequestMethod.POST) 
 	public String createTrans(Transaction transaction) throws GamblingException{ 
-		Assert.isTrue(transaction.validatePredict(),
-				"system error:not correct ammount and side param");
-		transaction.setPredict(transaction.getSideAmmount().substring(0, 1));
-		transaction.setAmount(Integer.parseInt(transaction.getSideAmmount().substring(1))); 
+		Assert.notNull(transaction,"System Error");
+		transaction.transferPredictAndAmount();
+		transaction.setGambler(userService.getCurrent());
 		transService.create(transaction);
 		return "redirect:/debt/list";
 	}

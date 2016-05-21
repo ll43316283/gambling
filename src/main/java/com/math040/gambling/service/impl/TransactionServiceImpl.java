@@ -40,7 +40,7 @@ public class TransactionServiceImpl implements TransactionService {
 			throw new GamblingException(GamblingException.TRANS_DEBT_ID_SHOULD_NOT_NULL);
 		}
 		if(debt.getDealer().equals(transaction.getGambler())){
-			throw new GamblingException(GamblingException.TRANS_DEBT_SHOULD_NOT_GAMBLE);
+			throw new GamblingException(GamblingException.TRANS_DEALER_SHOULD_NOT_GAMBLE);
 		}
 		
 		
@@ -130,7 +130,7 @@ public class TransactionServiceImpl implements TransactionService {
 	public List<Transaction> findByDebt(Debt debt) { 
 		 Assert.notNull(debt);
 		 Assert.notNull(debt.getId());  
-		return transDao.findByDebt(debt);
+		return transDao.findByDebtOrderByPredictDesc(debt);
 	}
 
 	@Override

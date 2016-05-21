@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+//import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import com.math040.gambling.service.UserService;
 import com.math040.gambling.service.impl.GamblingUserDetailServiceImpl;
@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable().formLogin().loginPage("/login")  
         .failureUrl("/login?error=error")  
         .loginProcessingUrl("/j_spring_security_check")  
-        .successHandler(getSuccessHandler())
+//        .successHandler(getSuccessHandler())
         .usernameParameter("username")  
         .passwordParameter("password").permitAll()
         .and().authorizeRequests().antMatchers("/**").hasAnyRole("USER","ADMIN");  
@@ -46,10 +46,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 	}
 	
-	@Bean
-	public AuthenticationSuccessHandler getSuccessHandler(){
-		return new SimpleLoginSucessHandler();
-	}
+//	@Bean
+//	public AuthenticationSuccessHandler getSuccessHandler(){
+//		return new SimpleLoginSucessHandler();
+//	}
 		
 	@Autowired
 	UserService userService; 

@@ -37,6 +37,13 @@
 				        <textarea class="form-control" id="title" name="title"  readonly>${debt.title}</textarea>
 				      </div>
 				   </div>
+				   
+				   <div class="form-group">
+				      <label for="title" class="col-md-2 col-sm-2 control-label">Dealer</label>
+				      <div class="col-md-6 col-sm-6">
+				       <input class="form-control" size="16" type="text" name="dealer" value="${debt.dealer.userName}"  readonly/>
+				      </div>
+				   </div>
 				     
 		         
 	             <div class="form-group">
@@ -47,34 +54,48 @@
 				   </div> 
 		    </form>
 		    
-			<form   id="wagerForm" role="form" method="post" action='<c:url value="/transaction"/>'>
-		          <div class="form-group">    
-					   <div class="col-sm-offset-1  col-md-offset-1 btn-group" data-toggle="buttons">
-						    <label class="btn btn-success disabled">
-							    <input type="radio" name="bt"  /> 是
-							  </label>
-						   <c:forEach var="item" items='${predicts.get("Y")}'>
-							  <label class="btn btn-success active">
-							    <input type="radio" name="options"  value="Y<c:out value='${item }'/>"   /> <c:out value='${item }'/> 
-							  </label>
-							</c:forEach> 
-							 <label class="btn btn-danger disabled">
-							    <input type="radio" name="bt"  /> 否
-							  </label>
-							<c:forEach var="item" items='${predicts.get("N")}'>
-							  <label class="btn btn-danger active">
-							    <input type="radio" name="options"  value="N<c:out value='${item }'/>" /> <c:out value='${item }'/> 
-							  </label>
-							</c:forEach> 
+		    <c:if test="${ transList!=null && transList.size()>0  }">
+			    <div class="list-group col-sm-offset-1 col-sm-8 col-md-offset-1 col-md-8" contenteditable="true">
+			    	<a class="list-group-item active" href="#">赌博池</a> 
+			    	<c:forEach var="trans" items="${transList}" >
+						<div class="list-group-item">
+							<span class="label label-<c:out value='${trans.predict=="Y"?"success":"danger" }'/> label-as-badge pull-right">14</span>
+							<c:out value="${trans.gambler.userName }"/>
 						</div>
-					</div>
-					 
-				   <div class="form-group">
-				      <div class="col-sm-offset-2 col-sm-10 col-md-offset-2 col-md-10">
-				         <button type="submit" class="btn btn-primary">提交</button>
-				      </div>
-				   </div>
-			</form>
+					</c:forEach> 
+				</div>
+		    </c:if>
+		    <c:if test='${"wager"==viewModel }'>
+				<form   id="wagerForm" role="form" method="post" action='<c:url value="/transaction"/>'>
+			          <input type="hidden" name="debt.id" value='<c:out value="${debt.id }"/>'/>
+			          <div class="form-group">    
+						   <div class="col-sm-offset-1  col-md-offset-1 btn-group" data-toggle="buttons">
+							    <label class="btn btn-success disabled">
+								    <input type="radio" name="bt"  /> 是
+								  </label>
+							   <c:forEach var="item" items='${predicts.get("Y")}'>
+								  <label class="btn btn-success active">
+								    <input type="radio" name="sideAmmount"  value="Y<c:out value='${item }'/>"   /> <c:out value='${item }'/> 
+								  </label>
+								</c:forEach> 
+								 <label class="btn btn-danger disabled">
+								    <input type="radio" name="bt"  /> 否
+								  </label>
+								<c:forEach var="item" items='${predicts.get("N")}'>
+								  <label class="btn btn-danger active">
+								    <input type="radio" name="sideAmmount"  value="N<c:out value='${item }'/>" /> <c:out value='${item }'/> 
+								  </label>
+								</c:forEach> 
+							</div>
+						</div>
+						 
+					   <div class="form-group">
+					      <div class="col-sm-offset-2 col-sm-10 col-md-offset-2 col-md-10">
+					         <button type="submit" class="btn btn-primary">提交</button>
+					      </div>
+					   </div>
+				</form>
+			</c:if>
    		</div>
 	</div>
 </div>
@@ -87,7 +108,7 @@
          validating: 'glyphicon glyphicon-refresh'
      },
      fields: {
-    	 options:{ 
+    	 sideAmmount:{ 
              validators: {
                  notEmpty: {
                      message: '你傻啊！赌博不下注啊！'

@@ -1,5 +1,6 @@
 package com.math040.gambling.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.math040.gambling.GamblingException;
 import com.math040.gambling.dto.Debt;
 import com.math040.gambling.dto.Transaction;
+import com.math040.gambling.dto.User;
 import com.math040.gambling.service.DebtService;
 import com.math040.gambling.service.TransactionService;
 import com.math040.gambling.service.UserService;
@@ -61,6 +64,28 @@ public class DebtController extends BaseController{
 		model.put("debt", debt);
 		model.put("transList", transList); 
 		model.put("predicts", predicts);
+		model.put("viewModel", getDebtViewModel(transList, debt));
 		return "wager_a_debt";
+	}
+	 
+	private final static String DEBT_VIEW_VIEW_MODEL="view";
+	private final static String DEBT_VIEW_WAGER_MODEL="wager";
+	
+	private String getDebtViewModel(List<Transaction> transList,Debt debt){
+		User current = userService.getCurrent();
+		if(debt.getDealer().getUserName().equals(current.getUserName())){
+			return DEBT_VIEW_VIEW_MODEL;
+		}
+		if(debt.getDeadline().before(new Date())){
+			return DEBT_VIEW_VIEW_MODEL;
+		}
+		if(!CollectionUtils.isEmpty(transList)){ 
+			for(Transaction trans:transList){
+				if(trans.getGambler().getUserName().equals(current.getUserName())){
+					return DEBT_VIEW_VIEW_MODEL;
+				}
+			} 
+		}
+		return DEBT_VIEW_WAGER_MODEL;
 	}
 }

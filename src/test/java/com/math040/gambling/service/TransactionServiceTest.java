@@ -107,7 +107,7 @@ public class TransactionServiceTest extends BaseTest{
 		Debt debt = initDebt();
 		User dealer = userService.findByUserName("admin");
 		thrown.expect(GamblingException.class);
-		thrown.expectMessage(GamblingException.TRANS_DEBT_SHOULD_NOT_GAMBLE);
+		thrown.expectMessage(GamblingException.TRANS_DEALER_SHOULD_NOT_GAMBLE);
 		Transaction trans1 = new Transaction();
 		trans1.setDebt(debt);
 		trans1.setGambler(dealer);

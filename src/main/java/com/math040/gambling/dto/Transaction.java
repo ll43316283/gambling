@@ -11,6 +11,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.springframework.util.StringUtils;
+
+import com.math040.gambling.GamblingException;
+
 @Entity
 @Table(name = "TR_TRANSACTION") 
 public class Transaction extends BaseDto{
@@ -117,8 +121,19 @@ public class Transaction extends BaseDto{
 	}
 	 
 	public boolean validateSideAmount(){
+		 if(!StringUtils.hasText(sideAmmount)){
+			 return false;
+		 }
 		 Pattern pattern = Pattern.compile("^["+PREDICT_YES+PREDICT_NO+"]{1}\\d{1,2}$");
 		 Matcher matcher = pattern.matcher(sideAmmount);
 		 return matcher.matches();
+	}
+	
+	public void transferPredictAndAmount() throws GamblingException{
+		if(!validateSideAmount()){
+			throw new GamblingException(GamblingException.TRANS_NOT_CORRECT_AMOUNT_SIDE_PARAM);
+		}
+		setPredict(getSideAmmount().substring(0, 1));
+		setAmount(Integer.parseInt(getSideAmmount().substring(1))); 
 	}
 }

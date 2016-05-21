@@ -9,6 +9,9 @@ public class TransactionTest  extends TestCase {
 	@Test
 	public void testValidateSideAmount(){ 
 		Transaction trans = new Transaction();
+		
+		Assert.assertFalse(trans.validateSideAmount());
+		
 		trans.setSideAmmount("Y3");
 		Assert.assertTrue(trans.validateSideAmount());
 		trans.setSideAmmount("N3");
