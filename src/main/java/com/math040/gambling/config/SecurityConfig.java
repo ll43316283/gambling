@@ -13,7 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.math040.gambling.service.UserService;
 import com.math040.gambling.service.impl.GamblingUserDetailServiceImpl;
-import com.math040.gambling.service.impl.SimpleLoginSucessHandler;
+//import com.math040.gambling.service.impl.SimpleLoginSucessHandler;
 
 @Configuration
 @EnableWebSecurity

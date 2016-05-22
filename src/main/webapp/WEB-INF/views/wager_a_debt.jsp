@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %> 
 <%@ page isELIgnored="false"%>
 <html>
 <head>
@@ -15,7 +16,11 @@
  <script src="../resources/bootstrap/js/bootstrap-datetimepicker.min.js"></script> 
  <script src="../resources/bootstrap/js/bootstrapValidator.js"></script> 
 <title>开盘口</title>
-<style type="text/css"> 
+<style type="text/css">
+ 
+.cursor-point{  
+cursor: pointer
+}
 </style>
 </head>
 <body> 
@@ -28,7 +33,12 @@
 					<strong>数040竞猜</strong>
 				</h1>
 			</div>
-  			  
+  			 <ul class="breadcrumb" contenteditable="true">
+				<li ><a  class="cursor-point home" >主页</a> <span class="divider"></span></li>
+				<li class="active">详细</li> 
+				<li class="pull-right">	<a href='<c:url value='/j_spring_security_logout' />' class="cursor-point">
+						<sec:authentication property="principal.username" />     Logout</a></li>
+			</ul> 
   			  
 			 <form class="form-horizontal" id="debtForm" role="form" >
 				   <div class="form-group">
@@ -55,7 +65,7 @@
 		    </form>
 		    
 		    <c:if test="${ transList!=null && transList.size()>0  }">
-			    <div class="list-group col-sm-offset-1 col-sm-8 col-md-offset-1 col-md-8" contenteditable="true">
+			    <div class="list-group col-sm-offset-2 col-sm-6 col-md-offset-2 col-md-6" contenteditable="true">
 			    	<a class="list-group-item active" href="#">赌博池</a> 
 			    	<c:forEach var="trans" items="${transList}" >
 						<div class="list-group-item">
@@ -68,6 +78,7 @@
 		    <c:if test='${"wager"==viewModel }'>
 				<form   id="wagerForm" role="form" method="post" action='<c:url value="/transaction"/>'>
 			          <input type="hidden" name="debt.id" value='<c:out value="${debt.id }"/>'/>
+			          
 			          <div class="form-group">    
 						   <div class="col-sm-offset-1  col-md-offset-1 btn-group" data-toggle="buttons">
 							    <label class="btn btn-success disabled">
@@ -90,16 +101,67 @@
 						</div>
 						 
 					   <div class="form-group">
-					      <div class="col-sm-offset-2 col-sm-10 col-md-offset-2 col-md-10">
-					         <button type="submit" class="btn btn-primary">提交</button>
+					      <div class="col-sm-offset-1 col-sm-10 col-md-offset-1 col-md-10">
+					         <button type="submit" class="btn btn-primary">下注</button> 
 					      </div>
 					   </div>
 				</form>
 			</c:if>
+			<br/><br/><br/>
+			<div class="clearfix"></div>
+			<sec:authorize access="hasRole('ROLE_ADMIN')">
+				 <form class="form-horizontal" id="endDebtForm" role="form" method="post" action='<c:url value="/debt/${debt.id}/end"/>'  >
+				   <input type="hidden" name="debt.id" value='<c:out value="${debt.id }"/>'/> 
+				   <div class="form-group">
+				      <label for="result" class="col-md-2 col-sm-2 control-label">结局</label>
+				      <div class="col-md-4 col-sm-4 btn-group"  > 
+                                <label class="btn btn-success active">
+								    <input type="radio" name="result"  value="Y"   /> 是 
+								 </label>
+								 <label class="btn btn-danger active">
+								    <input type="radio" name="result"  value="N"   /> 否
+								 </label>
+								 <label class="btn btn-warning active">
+								    <input type="radio" name="result"  value="D"   /> dealer全赔
+								 </label>
+				      </div>
+				      <div class="col-md-2 col-sm-2"  > 
+				      	<button type="submit" class="btn btn-primary">结束本次盘口</button> 
+				      </div>
+				   </div>
+				   
+				   
+		    </form>
+			</sec:authorize>
    		</div>
 	</div>
 </div>
  <script type="text/javascript">  
+ $(document).ready(function() {
+	 $(".breadcrumb .home").on('click',function(){ 
+		 window.location.href = "<%=request.getContextPath()%>/debt/list";
+	 });
+ });
+ 
+ $("#endDebtForm").bootstrapValidator({
+	 message: 'This value is not valid',
+     feedbackIcons: {
+         valid: 'glyphicon glyphicon-ok',
+         invalid: 'glyphicon glyphicon-remove',
+         validating: 'glyphicon glyphicon-refresh'
+     },
+     fields: {
+    	 result:{ 
+             validators: {
+                 notEmpty: {
+                     message: '麻痹！ 你敢不敢先选择个结局！'
+                 } 
+             }
+         }
+     }
+     
+ });
+ 
  $('#wagerForm').bootstrapValidator({
 	 message: 'This value is not valid',
      feedbackIcons: {

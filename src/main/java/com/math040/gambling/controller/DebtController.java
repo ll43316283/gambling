@@ -67,6 +67,12 @@ public class DebtController extends BaseController{
 		model.put("viewModel", getDebtViewModel(transList, debt));
 		return "wager_a_debt";
 	}
+	
+	@RequestMapping(value="/{id}/end",method=RequestMethod.POST)
+	public String end(@PathVariable Long id, Debt debt)throws GamblingException{
+		debtService.end(debt);
+		return "redirect:/debt/list";
+	}
 	 
 	private final static String DEBT_VIEW_VIEW_MODEL="view";
 	private final static String DEBT_VIEW_WAGER_MODEL="wager";
