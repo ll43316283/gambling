@@ -20,8 +20,8 @@
 				<li class="menu_debtList active">
 					<a href='<c:url value="/debt/list"/>'>进行中</a>
 				</li>
-				<li>
-					<a href="#">已完结</a>
+				<li class="menu_endDebtList">
+					<a href="<c:url value="/debt/endList"/>">已完结</a>
 				</li>
 				<li class="menu_add">
 					<a href='<c:url value="/debt/new"/>'>我要开盘</a>

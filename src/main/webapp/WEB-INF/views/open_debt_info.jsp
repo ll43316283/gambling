@@ -69,7 +69,10 @@ cursor: pointer
 			    	<a class="list-group-item active" href="#">赌博池</a> 
 			    	<c:forEach var="trans" items="${transList}" >
 						<div class="list-group-item">
-							<span class="label label-<c:out value='${trans.predict=="Y"?"success":"danger" }'/> label-as-badge pull-right">14</span>
+							<input type="hidden" class="isDealer" value="<c:out value='${trans.isDealer }'/>"/> 
+							<input type="hidden" class="predict" value="<c:out value='${trans.predict }'/>"/>
+							<span class="label label-as-badge pull-right">
+							<c:out value="${trans.amount }"/></span>
 							<c:out value="${trans.gambler.userName }"/>
 						</div>
 					</c:forEach> 
@@ -141,6 +144,19 @@ cursor: pointer
 	 $(".breadcrumb .home").on('click',function(){ 
 		 window.location.href = "<%=request.getContextPath()%>/debt/list";
 	 });
+	 $("div.list-group-item").each(function(){
+		 var l= $(this);
+		 var isDealer = l.find(".isDealer").val();
+		 var predict = l.find(".predict").val();
+		 if("Y"==isDealer){
+			 l.find(".label-as-badge").addClass("label-warning");
+		 }else if("Y"==predict){
+			 l.find(".label-as-badge").addClass("label-success");
+		 }else{
+			 l.find(".label-as-badge").addClass("label-danger");
+		 }
+		  
+	 })
  });
  
  $("#endDebtForm").bootstrapValidator({

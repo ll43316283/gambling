@@ -40,7 +40,12 @@ public class DebtController extends BaseController{
 	
 	@RequestMapping(value="/list", method = RequestMethod.GET) 
 	public ModelAndView list() throws GamblingException{ 
-		return new ModelAndView("debt_in_process","debts",debtService.findCurrentSeasonInProcss());
+		return new ModelAndView("debts_in_process","debts",debtService.findCurrentSeasonInProcss());
+	}
+	
+	@RequestMapping(value="/endList", method = RequestMethod.GET) 
+	public ModelAndView endList() throws GamblingException{ 
+		return new ModelAndView("debts_end","debts",debtService.findCurrentSeasonEnded());
 	}
 	
 	@RequestMapping(value="/new", method = RequestMethod.GET) 
@@ -60,12 +65,15 @@ public class DebtController extends BaseController{
 	public String get(@PathVariable Long id,ModelMap model) throws GamblingException{
 		Debt debt = debtService.findById(id);
 		List<Transaction> transList = transService.findByDebt(debt);
-		Map<String, List<Integer>> predicts = transService.getAvailablePredictAmounts(debt);
 		model.put("debt", debt);
 		model.put("transList", transList); 
-		model.put("predicts", predicts);
-		model.put("viewModel", getDebtViewModel(transList, debt));
-		return "wager_a_debt";
+		if(Debt.STATUS_OPEN.equals(debt.getStatus())){  
+			Map<String, List<Integer>> predicts = transService.getAvailablePredictAmounts(debt); 
+			model.put("predicts", predicts);
+			model.put("viewModel", getDebtViewModel(transList, debt)); 
+			return "open_debt_info";
+		}
+		return "end_debt_info";
 	}
 	
 	@RequestMapping(value="/{id}/end",method=RequestMethod.POST)
