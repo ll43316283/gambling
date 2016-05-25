@@ -23,14 +23,17 @@
 				<li class="menu_endDebtList">
 					<a href="<c:url value="/debt/endList"/>">已完结</a>
 				</li>
+				<li class="menu_cancelDebtList">
+					<a href="<c:url value="/debt/cancelList"/>">已取消</a>
+				</li>
 				<li class="menu_add">
 					<a href='<c:url value="/debt/new"/>'>我要开盘</a>
 				</li>
 				<li class="dropdown ">
-					<a class="dropdown-toggle" data-toggle="dropdown" href="#">下拉</a>
+					<a class="dropdown-toggle menu_statistics" data-toggle="dropdown" href="#">技术统计</a>
 					<ul class="dropdown-menu">
 						<li>
-							<a href="#">操作</a>
+							<a href="<c:url value="/statistics/rank"/>">rank</a>
 						</li>
 						<li>
 							<a href="#">设置栏目</a>

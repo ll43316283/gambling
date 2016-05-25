@@ -36,7 +36,10 @@ cursor: pointer
   			 <ul class="breadcrumb" contenteditable="true">
 				<li ><a  class="cursor-point home" >主页</a> <span class="divider"></span></li>
 				<li class="active">详细</li> 
-				<li class="pull-right">	<a href='<c:url value='/j_spring_security_logout' />' class="cursor-point">
+				<sec:authorize access="hasRole('ROLE_ADMIN')">
+				<li><button class="btn btn-primary" id="cancelDebt">取消此盘口</button></li>
+				</sec:authorize>
+				<li class="pull-right" >	<a  class="cursor-point" id="logout">
 						<sec:authentication property="principal.username" />     Logout</a></li>
 			</ul> 
   			  
@@ -113,6 +116,7 @@ cursor: pointer
 			<br/><br/><br/>
 			<div class="clearfix"></div>
 			<sec:authorize access="hasRole('ROLE_ADMIN')">
+			<c:if test='${"wager"==viewModel }'>
 				 <form class="form-horizontal" id="endDebtForm" role="form" method="post" action='<c:url value="/debt/${debt.id}/end"/>'  >
 				   <input type="hidden" name="debt.id" value='<c:out value="${debt.id }"/>'/> 
 				   <div class="form-group">
@@ -131,11 +135,13 @@ cursor: pointer
 				      <div class="col-md-2 col-sm-2"  > 
 				      	<button type="submit" class="btn btn-primary">结束本次盘口</button> 
 				      </div>
-				   </div>
-				   
-				   
-		    </form>
+				   </div> 
+		    	</form>
+		    </c:if>
 			</sec:authorize>
+   			<form id="cancelDebtForm" role="form" method="post" action='<c:url value="/debt/${debt.id}/cancel"/>'>
+   				 <input type="hidden" name="debt.id" value='<c:out value="${debt.id }"/>'/> 
+   			</form>
    		</div>
 	</div>
 </div>
@@ -144,6 +150,14 @@ cursor: pointer
 	 $(".breadcrumb .home").on('click',function(){ 
 		 window.location.href = "<%=request.getContextPath()%>/debt/list";
 	 });
+	 $("#logout").on('click',function(){ 
+		 window.location.href = "<%=request.getContextPath()%>/j_spring_security_logout";
+	 }); 
+	 $("#cancelDebt").on('click',function(){ 
+		if(confirm("以后能不能开盘口严谨点")){
+			$("#cancelDebtForm").submit();
+		}
+	 }); 
 	 $("div.list-group-item").each(function(){
 		 var l= $(this);
 		 var isDealer = l.find(".isDealer").val();

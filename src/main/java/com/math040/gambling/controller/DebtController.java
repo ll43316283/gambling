@@ -47,6 +47,10 @@ public class DebtController extends BaseController{
 	public ModelAndView endList() throws GamblingException{ 
 		return new ModelAndView("debts_end","debts",debtService.findCurrentSeasonEnded());
 	}
+	@RequestMapping(value="/cancelList", method = RequestMethod.GET) 
+	public ModelAndView cancelList() throws GamblingException{ 
+		return new ModelAndView("debts_cancel","debts",debtService.findCurrentSeasonCanceled());
+	}
 	
 	@RequestMapping(value="/new", method = RequestMethod.GET) 
 	public String goToNew() throws GamblingException{  
@@ -79,7 +83,13 @@ public class DebtController extends BaseController{
 	@RequestMapping(value="/{id}/end",method=RequestMethod.POST)
 	public String end(@PathVariable Long id, Debt debt)throws GamblingException{
 		debtService.end(debt);
-		return "redirect:/debt/list";
+		return "redirect:/debt/endList";
+	}
+	
+	@RequestMapping(value="/{id}/cancel",method=RequestMethod.POST)
+	public String cancel(@PathVariable Long id, Debt debt)throws GamblingException{
+		debtService.cancel(debt);
+		return "redirect:/debt/cancelList";
 	}
 	 
 	private final static String DEBT_VIEW_VIEW_MODEL="view";
