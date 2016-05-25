@@ -13,5 +13,5 @@ public interface DebtService {
 	 Debt cancel(Debt debt)throws GamblingException;
 	 Debt end(Debt debt)throws GamblingException; 
 	 List<Debt> findCurrentSeasonEnded() throws GamblingException;
-	 
+	 List<Debt> findCurrentSeasonCanceled() throws GamblingException;
 }

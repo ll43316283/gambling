@@ -95,4 +95,10 @@ public class DebtServiceImpl implements DebtService {
 		Season season = seasonService.getCurrent(); 
 		return debtDao.findBySeasonAndStatus(season.getSeason(), Debt.STATUS_CLOSE);
 	}
+	
+	@Override
+	public List<Debt> findCurrentSeasonCanceled() throws GamblingException {
+		Season season = seasonService.getCurrent(); 
+		return debtDao.findBySeasonAndStatus(season.getSeason(), Debt.STATUS_CLOSE);
+	}
 }

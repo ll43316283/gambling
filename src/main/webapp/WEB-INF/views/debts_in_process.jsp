@@ -26,7 +26,7 @@ cursor: pointer
 	<c:set var="menu" scope="request" value="debtList"/>  
  <div class="container-fluid">
 	<div class="row-fluid">
-		<div class="span12"> 	
+		<div class="col-md-12 col-sm-12"> 	
 			   <jsp:include page="menu.jsp" flush="true">
 				 	<jsp:param name="menu" value="${menu}"/> 
 				 </jsp:include>  

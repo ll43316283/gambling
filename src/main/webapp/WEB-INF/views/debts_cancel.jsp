@@ -23,7 +23,7 @@ cursor: pointer
 
 
 
-	<c:set var="menu" scope="request" value="endDebtList"/>  
+ <c:set var="menu" scope="request" value="cancelDebtList"/>  
  <div class="container-fluid">
 	<div class="row-fluid">
 		<div class="col-md-12 col-sm-12"> 	
@@ -31,28 +31,26 @@ cursor: pointer
 				 	<jsp:param name="menu" value="${menu}"/> 
 				 </jsp:include>  
 			  <c:if test="${debts.size()==0 }">
-			  	<h3 contenteditable="true">好萧条啊， 连盘口都没有。。。你们蛀虫都不当了？</h3>
+			  	<h3 contenteditable="true">数学系同学很严谨， 没有取消的盘口</h3>
 			  </c:if>
 			  <c:if test="${debts.size()>0 }">
 				<table class="table table-hover" contenteditable="true">
 					<thead>
 						<tr> 
-							<th>盘口</th>
-							<th>截至时间</th>
+							<th>盘口</th> 
 							<th>庄家</th>
-							<th>结局</th>
+							<th>取消时间</th>
 						</tr>
 					</thead>
 				
-					<tbody class="debt-body"> 
+					<tbody > 
 						 <c:forEach var="debt"  items="${debts}" >
 							<tr class="cursor-point">  
 								<td><a>${debt.title}</a> 
 									<input type="hidden" class="debt-id" value="${debt.id}"/>
-								</td>
-								<td>${debt.deadline} </td> 
+								</td> 
 								<td>${debt.dealer.userName} </td> 
-								<td > <button disabled>${debt.result}</button>  </td>
+								<td>${debt.endDate} </td> 
 							</tr> 
 						</c:forEach>
 					</tbody>
@@ -61,27 +59,7 @@ cursor: pointer
  
   </div></div></div>
    <script type="text/javascript"> 
-   $(document).ready(function() { 
-	   var $jq = jQuery.noConflict();
-	   $jq('.cursor-point').on("click",function(){   
-		   var debtId = $jq(this).find(".debt-id").val();
-		   //$jq.get("<%=request.getContextPath()%>/debt/"+debtId);
-		   window.location.href = "<%=request.getContextPath()%>/debt/"+debtId;
-		  //$jq('#myModal').modal();
-	   });
-	   
-	   $jq('tbody tr td button').each(function(){
-		   var bt = $jq(this);
-		   if(bt.html()=="Y"){
-			   bt.addClass("btn-success");
-		   }
-		   else if(bt.html()=="N"){
-			   bt.addClass("btn-danger");
-		   }else{
-			   bt.addClass("btn-warning");
-		   }
-	   });
-   });
+   
    </script>
 </body>
 </html>
