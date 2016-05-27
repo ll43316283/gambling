@@ -87,7 +87,10 @@ public class BaseTest {
 		debt.setTitle("second test debt");
 		User user = userService.findByUserName("admin");
 		debt.setDealer(user); 
-		debt.setDeadline(new Date());
+		try {
+			debt.setDeadline(DateUtil.parse("9999-1-1 12:01"));
+		} catch (ParseException e) { 
+		}
 		return debtService.create(debt);
 	}
 	

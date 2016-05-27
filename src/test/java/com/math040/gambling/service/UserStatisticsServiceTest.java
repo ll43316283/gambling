@@ -67,7 +67,7 @@ public class UserStatisticsServiceTest extends BaseTest {
 		Debt debt2 = initDebt2();
 		User gambler = initGambler(); 
 		User gambler2 = initGambler2(); 
-		
+		  
 		
 		Transaction trans1 = new Transaction();
 		trans1.setDebt(debt);

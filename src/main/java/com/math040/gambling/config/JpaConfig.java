@@ -1,8 +1,7 @@
 package com.math040.gambling.config;
 
 import java.util.Properties;
-
-import javax.persistence.EntityManagerFactory;
+ 
 import javax.sql.DataSource;
 
 import org.h2.jdbcx.JdbcConnectionPool;
@@ -20,8 +19,9 @@ public class JpaConfig {
 	  @Bean
 	  public PlatformTransactionManager transactionManager()
 	  {
-	    EntityManagerFactory factory = entityManagerFactory().getObject();
-	    return new JpaTransactionManager(factory);
+		  JpaTransactionManager transaction = new JpaTransactionManager(); 
+		  transaction.setEntityManagerFactory(entityManagerFactory().getObject()); 
+	    return   transaction;
 	  }
 	  
 	  @Bean

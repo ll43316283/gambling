@@ -11,7 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional; 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import com.math040.gambling.GamblingException;
@@ -24,7 +25,7 @@ import com.math040.gambling.repository.UserStatisticsRepository;
 import com.math040.gambling.service.SeasonService;
 import com.math040.gambling.service.UserStatisticsService;
 
-@Service
+@Service 
 @Transactional
 public class UserStatisticsServiceImpl implements UserStatisticsService {
 	private static Logger logger = LoggerFactory.getLogger(UserStatisticsServiceImpl.class);
@@ -45,6 +46,7 @@ public class UserStatisticsServiceImpl implements UserStatisticsService {
 	TitleRepository titleDao;
 	
 	@Override
+	@Transactional(propagation=Propagation.REQUIRED)
 	public void doStatistics() throws GamblingException{
 		int season = seasonService.getCurrent().getSeason();
 	    doStatisticsAmounts(season);
@@ -56,7 +58,7 @@ public class UserStatisticsServiceImpl implements UserStatisticsService {
 	    doStatisticsTitles(season,usList);
 	}
 
-
+	@Transactional(propagation=Propagation.NESTED)
 	private void doStatisticsAmounts(int season) throws GamblingException {
 		List<Object[]> userAmounts = usDao.findUserAmountsBySeason(season);
 		if(CollectionUtils.isEmpty(userAmounts)){
@@ -89,7 +91,7 @@ public class UserStatisticsServiceImpl implements UserStatisticsService {
 			}
 		}
 	}
-	
+	@Transactional(propagation=Propagation.NESTED)
 	private void doStatisticsWinRate(int season,List<UserStatistics> usList){ 
 		for(UserStatistics us:usList){
 			Integer totalTrans = transDao.countTransBySeasonAndGamblerAndNotDealer(season, us.getGambler());
@@ -101,11 +103,13 @@ public class UserStatisticsServiceImpl implements UserStatisticsService {
 				us.setWinningRate(winRate);
 			}  
 			us.setUpdateDate(new Date()); 
+			usDao.save(us);
 		}
+		
 	}
 	
 	
-
+	@Transactional(propagation=Propagation.NESTED)
 	private void doStatisticsTitles(int season,List<UserStatistics> usList) {  
 		for(UserStatistics us:usList){
 			if(!CollectionUtils.isEmpty(us.getTitles())){
@@ -116,7 +120,7 @@ public class UserStatisticsServiceImpl implements UserStatisticsService {
 		setHighestRateTitle(usList);
 	}
 
-
+	@Transactional(propagation=Propagation.NESTED)
 	private void setHighestAmountTitle(List<UserStatistics> usList) {
 		
 		Collections.sort(usList, new Comparator<UserStatistics>(){ 
@@ -130,20 +134,23 @@ public class UserStatisticsServiceImpl implements UserStatisticsService {
 		
 		if(usList.get(0).getAmount()!=0){ 
 			usList.get(0).getTitles().add(title);
+			usDao.save(usList.get(0));
 			int i =0;
 			int max = usList.size()-1;
 			boolean end = false;
 			do{
 				if(usList.get(i).getAmount() == usList.get(i+1).getAmount()){
-					usList.get(i+1).getTitles().add(title);
+					//UserStatistics us = usDao.findBySeasonAndGambler_id(usList.get(i).getSeason(), usList.get(i).getGambler().getId());
+					//us.getTitles().add(title);
+					usDao.save(usList.get(i+1));
 				}else{
 					end = true;
 				}
 				i++;
 			}while( !end && i< max-1);
-		}
+		} 
 	}
-	
+	@Transactional(propagation=Propagation.NESTED)
 	private void setHighestRateTitle(List<UserStatistics> usList) {
 		
 		Collections.sort(usList, new Comparator<UserStatistics>(){ 
@@ -160,18 +167,22 @@ public class UserStatisticsServiceImpl implements UserStatisticsService {
 		if(usList.get(0).getWinningRate()!=null 
 				&& usList.get(0).getWinningRate().compareTo(0.0)!=0){ 
 			usList.get(0).getTitles().add(title);
+			usDao.save(usList.get(0));
 			int i =0;
 			int max = usList.size()-1;
 			boolean end = false;
 			do{
 				if(usList.get(i).getWinningRate().equals(usList.get(i+1).getWinningRate())){
-					usList.get(i+1).getTitles().add(title);
+					//UserStatistics us = usDao.findBySeasonAndGambler_id(usList.get(i).getSeason(), usList.get(i).getGambler().getId());
+					//us.getTitles().add(title);
+					usDao.save(usList.get(i+1));
 				}else{
 					end = true;
 				}
 				i++;
 			}while( !end && i< max-1);
 		}
+	
 	}
 
 
