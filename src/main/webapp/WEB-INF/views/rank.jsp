@@ -9,134 +9,278 @@
  <script src="../resources/jquery/jquery-1.9.1.min.js"></script>
 <link href="../resources/bootstrap/css/bootstrap.min.css" rel="stylesheet"> 
  <script src="../resources/bootstrap/js/bootstrap.min.js"></script>
- <script src="../resources/d3/d3.v3.min.js"></script>
- <script src="../resources/d3/liquidFillGauge.js"></script>
+ <script src="../resources/chart/Chart.bundle.js"></script> 
 <title>math040</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    		 
-    	  .table tr td {
-    	  	font-size: 20px;
-    	  	font-weight:bold;
-    	   text-align:center;	 
-    	   height:80px;
-    	  }
-    	  .table thead tr th {
-    	   text-align:center	
-    	  }
-    	  .table tr td:first-child{
-    	    padding-top:25px;
-    	  }
-        .liquidFillGaugeText { font-family: Helvetica; font-weight: bold; }
-        
-        .star-color{
-         color: #FFCC33
-        }
+  <style type="text/css">
+    canvas{
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+     #chartjs-tooltip {
+      opacity: 1;
+      position: absolute;
+      background: rgba(0, 0, 0, .7);
+      color: white;
+      border-radius: 3px;
+      -webkit-transition: all .1s ease;
+      transition: all .1s ease;
+      pointer-events: none;
+      -webkit-transform: translate(-50%, 0);
+      transform: translate(-50%, 0);
+    }
+    .chartjs-tooltip-key {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+    }
     </style>
 </head>
 <body>
- 
-
-
-
- <c:set var="menu" scope="request" value="statistics"/>  
+<c:set var="menu" scope="request" value="statistics"/>  
  <div class="container-fluid">
 	<div class="row">
-		<div class="col-md-12 col-sm-12">
+		<div class="col col-md-12 col-sm-12">
 		 <jsp:include page="menu.jsp" flush="true">
 				 	<jsp:param name="menu" value="${menu}"/> 
-				 </jsp:include> 
+		</jsp:include> 
+			
+			<div class="row" style="margin-top:20px">
+				<div class="col-sm-offset-1 col-sm-10 col-md-offset-1 col-md-10">
+					<button id="refresh" class="btn-primary">实时刷新</button>
+				</div>
+			</div>
 			<div class="row">
-				<div class="col-md-6 col-sm-6">
-					<table class="table table-striped table-condensed">
-						<thead>
-							<tr>
-								<th>
-									num
-								</th>
-								<th>
-									rate
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>
-									<span class="glyphicon glyphicon-star-empty star-color" 
-									  aria-hidden="true">
-									</span>  song
-								</td>
-								<td>
-								 <svg id="fillgauge1"  height="100%" onclick="gauge1.update(NewValue());"></svg>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									lee
-								</td>
-								<td>
-								 <svg id="fillgauge2"  height="100%" onclick="gauge2.update(NewValue());"></svg>
-								</td>
-							</tr>
-							
-							<tr>
-								<td>
-									zhantang
-								</td>
-								<td>
-								 <svg id="fillgauge3"  height="100%" onclick="gauge3.update(NewValue());"></svg>
-								</td>
-							</tr>
-							
-						</tbody>
-					</table>
-				</div>
-				<div class="col-md-6 col-sm-6">
-					<p>
-						<em>Git</em>sdfsdfsdfs<strong>Linus Torvalds</strong>tghuishf asjdfajlfjasljfb sd fklsajfoiasf skfsdufiokj sdwsdfkjskljfkl;jpiulk sdf dfj s
-					</p>
-				</div>
+				    <div id="container" class="col-sm-offset-1 col-sm-10 col-md-offset-1 col-md-10" >
+				        <canvas id="canvas"  ></canvas>
+				    </div> 
 			</div>
 		</div>
 	</div>
-</div>
-<script language="JavaScript">
-	
-	  var top1Config = liquidFillGaugeDefaultSettings();
-    top1Config.circleColor = "#FFCC33";
-    top1Config.textColor = "#FF3300";
-    top1Config.waveTextColor = "#FF3300";
-    top1Config.waveColor = "#FFCC33";
-    top1Config.circleThickness = 0.2;
-    top1Config.textVertPosition = 0.5;
-    top1Config.waveAnimateTime = 1000;
-    
-    var gauge1 = loadLiquidFillGauge("fillgauge1", 55,top1Config);
-    
-    var top2Config = liquidFillGaugeDefaultSettings();
-    top2Config.circleColor = "#CCCCCC";
-    top2Config.textColor = "#FF3300";
-    top2Config.waveTextColor = "#FF3300";
-    top2Config.waveColor = "#CCCCCC";
-    top2Config.circleThickness = 0.2;
-    top2Config.textVertPosition = 0.5;
-    top2Config.waveAnimateTime = 1000; 
-    
-    
-    var gauge2 = loadLiquidFillGauge("fillgauge2", 41,top2Config);
-    
-    var top3Config = liquidFillGaugeDefaultSettings();
-    top3Config.circleColor = "#CC6633";
-    top3Config.textColor = "#FF3300";
-    top3Config.waveTextColor = "#FF3300";
-    top3Config.waveColor = "#CC6633";
-    top3Config.circleThickness = 0.2;
-    top3Config.textVertPosition = 0.5;
-    top3Config.waveAnimateTime = 1000; 
-    
-    
-    var gauge3 = loadLiquidFillGauge("fillgauge3", 40,top3Config);
-    
-</script>
+ </div>
+    <script> 
+    	$(document).ready(function(){
+    		$("#refresh").on("click",function(){
+    			window.location.href = "<%=request.getContextPath()%>/statistics";
+    		});
+    	});
+ 		
+        var randomColorFactor = function() {
+            return Math.round(Math.random() * 255);
+        };
+        var randomColor = function() {
+            return 'rgba(' + randomColorFactor() + ',' + randomColorFactor() + ',' + randomColorFactor() + ',.7)';
+        };
+        
+    	 var rank_r={
+    	 							1:30,
+    	 							2:20,
+    	 							3:15,
+    	 							4:10,
+    	 							5:9
+    	 						}
+    	
+    	 var mydata ={
+    	 								datasets: [
+	    	 													{
+	    	 														name:'gang',
+	    	 														rate:50,
+	    	 													  score:314,
+	    	 													  rank:1	
+	    	 													},
+	    	 													{
+	    	 														name:'song',
+	    	 														rate:75.5,
+	    	 														score:276,
+	    	 														rank:2
+	    	 													},
+	    	 													{
+	    	 														name:'liang',
+	    	 														rate:68,
+	    	 														score:244,
+	    	 														rank:3
+	    	 													},
+	    	 													{
+	    	 														name:'zhantang',
+	    	 														rate:45,
+	    	 														score:35,
+	    	 														rank:4
+	    	 													},
+	    	 													{
+	    	 														name:'everest',
+	    	 														rate:13,
+	    	 														score:-54,
+	    	 														rank:5
+	    	 													}
+    	 													]
+    	 						 };
+    	  
+    	 var bubbleChartData = {
+            animation: {
+                duration: 10000
+            },
+            datasets: [ ] 
+        };
+        
+    	  for(var i=0;i<mydata.datasets.length;i++){
+    	  
+	    	  var tempdata = mydata.datasets[i];
+	    	  
+	    	  var dataset={
+	    	     label : 	tempdata.name,
+	    	     backgroundColor : randomColor(),
+	    	     data  :	[
+	    	     						{
+	    	     							y:	tempdata.score,
+	    	     							x:  tempdata.rate,
+	    	     							r:  rank_r[tempdata.rank]
+	    	     						}
+	    	     				  ]
+	    	  }; 
+	    	  
+	    	 
+	    	  
+	    	  bubbleChartData.datasets.push(dataset);
+    	  
+    	  }
+    	 
+    	var tooltipBody = function (o){
+    			var nm = o.split(":")[0];
+    			var ov = o.split(":")[1].trim(); 
+    			var no_kuohao = ov.substring(1).substring(0,ov.substring(1).length-1);
+    			var rate = no_kuohao.split(",")[0]+"%";
+    			var score = no_kuohao.split(",")[1];
+    			return nm+"  rate: "+ rate+"	score: "+score;
+    	}
+    	  
+    	var customTooltips = function(tooltip) {
+				      // Tooltip Element
+				      var tooltipEl = $('#chartjs-tooltip');
+				
+				      if (!tooltipEl[0]) {
+				        $('body').append('<div id="chartjs-tooltip"></div>');
+				        tooltipEl = $('#chartjs-tooltip');
+				      }
+				
+				      // Hide if no tooltip
+				      if (!tooltip.opacity) {
+				        tooltipEl.css({
+				          opacity: 0
+				        });
+				        $('.chartjs-wrap canvas')
+				          .each(function(index, el) {
+				            $(el).css('cursor', 'default');
+				          });
+				        return;
+				      }
+				
+				      $(this._chart.canvas).css('cursor', 'pointer');
+				
+				      // Set caret Position
+				      tooltipEl.removeClass('above below no-transform');
+				      if (tooltip.yAlign) {
+				        tooltipEl.addClass(tooltip.yAlign);
+				      } else {
+				        tooltipEl.addClass('no-transform');
+				      }
+				
+				      // Set Text
+				      if (tooltip.body) {
+				      	var bd = tooltipBody(tooltip.body[0]);
+				        var innerHtml = [
+				          (tooltip.beforeTitle || []).join('\n'), (tooltip.title || []).join('\n'), (tooltip.afterTitle || []).join('\n'), (tooltip.beforeBody || []).join('\n'), bd, (tooltip.afterBody || []).join('\n'), (tooltip.beforeFooter || [])
+				          .join('\n'), (tooltip.footer || []).join('\n'), (tooltip.afterFooter || []).join('\n')
+				        ];
+				        
+				        tooltipEl.html(innerHtml.join('\n'));
+				      }
+				
+				      // Find Y Location on page
+				      var top = 0;
+				      if (tooltip.yAlign) {
+				        if (tooltip.yAlign == 'above') {
+				          top = tooltip.y - tooltip.caretHeight - tooltip.caretPadding;
+				        } else {
+				          top = tooltip.y + tooltip.caretHeight + tooltip.caretPadding;
+				        }
+				      }
+				
+				      var position = $(this._chart.canvas)[0].getBoundingClientRect();
+				
+				      // Display, position, and set styles for font
+				      tooltipEl.css({
+				        opacity: 1,
+				        width: tooltip.width ? (tooltip.width + 'px') : 'auto',
+				        left: position.left + tooltip.x + 'px',
+				        top: position.top + top + 'px',
+				        fontFamily: tooltip._fontFamily,
+				        fontSize: tooltip.fontSize,
+				        fontStyle: tooltip._fontStyle,
+				        padding: tooltip.yPadding + 'px ' + tooltip.xPadding + 'px',
+				      });
+    };
+			  
+				function testclick(obj){
+						console.log(obj);
+				}
+        window.onload = function() {
+            var ctx = document.getElementById("canvas").getContext("2d");
+            window.myChart = new Chart(ctx, {
+                type: 'bubble',
+                data: bubbleChartData,
+                options: {
+                    responsive: true,
+                    title:{
+                        display:true,
+                        text:'ranking'
+                    },
+                    legend:{
+                    	position:'bottom'
+                    },
+                    
+                    onclick: testclick,
+                     tooltips: {
+                     	  enabled: false,
+                     		custom:customTooltips,
+							          mode: 'single'
+							        }, 
+							        scales: {
+							        	 yAxes: [{
+							            scaleLabel: {
+							              display: true,
+							              labelString: 'score'
+							            }
+							          }],
+							          xAxes: [{
+							            scaleLabel: {
+							              display: true,
+							              labelString: 'rate%'
+							            }
+							          }]
+							         
+							        }, 
+							        
+							        animation: {
+                        onComplete: function () {
+                            var chartInstance = this.chart;
+                            var ctx = chartInstance.ctx;
+                            ctx.textAlign = "center";
+                            Chart.helpers.each(this.data.datasets.forEach(function (dataset, i) {
+                                var meta = chartInstance.controller.getDatasetMeta(i);
+                                Chart.helpers.each(meta.data.forEach(function (bubble, index) {
+                                	   //console.log(dataset.label);
+                                    ctx.fillText(dataset.label + " :"+dataset.data[index].x+"% ~ "+dataset.data[index].y,
+                                     bubble._model.x, bubble._model.y + dataset.data[index].r+ 10);
+                                }),this)
+                            }),this);
+                        }
+                      }
+                }
+            });
+        };
+        
+    </script>
 </body>
+
 </html>
