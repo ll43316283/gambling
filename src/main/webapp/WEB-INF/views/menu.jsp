@@ -29,8 +29,8 @@
 				<li class="menu_add">
 					<a href='<c:url value="/debt/new"/>'>我要开盘</a>
 				</li>
-				<li class="dropdown ">
-					<a class="dropdown-toggle menu_statistics" data-toggle="dropdown" href="#">技术统计</a>
+				<li class="dropdown menu_statistics">
+					<a class="dropdown-toggle " data-toggle="dropdown" href="#">技术统计</a>
 					<ul class="dropdown-menu">
 						<li>
 							<a href="<c:url value="/statistics/rank"/>">rank</a>

@@ -49,7 +49,7 @@ public class DebtController extends BaseController{
 	}
 	@RequestMapping(value="/cancelList", method = RequestMethod.GET) 
 	public ModelAndView cancelList() throws GamblingException{ 
-		return new ModelAndView("debts_cancel","debts",debtService.findCurrentSeasonCanceled());
+		return new ModelAndView("debts_cancel","debts",debtService.findCurrentSeasonEnded());
 	}
 	
 	@RequestMapping(value="/new", method = RequestMethod.GET) 

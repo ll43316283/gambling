@@ -23,15 +23,15 @@ cursor: pointer
 
 
 
-	<c:set var="menu" scope="request" value="cancelDebtList"/>  
+ <c:set var="menu" scope="request" value="cancelDebtList"/>  
  <div class="container-fluid">
 	<div class="row-fluid">
-		<div class="span12"> 	
+		<div class="col-md-12 col-sm-12"> 	
 			   <jsp:include page="menu.jsp" flush="true">
 				 	<jsp:param name="menu" value="${menu}"/> 
 				 </jsp:include>  
 			  <c:if test="${debts.size()==0 }">
-			  	<h3 contenteditable="true">数学系同学都很严谨， 盘口成功率很高</h3>
+			  	<h3 contenteditable="true">数学系同学很严谨， 没有取消的盘口</h3>
 			  </c:if>
 			  <c:if test="${debts.size()>0 }">
 				<table class="table table-hover" contenteditable="true">
@@ -43,14 +43,14 @@ cursor: pointer
 						</tr>
 					</thead>
 				
-					<tbody class="debt-body"> 
+					<tbody > 
 						 <c:forEach var="debt"  items="${debts}" >
 							<tr class="cursor-point">  
 								<td><a>${debt.title}</a> 
 									<input type="hidden" class="debt-id" value="${debt.id}"/>
 								</td> 
 								<td>${debt.dealer.userName} </td> 
-								<td>${debt.endDate} </td>  
+								<td>${debt.endDate} </td> 
 							</tr> 
 						</c:forEach>
 					</tbody>
@@ -59,7 +59,7 @@ cursor: pointer
  
   </div></div></div>
    <script type="text/javascript"> 
-  
+   
    </script>
 </body>
 </html>

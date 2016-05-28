@@ -26,7 +26,7 @@ cursor: pointer
 <body> 
  <div class="container-fluid">
 	<div class="row-fluid">
-		<div class="span12"> 
+		<div class="col-md-12 col-sm-12"> 
   			  
   			<div class="page-header">
 				<h1>
@@ -139,7 +139,7 @@ cursor: pointer
 		    	</form>
 		    </c:if>
 			</sec:authorize>
-   			<form id="cancelDebtForm" role="form" method="post" action='<c:url value="/debt/${debt.id}/cancel"/>'>
+   			<form id="cancelDebtForm" role="form" method="post" action='<c:url value="/debt/${debt.id}/close"/>'>
    				 <input type="hidden" name="debt.id" value='<c:out value="${debt.id }"/>'/> 
    			</form>
    		</div>

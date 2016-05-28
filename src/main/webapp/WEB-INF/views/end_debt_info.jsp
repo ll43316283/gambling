@@ -26,7 +26,7 @@ cursor: pointer
 <body> 
  <div class="container-fluid">
 	<div class="row-fluid">
-		<div class="span12"> 
+		<div class="col-md-12 col-sm-12"> 
   			  
   			<div class="page-header">
 				<h1>
