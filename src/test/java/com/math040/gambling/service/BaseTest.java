@@ -1,5 +1,6 @@
 package com.math040.gambling.service;
 
+import java.text.ParseException;
 import java.util.Date;
 
 import org.junit.Assert;
@@ -16,16 +17,17 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.transaction.annotation.Transactional;
 
 import com.math040.gambling.GamblingException;
-import com.math040.gambling.config.JpaConfig;
 import com.math040.gambling.dto.Debt;
 import com.math040.gambling.dto.Season;
 import com.math040.gambling.dto.User;
 import com.math040.gambling.repository.SeasonRepository;
+import com.math040.gambling.util.DateUtil;
 
 import config.TestBasedConfig;
+import config.TestJpaConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes={TestBasedConfig.class,JpaConfig.class})
+@ContextConfiguration(classes={TestBasedConfig.class,TestJpaConfig.class})
 @Transactional
 @TestExecutionListeners(                
 	    { DependencyInjectionTestExecutionListener.class,  
@@ -57,7 +59,20 @@ public class BaseTest {
 	}
 	
 	@Rollback
-	public Debt initDebt() throws GamblingException {
+	public Debt initDebt() throws GamblingException { 
+		Debt debt = new Debt();
+		debt.setTitle("first test debt");
+		User user = userService.findByUserName("admin");
+		debt.setDealer(user); 
+		try {
+			debt.setDeadline(DateUtil.parse("9999-1-1 12:01"));
+		} catch (ParseException e) { 
+		}
+		return debtService.create(debt);
+	}
+	
+	@Rollback
+	public Debt initDeadLineInValidDebt() throws GamblingException {
 		Debt debt = new Debt();
 		debt.setTitle("first test debt");
 		User user = userService.findByUserName("admin");
@@ -66,14 +81,16 @@ public class BaseTest {
 		return debtService.create(debt);
 	}
 	
-	
 	@Rollback
 	public Debt initDebt2() throws GamblingException {
 		Debt debt = new Debt();
 		debt.setTitle("second test debt");
 		User user = userService.findByUserName("admin");
 		debt.setDealer(user); 
-		debt.setDeadline(new Date());
+		try {
+			debt.setDeadline(DateUtil.parse("9999-1-1 12:01"));
+		} catch (ParseException e) { 
+		}
 		return debtService.create(debt);
 	}
 	

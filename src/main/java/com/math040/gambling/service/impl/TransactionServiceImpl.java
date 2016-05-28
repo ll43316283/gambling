@@ -2,8 +2,10 @@ package com.math040.gambling.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
- 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -38,12 +40,18 @@ public class TransactionServiceImpl implements TransactionService {
 			throw new GamblingException(GamblingException.TRANS_DEBT_ID_SHOULD_NOT_NULL);
 		}
 		if(debt.getDealer().equals(transaction.getGambler())){
-			throw new GamblingException(GamblingException.TRANS_DEBT_SHOULD_NOT_GAMBLE);
+			throw new GamblingException(GamblingException.TRANS_DEALER_SHOULD_NOT_GAMBLE);
 		}
+		
+		
 		
 		transaction.setDebt(debt);
 		transaction.setIsDealer(Transaction.NOT_DEALER);
 		transaction.setCreateDate(new Date());
+		
+		if(debt.getDeadline().before(transaction.getCreateDate())){
+			throw new GamblingException(GamblingException.TRANS_SHOULD_NOT_GAMBLE_AFTER_DEADLINE);
+		}
 		
 		if(!validateOneShouldDebtOnceInOneDebt(transaction)){
 			throw new GamblingException(GamblingException.TRANS_GAMBLER_SHOULD_GAMBLE_ONCE_IN_ONE_GAME);
@@ -116,5 +124,26 @@ public class TransactionServiceImpl implements TransactionService {
 		trans.setDebt(debt);
 		trans.setGambler(debt.getDealer());  
 		transDao.save(trans);
+	}
+
+	@Override
+	public List<Transaction> findByDebt(Debt debt) { 
+		 Assert.notNull(debt);
+		 Assert.notNull(debt.getId());  
+		return transDao.findByDebtOrderByPredictDesc(debt);
+	}
+
+	@Override
+	public Map<String, List<Integer>> getAvailablePredictAmounts(Debt debt) { 
+		 Assert.notNull(debt);
+		 Assert.notNull(debt.getId());  
+		List<Integer> yesAmmounts = Amount.getAvailableAmountByTransList(
+				transDao.findByDebt_IdAndPredict(debt.getId(), Transaction.PREDICT_YES));
+		List<Integer> noAmmounts = Amount.getAvailableAmountByTransList(
+				transDao.findByDebt_IdAndPredict(debt.getId(), Transaction.PREDICT_NO));
+		Map<String,List<Integer>> result = new HashMap<>();
+		result.put(Transaction.PREDICT_YES, yesAmmounts);
+		result.put(Transaction.PREDICT_NO, noAmmounts);
+		return result;
 	}
 }

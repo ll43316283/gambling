@@ -13,7 +13,7 @@ import com.math040.gambling.service.UserService;
 
 @Controller
 @RequestMapping("/user")
-public class UserController {
+public class UserController  extends BaseController {
 	
 	public static Logger logger = LoggerFactory.getLogger(UserController.class);
 	

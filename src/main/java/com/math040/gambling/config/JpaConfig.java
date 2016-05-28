@@ -2,7 +2,6 @@ package com.math040.gambling.config;
 
 import java.util.Properties;
 
-import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.h2.jdbcx.JdbcConnectionPool;
@@ -13,15 +12,18 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration  
+@EnableTransactionManagement
 @EnableJpaRepositories(basePackages="com.math040.gambling.repository")
 public class JpaConfig {
 	  @Bean
 	  public PlatformTransactionManager transactionManager()
 	  {
-	    EntityManagerFactory factory = entityManagerFactory().getObject();
-	    return new JpaTransactionManager(factory);
+		  JpaTransactionManager transaction = new JpaTransactionManager(); 
+		  transaction.setEntityManagerFactory(entityManagerFactory().getObject()); 
+	    return   transaction;
 	  }
 	  
 	  @Bean

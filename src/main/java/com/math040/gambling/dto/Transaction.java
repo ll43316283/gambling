@@ -1,12 +1,19 @@
 package com.math040.gambling.dto;
 
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.persistence.Column;
-import javax.persistence.Entity; 
+import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne; 
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.springframework.util.StringUtils;
+
+import com.math040.gambling.GamblingException;
 
 @Entity
 @Table(name = "TR_TRANSACTION") 
@@ -38,6 +45,9 @@ public class Transaction extends BaseDto{
 	
 	@Column(name="is_dealer",length=1)
 	private String isDealer;
+	
+	@Transient
+	private String sideAmmount;
 	
 	public Debt getDebt() {
 		return debt;
@@ -101,6 +111,29 @@ public class Transaction extends BaseDto{
 	public void setIsDealer(String isDealer) {
 		this.isDealer = isDealer;
 	}
+
+	public String getSideAmmount() {
+		return sideAmmount;
+	}
+
+	public void setSideAmmount(String sideAmmount) {
+		this.sideAmmount = sideAmmount;
+	}
 	 
+	public boolean validateSideAmount(){
+		 if(!StringUtils.hasText(sideAmmount)){
+			 return false;
+		 }
+		 Pattern pattern = Pattern.compile("^["+PREDICT_YES+PREDICT_NO+"]{1}\\d{1,2}$");
+		 Matcher matcher = pattern.matcher(sideAmmount);
+		 return matcher.matches();
+	}
 	
+	public void transferPredictAndAmount() throws GamblingException{
+		if(!validateSideAmount()){
+			throw new GamblingException(GamblingException.TRANS_NOT_CORRECT_AMOUNT_SIDE_PARAM);
+		}
+		setPredict(getSideAmmount().substring(0, 1));
+		setAmount(Integer.parseInt(getSideAmmount().substring(1))); 
+	}
 }

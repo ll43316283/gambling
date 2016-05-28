@@ -18,21 +18,21 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.transaction.annotation.Transactional;
 
 import com.math040.gambling.GamblingException;
-import com.math040.gambling.config.JpaConfig;
 import com.math040.gambling.dto.Debt;
 import com.math040.gambling.dto.User;
 
-import config.TestBasedConfig; 
+import config.TestBasedConfig;
+import config.TestJpaConfig; 
  
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes={TestBasedConfig.class,JpaConfig.class})
+@ContextConfiguration(classes={TestBasedConfig.class,TestJpaConfig.class})
 @Transactional
 @TestExecutionListeners(                
 	    { DependencyInjectionTestExecutionListener.class,  
 	    	TransactionalTestExecutionListener.class })  
 public class DebtServiceTest extends BaseTest{
-	@Rule
+	@Rule  
 	public ExpectedException thrown= ExpectedException.none();
 	
 	@Autowired

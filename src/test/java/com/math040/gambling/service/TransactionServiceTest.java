@@ -7,7 +7,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired; 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -17,17 +17,17 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.transaction.annotation.Transactional;
 
 import com.math040.gambling.GamblingException;
-import com.math040.gambling.config.JpaConfig;
 import com.math040.gambling.dto.Debt;
 import com.math040.gambling.dto.Transaction;
 import com.math040.gambling.dto.User;
 import com.math040.gambling.repository.TransactionRepository;
 
-import config.TestBasedConfig; 
+import config.TestBasedConfig;
+import config.TestJpaConfig; 
  
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes={TestBasedConfig.class,JpaConfig.class})
+@ContextConfiguration(classes={TestBasedConfig.class,TestJpaConfig.class})
 @Transactional
 @TestExecutionListeners(                
 	    { DependencyInjectionTestExecutionListener.class,  
@@ -64,7 +64,20 @@ public class TransactionServiceTest extends BaseTest{
 		Assert.assertEquals(Transaction.NOT_DEALER, savedTrans.getIsDealer());
 	} 
 	 
-	
+	@Test
+	@Rollback
+	public void testCreateTransThrowGamblerShouldNotGambleAfterDeadLine() throws GamblingException { 
+		Debt debt = initDeadLineInValidDebt(); 
+		User gambler = initGambler();
+		Transaction trans = new Transaction();
+		trans.setDebt(debt);
+		trans.setGambler(gambler);
+		trans.setPredict(Transaction.PREDICT_YES);
+		trans.setAmount(29);
+		thrown.expect(GamblingException.class);
+		thrown.expectMessage(GamblingException.TRANS_SHOULD_NOT_GAMBLE_AFTER_DEADLINE); 
+		transService.create(trans);
+	}
 	@Test
 	@Rollback
 	public void testCreateTrans_with_2_same_amount_predict_throw_amount_not_correct_exception() throws GamblingException { 
@@ -94,7 +107,7 @@ public class TransactionServiceTest extends BaseTest{
 		Debt debt = initDebt();
 		User dealer = userService.findByUserName("admin");
 		thrown.expect(GamblingException.class);
-		thrown.expectMessage(GamblingException.TRANS_DEBT_SHOULD_NOT_GAMBLE);
+		thrown.expectMessage(GamblingException.TRANS_DEALER_SHOULD_NOT_GAMBLE);
 		Transaction trans1 = new Transaction();
 		trans1.setDebt(debt);
 		trans1.setGambler(dealer);
