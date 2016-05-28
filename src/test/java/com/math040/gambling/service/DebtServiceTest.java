@@ -32,7 +32,7 @@ import config.TestJpaConfig;
 	    { DependencyInjectionTestExecutionListener.class,  
 	    	TransactionalTestExecutionListener.class })  
 public class DebtServiceTest extends BaseTest{
-	@Rule
+	@Rule  
 	public ExpectedException thrown= ExpectedException.none();
 	
 	@Autowired
