@@ -1,4 +1,4 @@
-package com.math040.gambling.config;
+package config;
 
 import java.util.Properties;
 
@@ -11,13 +11,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.PlatformTransactionManager; 
 
-@Configuration  
-@EnableTransactionManagement
+@Configuration   
 @EnableJpaRepositories(basePackages="com.math040.gambling.repository")
-public class JpaConfig {
+public class TestJpaConfig {
 	  @Bean
 	  public PlatformTransactionManager transactionManager()
 	  {

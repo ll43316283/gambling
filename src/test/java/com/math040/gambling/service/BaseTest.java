@@ -17,7 +17,6 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.transaction.annotation.Transactional;
 
 import com.math040.gambling.GamblingException;
-import com.math040.gambling.config.JpaConfig;
 import com.math040.gambling.dto.Debt;
 import com.math040.gambling.dto.Season;
 import com.math040.gambling.dto.User;
@@ -25,9 +24,10 @@ import com.math040.gambling.repository.SeasonRepository;
 import com.math040.gambling.util.DateUtil;
 
 import config.TestBasedConfig;
+import config.TestJpaConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes={TestBasedConfig.class,JpaConfig.class})
+@ContextConfiguration(classes={TestBasedConfig.class,TestJpaConfig.class})
 @Transactional
 @TestExecutionListeners(                
 	    { DependencyInjectionTestExecutionListener.class,  

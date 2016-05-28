@@ -58,7 +58,7 @@ public class UserStatisticsServiceImpl implements UserStatisticsService {
 	    doStatisticsTitles(season,usList);
 	}
 
-	@Transactional(propagation=Propagation.NESTED)
+	@Transactional(propagation=Propagation.MANDATORY)
 	private void doStatisticsAmounts(int season) throws GamblingException {
 		List<Object[]> userAmounts = usDao.findUserAmountsBySeason(season);
 		if(CollectionUtils.isEmpty(userAmounts)){
@@ -103,7 +103,7 @@ public class UserStatisticsServiceImpl implements UserStatisticsService {
 				us.setWinningRate(winRate);
 			}  
 			us.setUpdateDate(new Date()); 
-			usDao.save(us);
+//			usDao.save(us);
 		}
 		
 	}
@@ -134,7 +134,7 @@ public class UserStatisticsServiceImpl implements UserStatisticsService {
 		
 		if(usList.get(0).getAmount()!=0){ 
 			usList.get(0).getTitles().add(title);
-			usDao.save(usList.get(0));
+//			usDao.save(usList.get(0));
 			int i =0;
 			int max = usList.size()-1;
 			boolean end = false;
@@ -142,7 +142,8 @@ public class UserStatisticsServiceImpl implements UserStatisticsService {
 				if(usList.get(i).getAmount() == usList.get(i+1).getAmount()){
 					//UserStatistics us = usDao.findBySeasonAndGambler_id(usList.get(i).getSeason(), usList.get(i).getGambler().getId());
 					//us.getTitles().add(title);
-					usDao.save(usList.get(i+1));
+					usList.get(i+1).getTitles().add(title);
+//					usDao.save(usList.get(i+1));
 				}else{
 					end = true;
 				}
@@ -167,7 +168,7 @@ public class UserStatisticsServiceImpl implements UserStatisticsService {
 		if(usList.get(0).getWinningRate()!=null 
 				&& usList.get(0).getWinningRate().compareTo(0.0)!=0){ 
 			usList.get(0).getTitles().add(title);
-			usDao.save(usList.get(0));
+//			usDao.save(usList.get(0));
 			int i =0;
 			int max = usList.size()-1;
 			boolean end = false;
@@ -175,7 +176,8 @@ public class UserStatisticsServiceImpl implements UserStatisticsService {
 				if(usList.get(i).getWinningRate().equals(usList.get(i+1).getWinningRate())){
 					//UserStatistics us = usDao.findBySeasonAndGambler_id(usList.get(i).getSeason(), usList.get(i).getGambler().getId());
 					//us.getTitles().add(title);
-					usDao.save(usList.get(i+1));
+//					usDao.save(usList.get(i+1));
+					usList.get(i+1).getTitles().add(title);
 				}else{
 					end = true;
 				}

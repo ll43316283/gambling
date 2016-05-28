@@ -1,8 +1,8 @@
 package com.math040.gambling.service;
  
 
-import org.junit.Assert; 
-import org.junit.Test; 
+import org.junit.Assert;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
@@ -14,7 +14,6 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.transaction.annotation.Transactional;
 
 import com.math040.gambling.GamblingException;
-import com.math040.gambling.config.JpaConfig;
 import com.math040.gambling.dto.Debt;
 import com.math040.gambling.dto.Title;
 import com.math040.gambling.dto.Transaction;
@@ -24,11 +23,12 @@ import com.math040.gambling.repository.DebtRepository;
 import com.math040.gambling.repository.TransactionRepository;
 import com.math040.gambling.repository.UserStatisticsRepository;
 
-import config.TestBasedConfig; 
+import config.TestBasedConfig;
+import config.TestJpaConfig; 
  
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes={TestBasedConfig.class,JpaConfig.class})
+@ContextConfiguration(classes={TestBasedConfig.class,TestJpaConfig.class})
 @Transactional
 @TestExecutionListeners(                
 	    { DependencyInjectionTestExecutionListener.class,  

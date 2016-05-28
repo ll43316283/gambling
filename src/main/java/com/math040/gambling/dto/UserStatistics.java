@@ -9,7 +9,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -34,7 +33,7 @@ public class UserStatistics extends BaseDto{
 	@Column(name="update_date")
 	private Date updateDate;
 	
-	@ManyToMany(fetch=FetchType.EAGER)
+	@ManyToMany
 	@JoinTable(name="TR_USERSTAT_TITLE_MAP", joinColumns=@JoinColumn(name="us_id"),
 	inverseJoinColumns=@JoinColumn(name="title_id"))
 	List<Title> titles = new ArrayList<>();
