@@ -89,7 +89,7 @@
     	 							13:1
     	 						};
     	 
-    	 var getRadius = function(var rank){
+    	 var getRadius = function( rank){
     		 var result = 1;
     		 if(rankAndradiusMap[rank]){
     			 result = rankAndradiusMap[rank];
