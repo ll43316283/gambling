@@ -38,6 +38,9 @@ public class UserStatistics extends BaseDto{
 	inverseJoinColumns=@JoinColumn(name="title_id"))
 	List<Title> titles = new ArrayList<>();
 	
+	@Column(name="ranking")
+	private int ranking;
+	
 	public User getGambler() {
 		return gambler;
 	}
@@ -91,8 +94,13 @@ public class UserStatistics extends BaseDto{
 	public void setTitles(List<Title> titles) {
 		this.titles = titles;
 	}
-	
-	
-  
+
+	public int getRanking() {
+		return ranking;
+	}
+
+	public void setRanking(int ranking) {
+		this.ranking = ranking;
+	} 
 	
 }

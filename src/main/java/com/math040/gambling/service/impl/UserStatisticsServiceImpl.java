@@ -50,12 +50,21 @@ public class UserStatisticsServiceImpl implements UserStatisticsService {
 	public void doStatistics() throws GamblingException{
 		int season = seasonService.getCurrent().getSeason();
 	    doStatisticsAmounts(season);
-	    List<UserStatistics> usList = usDao.findBySeason(season); 
+	    List<UserStatistics> usList = usDao.findBySeasonOrderByAmountDescWinningRateAsc(season); 
 		if(CollectionUtils.isEmpty(usList)){
 			return;
 		}
 	    doStatisticsWinRate(season,usList);
 	    doStatisticsTitles(season,usList);
+	    doRank(season);
+	}
+	
+	@Transactional(propagation=Propagation.MANDATORY)
+	private void doRank(int season) {
+		List<UserStatistics> usList = usDao.findBySeasonOrderByAmountDescWinningRateAsc(season);
+		for(int i=0;i<usList.size();i++){
+			usList.get(i).setRanking(i+1);
+		} 
 	}
 
 	@Transactional(propagation=Propagation.MANDATORY)
@@ -185,6 +194,16 @@ public class UserStatisticsServiceImpl implements UserStatisticsService {
 			}while( !end && i< max-1);
 		}
 	
+	}
+
+	@Override
+	public List<UserStatistics> findAllInCurrentSeason() throws GamblingException { 
+		return usDao.findBySeasonOrderByAmountDescWinningRateAsc(seasonService.getCurrent().getSeason());
+	}
+
+	@Override
+	public List<UserStatistics> findAllInCurrentSeasonOrderByRanking() throws GamblingException {
+		return usDao.findBySeasonOrderByRankingAsc(seasonService.getCurrent().getSeason());
 	}
 
 

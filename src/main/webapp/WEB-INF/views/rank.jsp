@@ -73,13 +73,30 @@
             return 'rgba(' + randomColorFactor() + ',' + randomColorFactor() + ',' + randomColorFactor() + ',.7)';
         };
         
-    	 var rank_r={
+    	 var rankAndradiusMap = { 
     	 							1:30,
     	 							2:20,
     	 							3:15,
     	 							4:10,
-    	 							5:9
-    	 						}
+    	 							5:9,
+    	 							6:8,
+    	 							7:7,
+    	 							8:6,
+    	 							9:5,
+    	 							10:4,
+    	 							11:3,
+    	 							12:2,
+    	 							13:1
+    	 						};
+    	 
+    	 var getRadius = function(var rank){
+    		 var result = 1;
+    		 if(rankAndradiusMap[rank]){
+    			 result = rankAndradiusMap[rank];
+    		 }
+    		 console.log(result);
+    		 return result;
+    	 };
     	
     	 var mydata ={
     	 								datasets: [
@@ -134,7 +151,7 @@
 	    	     						{
 	    	     							y:	tempdata.score,
 	    	     							x:  tempdata.rate,
-	    	     							r:  rank_r[tempdata.rank]
+	    	     							r:  getRadius(tempdata.rank)
 	    	     						}
 	    	     				  ]
 	    	  }; 

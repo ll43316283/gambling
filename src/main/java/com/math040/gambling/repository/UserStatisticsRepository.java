@@ -23,5 +23,7 @@ public interface UserStatisticsRepository extends JpaRepository<UserStatistics, 
 	
 	UserStatistics findByGamblerAndSeason(User gambler, int season);
 	
-	List<UserStatistics> findBySeason(int season);
+	List<UserStatistics> findBySeasonOrderByAmountDescWinningRateAsc(int season);
+	
+	List<UserStatistics> findBySeasonOrderByRankingAsc(int season);
 }

@@ -108,6 +108,7 @@ public class UserStatisticsServiceTest extends BaseTest {
 		
 		Assert.assertEquals(0,liang.getAmount());
 		Assert.assertEquals(new Double(0.5),liang.getWinningRate());
+		Assert.assertEquals(2,liang.getRanking());
 		Assert.assertEquals(0,liang2.getAmount());
 		Assert.assertEquals(new Double(0.5),liang2.getWinningRate());
 		Assert.assertEquals(0,admin.getAmount());
@@ -168,6 +169,7 @@ public class UserStatisticsServiceTest extends BaseTest {
 		
 		Assert.assertEquals(58,liang.getAmount());
 		Assert.assertEquals(new Double(1),liang.getWinningRate());
+		Assert.assertEquals(1,liang.getRanking());
 		Assert.assertEquals(0,liang2.getAmount());
 		Assert.assertEquals(new Double(0.5),liang2.getWinningRate());
 		Assert.assertEquals(-58,admin.getAmount());
