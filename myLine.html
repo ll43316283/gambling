@@ -1,0 +1,167 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Line Chart</title>
+   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+     <script src="../dist/Chart.bundle.js"></script>
+    <script src="bootstrap.js"></script>
+    <link rel="stylesheet" href="bootstrap.css"></link>
+   
+    <style>
+        canvas {
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+        .nav-boder{
+        	border:1px;
+        	border-style:solid;
+        	-webkit-border-radius: 6px;
+					-moz-border-radius: 6px;
+					border-radius: 6px;
+        }
+ 				.nav-stacked li{
+         
+        }        
+    </style>
+</head>
+
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			
+		<div class="col-md-4 col-sm-4 pull-right  "> 
+				<div style="padding-top:40px"></div>
+				<div class="nav-boder">
+					<ul class="nav nav-pills nav-stacked">
+						<li >
+							<a href="#">gang</a>
+						</li>
+						<li>
+							<a href="#">song</a>
+						</li> 
+					</ul>
+				</div>
+		</div>
+		<div class="col-md-8 col-sm-8"> 
+		    <div style="width:100%;">
+		        <canvas id="canvas"></canvas>
+		    </div> 
+		</div>
+	</div>
+</div>
+    <script>
+         
+        
+        var randomColorFactor = function() {
+            return Math.round(Math.random() * 255);
+        };
+        var randomColor = function(opacity) {
+            return 'rgba(' + randomColorFactor() + ',' + randomColorFactor() + ',' + randomColorFactor() + ',' + (opacity || '.3') + ')';
+        };
+
+        var mydata = {
+        		 name:'gang',
+        		 datasets:[
+        		 						{title:'debt1',amount:29},
+        		 						{title:'debt2',amount:-23},
+        		 						{title:'debt4',amount:1},
+        		 						{title:'debt6',amount:13} 
+        		 					]	
+        };
+       
+       $(".nav li").each(function(){
+       		var l = $(this);
+       		if(mydata.name==l.find("a").html()){ 
+       		 l.addClass("active");	
+       		}
+       });
+        
+        var config = {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: "",
+                    data: [],
+                    fill: false,
+                  //  borderDash: [5, 5],
+                }]
+            },
+            options: {
+                responsive: true,
+                legend: {
+                    position: 'bottom',
+                },
+                hover: {
+                    mode: 'label'
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Bet'
+                        }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Amount'
+                        }
+                    }]
+                },
+                title: {
+                    display: true,
+                    text: 'Chart.js Line Chart - Legend'
+                },
+                animation: {
+                        onComplete: function () {
+                            var chartInstance = this.chart;
+                            var ctx = chartInstance.ctx;
+                            ctx.textAlign = "center";
+
+                            Chart.helpers.each(this.data.datasets.forEach(function (dataset, i) {
+                                var meta = chartInstance.controller.getDatasetMeta(i);
+                                Chart.helpers.each(meta.data.forEach(function (line, index) {
+                                	   //console.log(dataset.label);
+                                    ctx.fillText(dataset.label + " :"+dataset.data[index],
+                                     line._model.x, line._model.y  );
+                                }),this)
+                            }),this);
+                        }
+                      }
+            }
+        }; 
+        
+         $.each(mydata.datasets,function(i,dataset){
+        	config.data.labels.push(dataset.title);
+        	config.data.datasets[0].data.push(dataset.amount); 
+        	
+        });
+        config.data.datasets[0].label=mydata.name;
+        
+        $.each(config.data.datasets, function(i, dataset) {
+            var background = randomColor(0.5);
+            dataset.borderColor = background;
+            dataset.backgroundColor = background;
+            dataset.pointBorderColor = background;
+            dataset.pointBackgroundColor = background;
+            dataset.pointBorderWidth = 1;
+            dataset.pointRadius=8;
+        });
+				$(document).ready(function(){
+					 var ctx = document.getElementById("canvas").getContext("2d");
+           window.myLine = new Chart(ctx, config);
+           
+           
+				}); 
+
+       
+ 
+    </script>
+</body>
+
+</html>
