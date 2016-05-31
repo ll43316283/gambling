@@ -98,40 +98,7 @@
     		 return result;
     	 };
     	
-    	 var mydata ={
-    	 								datasets: [
-	    	 													{
-	    	 														name:'gang',
-	    	 														rate:50,
-	    	 													  score:314,
-	    	 													  rank:1	
-	    	 													},
-	    	 													{
-	    	 														name:'song',
-	    	 														rate:75.5,
-	    	 														score:276,
-	    	 														rank:2
-	    	 													},
-	    	 													{
-	    	 														name:'liang',
-	    	 														rate:68,
-	    	 														score:244,
-	    	 														rank:3
-	    	 													},
-	    	 													{
-	    	 														name:'zhantang',
-	    	 														rate:45,
-	    	 														score:35,
-	    	 														rank:4
-	    	 													},
-	    	 													{
-	    	 														name:'everest',
-	    	 														rate:13,
-	    	 														score:-54,
-	    	 														rank:5
-	    	 													}
-    	 													]
-    	 						 };
+    	datasets=  <c:out value='${ranks}' escapeXml="false"/>;
     	  
     	 var bubbleChartData = {
             animation: {
@@ -140,9 +107,9 @@
             datasets: [ ] 
         };
         
-    	  for(var i=0;i<mydata.datasets.length;i++){
+    	  for(var i=0;i<datasets.length;i++){
     	  
-	    	  var tempdata = mydata.datasets[i];
+	    	  var tempdata = datasets[i];
 	    	  
 	    	  var dataset={
 	    	     label : 	tempdata.name,
@@ -238,9 +205,9 @@
 				      });
     };
 			  
-				function testclick(obj){
-						console.log(obj);
-				}
+	function testclick(obj){
+			console.log(obj);
+	}
         window.onload = function() {
             var ctx = document.getElementById("canvas").getContext("2d");
             window.myChart = new Chart(ctx, {
@@ -256,7 +223,7 @@
                     	position:'bottom'
                     },
                     
-                    onclick: testclick,
+                    onClick: testclick,
                      tooltips: {
                      	  enabled: false,
                      		custom:customTooltips,

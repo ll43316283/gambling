@@ -18,6 +18,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 	List<Transaction> findByDebt_idAndGambler_id(Long debtId,Long userId);
 	List<Transaction> findByDebtOrderByPredictDesc(Debt debt);
 	List<Transaction> findByDebtOrderByAmountDesc(Debt debt);
+	List<Transaction> findByDebt_seasonAndDebt_statusOrderByGambler_idAsc(int season,String status);
 	
 	@Modifying(clearAutomatically=true)
 	@Query("update Transaction trans set trans.winAmount=trans.amount where trans.debt=:debt and trans.predict=:predict")

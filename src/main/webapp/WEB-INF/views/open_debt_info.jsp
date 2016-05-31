@@ -115,8 +115,7 @@ cursor: pointer
 			</c:if>
 			<br/><br/><br/>
 			<div class="clearfix"></div>
-			<sec:authorize access="hasRole('ROLE_ADMIN')">
-			<c:if test='${"wager"==viewModel }'>
+			<sec:authorize access="hasRole('ROLE_ADMIN')"> 
 				 <form class="form-horizontal" id="endDebtForm" role="form" method="post" action='<c:url value="/debt/${debt.id}/end"/>'  >
 				   <input type="hidden" name="debt.id" value='<c:out value="${debt.id }"/>'/> 
 				   <div class="form-group">
@@ -136,8 +135,7 @@ cursor: pointer
 				      	<button type="submit" class="btn btn-primary">结束本次盘口</button> 
 				      </div>
 				   </div> 
-		    	</form>
-		    </c:if>
+		    	</form> 
 			</sec:authorize>
    			<form id="cancelDebtForm" role="form" method="post" action='<c:url value="/debt/${debt.id}/close"/>'>
    				 <input type="hidden" name="debt.id" value='<c:out value="${debt.id }"/>'/> 

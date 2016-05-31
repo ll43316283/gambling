@@ -12,4 +12,5 @@ public interface TransactionService {
   void end(Debt debt)throws GamblingException; 
   List<Transaction> findByDebt(Debt debt);
   Map<String,List<Integer>> getAvailablePredictAmounts(Debt debt);
+  List<Transaction> findClosedTransBySeason() throws GamblingException;
 }

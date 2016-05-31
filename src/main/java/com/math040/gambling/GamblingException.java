@@ -46,4 +46,6 @@ public class GamblingException extends Exception {
 	public final static String TITLE_TITLE_AND_DESC_SHOULD_NOT_BE_NULL="PLEASE INPUT A TITLE NAME AND ITS ";  
 	public final static String TITLE_TITLE_CODE_SHOULD_NOT_BE_NULL="PLEASE INPUT A TITLE CODE "; 
 	public final static String TITLE_TITLE_CODE_SHOULD_BE_UNIQUE="THIS TITLE CODE HAS BEEN ALREADY EXISTED.PLEASE INPUT A NEW ONE ";  
+
+	public final static String JACKSON_TRANSFER_ERROR="JACKSON TRANSFER ERROR"; 
 }

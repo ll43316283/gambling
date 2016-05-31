@@ -17,6 +17,7 @@ import com.math040.gambling.dto.Debt;
 import com.math040.gambling.dto.Transaction;
 import com.math040.gambling.repository.DebtRepository;
 import com.math040.gambling.repository.TransactionRepository;
+import com.math040.gambling.service.SeasonService;
 import com.math040.gambling.service.TransactionService; 
 
 @Service
@@ -27,6 +28,9 @@ public class TransactionServiceImpl implements TransactionService {
 	@Autowired
 	DebtRepository debtDao;
 	 
+	@Autowired
+	SeasonService seasonService;
+	
 	public Transaction create(Transaction transaction) throws GamblingException{
 		Assert.notNull(transaction);
 		if(transaction.getGambler()==null || transaction.getGambler().getId()==null){
@@ -145,5 +149,11 @@ public class TransactionServiceImpl implements TransactionService {
 		result.put(Transaction.PREDICT_YES, yesAmmounts);
 		result.put(Transaction.PREDICT_NO, noAmmounts);
 		return result;
+	}
+
+	@Override
+	public List<Transaction> findClosedTransBySeason() throws GamblingException { 
+		return transDao.findByDebt_seasonAndDebt_statusOrderByGambler_idAsc(
+				seasonService.getCurrent().getSeason(), Debt.STATUS_CLOSE);
 	}
 }

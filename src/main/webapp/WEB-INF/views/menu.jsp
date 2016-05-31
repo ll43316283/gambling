@@ -36,7 +36,7 @@
 							<a href="<c:url value="/statistics/rank"/>">rank</a>
 						</li>
 						<li>
-							<a href="#">设置栏目</a>
+							<a href="<c:url value="/statistics/scoreLine"/>">个人战绩</a>
 						</li>
 						<li>
 							<a href="#">更多设置</a>
