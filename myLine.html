@@ -27,13 +27,13 @@
 		<div class="col-md-4 col-sm-4 pull-right  "> 
 				<div class="padding-top"></div>
 				<div class="btn-group-vertical" id="usernameButtons" data-toggle="buttons">
-				  <label class="btn btn-primary">
+				  <label class="btn btn-default">
 				     <input type="checkbox" name="usernames" id="option1" value="gang" autocomplete="off" >gang
 				  </label>
-				  <label class="btn btn-primary">
+				  <label class="btn btn-default">
 				    <input type="checkbox" name="usernames" id="option2"  value="song" autocomplete="off">song
 				  </label>
-				  <label class="btn btn-primary">
+				  <label class="btn btn-default">
 				    <input type="checkbox" name="usernames" id="option3"  value="liang" autocomplete="off">liang
 				  </label>
 				</div>
@@ -178,7 +178,7 @@
             },
             options: {
                 responsive: true,
-                legend: {
+                legend: { 
                     position: 'bottom',
                     onClick:null,
                 },
@@ -265,8 +265,12 @@
 		        var ctx = document.getElementById("canvas").getContext("2d");
 	          window.myLine = new Chart(ctx, config);
 	          
-	         $(".btn-primary").change(function(){
+	         $(".btn").change(function(){
 	              var lb = $(this);
+	              $("#usernameButtons .btn").removeClass("btn-primary");//btn-default
+	              $("#usernameButtons .btn").removeClass("btn-default");
+	              $("#usernameButtons .btn").addClass("btn-default");
+	              $("#usernameButtons .active").addClass("btn-primary");
 	              var usernames = $("#usernameButtons .active input[name='usernames']").map(function(){
 	              	return $(this).val();
 	              }).get() ; 
