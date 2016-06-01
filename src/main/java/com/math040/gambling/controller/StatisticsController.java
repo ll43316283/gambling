@@ -107,6 +107,7 @@ public class StatisticsController extends BaseController{
 		model.put("allscores",allData);
 		model.put("sequenceBetIds",sequenceBetIds);
 		model.put("names",names);
+		model.put("nameList",nameList);
 		return new ModelAndView("scoreLine",model);
 	}
 	

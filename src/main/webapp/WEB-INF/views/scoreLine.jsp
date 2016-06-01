@@ -56,15 +56,12 @@
 		<div class="col-md-4 col-sm-4 pull-right  "> 
 				<div class="padding-top"></div>
 				<div class="btn-group-vertical" id="usernameButtons" data-toggle="buttons">
-				  <label class="btn btn-default">
-				     <input type="checkbox" name="usernames" id="option1" value="gang" autocomplete="off" >gang
-				  </label>
-				  <label class="btn btn-default">
-				    <input type="checkbox" name="usernames" id="option2"  value="song" autocomplete="off">song
-				  </label>
-				  <label class="btn btn-default">
-				    <input type="checkbox" name="usernames" id="option3"  value="liang" autocomplete="off">liang
-				  </label>
+				 
+				  <c:forEach var="nm"  items="${nameList}" >
+					  <label class="btn btn-default">
+					     <input type="checkbox" name="usernames"   value="${nm }" autocomplete="off" >${nm }
+					  </label>
+				   </c:forEach>
 				</div>
 		</div>
 		<div class="col-md-8 col-sm-8"> 
