@@ -8,10 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;  
-import com.math040.gambling.GamblingException; 
-import com.math040.gambling.dto.Transaction; 
+import com.math040.gambling.GamblingException;
 import com.math040.gambling.service.TransactionService;
-import com.math040.gambling.service.UserService; 
+import com.math040.gambling.service.UserService;
+import com.math040.gambling.vo.Transaction; 
 
 @Controller
 @RequestMapping("/transaction")

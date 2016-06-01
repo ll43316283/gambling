@@ -13,12 +13,12 @@ import org.springframework.util.CollectionUtils;
 
 import com.math040.gambling.GamblingException;
 import com.math040.gambling.dto.Amount;
-import com.math040.gambling.dto.Debt;
-import com.math040.gambling.dto.Transaction;
 import com.math040.gambling.repository.DebtRepository;
 import com.math040.gambling.repository.TransactionRepository;
 import com.math040.gambling.service.SeasonService;
-import com.math040.gambling.service.TransactionService; 
+import com.math040.gambling.service.TransactionService;
+import com.math040.gambling.vo.Debt;
+import com.math040.gambling.vo.Transaction; 
 
 @Service
 public class TransactionServiceImpl implements TransactionService {

@@ -16,14 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import com.math040.gambling.GamblingException;
-import com.math040.gambling.dto.Title;
-import com.math040.gambling.dto.UserStatistics;
 import com.math040.gambling.repository.TitleRepository;
 import com.math040.gambling.repository.TransactionRepository;
 import com.math040.gambling.repository.UserRepository;
 import com.math040.gambling.repository.UserStatisticsRepository;
 import com.math040.gambling.service.SeasonService;
 import com.math040.gambling.service.UserStatisticsService;
+import com.math040.gambling.vo.Title;
+import com.math040.gambling.vo.UserStatistics;
 
 @Service 
 @Transactional

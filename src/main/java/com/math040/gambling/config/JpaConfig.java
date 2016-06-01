@@ -35,7 +35,7 @@ public class JpaConfig {
 	    vendorAdapter.setShowSql(Boolean.TRUE); 
 	    factory.setDataSource(dataSource());
 	    factory.setJpaVendorAdapter(vendorAdapter);
-	    factory.setPackagesToScan("com.math040.gambling.dto");
+	    factory.setPackagesToScan("com.math040.gambling.vo");
 	    Properties jpaProperties = new Properties();
 	    jpaProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect"); 
 	    factory.setJpaProperties(jpaProperties);

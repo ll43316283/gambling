@@ -1,5 +1,7 @@
 package com.math040.gambling.dto;
 
+import com.math040.gambling.vo.UserStatistics;
+
 public class Rank {
 	private String name;
 	private Double rate;

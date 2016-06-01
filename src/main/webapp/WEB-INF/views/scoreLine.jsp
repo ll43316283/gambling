@@ -83,31 +83,12 @@
         var randomColor = function(opacity) {
             return 'rgba(' + randomColorFactor() + ',' + randomColorFactor() + ',' + randomColorFactor() + ',' + (opacity || '.3') + ')';
         };
- 
-        var sequenceBetIds = [3,2,1,4,5,6];
-        var allData=[];
-        var gang = {
-        		 name:'gang',
-        		 datasets:[
-        		 						{betId:1,title:'debt1',amount:29},
-        		 						{betId:2,title:'debt2',amount:-23},
-        		 						{betId:3,title:'debt3',amount:-23}, 
-        		 						{betId:6,title:'debt6',amount:13} 
-        		 					]	
-        };
-        var song = {
-        	name:'song',
-        		 datasets:[
-        		 						{betId:1,title:'debt1',amount:23},
-        		 						{betId:2,title:'debt2',amount:29}, 
-        		 						{betId:5,title:'debt5',amount:13}, 
-        		 					]	
-        	 
-        }; 
+        
+        var allData =  <c:out value='${allscores}' escapeXml="false"/>;
+        
+        var sequenceBetIds = <c:out value='${sequenceBetIds}' escapeXml="false"/>; 
        
-       allData.push(gang);
-       allData.push(song); 
-       
+        var names = <c:out value='${names}' escapeXml="false"/>; 
        
        var getBetIndex = function(betId){
        		var result=-1;
@@ -120,7 +101,7 @@
        	  return result;
        };
        
-       //console.log(getBetIndex(10));
+      
        
        var filterDataset = function(names){
    					var result = []; 
@@ -167,7 +148,7 @@
        	 return result;
        };
        
-       //console.log(getDisplayLabel(filterDataset(['song','gang'])));
+       console.log(getDisplayLabel(filterDataset(['qian'])));
        
        var getBetById = function(bets,betLabel){
        	 var result = null; 
@@ -257,12 +238,12 @@
        	    config.data.labels = [];
        			config.data.datasets = [];
        			var datasets = filterDataset(selectedNames); 
-       			//console.log(datasets);
+       			console.log(datasets);
             var betsLabel = getDisplayLabel(datasets);
             datasets = sortBetsDataSet(betsLabel,datasets); 
        			$.each(datasets,function(i,dataset){
 		         	  var chart_dataset =  {
-		         	  				label: dataset.name,
+		         	  		label: dataset.name,
 		                    data: [],
 		                    fill: false,
 		         	  }; 
@@ -288,10 +269,10 @@
 				$(document).ready(function(){ 
 					 
 					
-            var selectedNames = ['song','gang']; 
+            var selectedNames = names; 
             generateConfigs(selectedNames); 
             
-		        var ctx = document.getElementById("canvas").getContext("2d");
+		      var ctx = document.getElementById("canvas").getContext("2d");
 	          window.myLine = new Chart(ctx, config);
 	          
 	         $(".btn").change(function(){

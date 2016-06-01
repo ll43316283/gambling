@@ -14,14 +14,14 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.transaction.annotation.Transactional;
 
 import com.math040.gambling.GamblingException;
-import com.math040.gambling.dto.Debt;
-import com.math040.gambling.dto.Title;
-import com.math040.gambling.dto.Transaction;
-import com.math040.gambling.dto.User;
-import com.math040.gambling.dto.UserStatistics;
 import com.math040.gambling.repository.DebtRepository;
 import com.math040.gambling.repository.TransactionRepository;
 import com.math040.gambling.repository.UserStatisticsRepository;
+import com.math040.gambling.vo.Debt;
+import com.math040.gambling.vo.Title;
+import com.math040.gambling.vo.Transaction;
+import com.math040.gambling.vo.User;
+import com.math040.gambling.vo.UserStatistics;
 
 import config.TestBasedConfig;
 import config.TestJpaConfig; 

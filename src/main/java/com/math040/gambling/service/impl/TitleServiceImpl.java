@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service; 
 import org.springframework.util.StringUtils;
 
-import com.math040.gambling.GamblingException; 
-import com.math040.gambling.dto.Title;
+import com.math040.gambling.GamblingException;
 import com.math040.gambling.repository.TitleRepository; 
-import com.math040.gambling.service.TitleService; 
+import com.math040.gambling.service.TitleService;
+import com.math040.gambling.vo.Title; 
 
 @Service
 public class TitleServiceImpl implements TitleService {

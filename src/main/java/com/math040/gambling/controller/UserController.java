@@ -7,9 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
- 
-import com.math040.gambling.dto.User; 
+
 import com.math040.gambling.service.UserService;
+import com.math040.gambling.vo.User;
 
 @Controller
 @RequestMapping("/user")

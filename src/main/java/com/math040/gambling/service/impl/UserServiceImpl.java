@@ -5,9 +5,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import com.math040.gambling.dto.User;
 import com.math040.gambling.repository.UserRepository;
-import com.math040.gambling.service.UserService; 
+import com.math040.gambling.service.UserService;
+import com.math040.gambling.vo.User; 
 
 @Service
 public class UserServiceImpl implements UserService {

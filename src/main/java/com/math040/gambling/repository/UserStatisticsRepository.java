@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.math040.gambling.dto.Debt;
-import com.math040.gambling.dto.User;
-import com.math040.gambling.dto.UserStatistics;
+import com.math040.gambling.vo.Debt;
+import com.math040.gambling.vo.User;
+import com.math040.gambling.vo.UserStatistics;
  
 
 @Transactional

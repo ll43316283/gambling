@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.math040.gambling.dto.Debt;
-import com.math040.gambling.dto.Transaction;
-import com.math040.gambling.dto.User; 
+import com.math040.gambling.vo.Debt;
+import com.math040.gambling.vo.Transaction;
+import com.math040.gambling.vo.User; 
 
 @Transactional
 public interface TransactionRepository extends JpaRepository<Transaction, Long> { 

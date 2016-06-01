@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.math040.gambling.GamblingException;
-import com.math040.gambling.dto.Debt;
-import com.math040.gambling.dto.Transaction;
-import com.math040.gambling.dto.User;
 import com.math040.gambling.service.DebtService;
 import com.math040.gambling.service.TransactionService;
 import com.math040.gambling.service.UserService;
+import com.math040.gambling.vo.Debt;
+import com.math040.gambling.vo.Transaction;
+import com.math040.gambling.vo.User;
 
 @Controller
 @RequestMapping("/debt")

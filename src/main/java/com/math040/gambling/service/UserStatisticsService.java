@@ -3,7 +3,7 @@ package com.math040.gambling.service;
 import java.util.List;
 
 import com.math040.gambling.GamblingException;
-import com.math040.gambling.dto.UserStatistics; 
+import com.math040.gambling.vo.UserStatistics; 
 
 public interface UserStatisticsService { 
 	 void doStatistics()throws GamblingException;

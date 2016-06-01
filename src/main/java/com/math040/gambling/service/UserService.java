@@ -1,7 +1,7 @@
 package com.math040.gambling.service;
  
 
-import com.math040.gambling.dto.User;
+import com.math040.gambling.vo.User;
  
 
 public interface UserService { 
