@@ -145,7 +145,7 @@
        	 return result;
        };
        
-       console.log(getDisplayLabel(filterDataset(['qian'])));
+       //console.log(getDisplayLabel(filterDataset(['qian'])));
        
        var getBetById = function(bets,betLabel){
        	 var result = null; 
@@ -210,7 +210,7 @@
                 },
                 title: {
                     display: true,
-                    text: 'Chart.js Line Chart - Legend'
+                    text: '战绩图'
                 },
                 animation: {
                         onComplete: function () {

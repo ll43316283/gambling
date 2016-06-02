@@ -32,12 +32,18 @@
 				<li class="dropdown menu_statistics">
 					<a class="dropdown-toggle " data-toggle="dropdown" href="#">技术统计</a>
 					<ul class="dropdown-menu">
+						<sec:authorize access="hasRole('ROLE_ADMIN')"> 
+						<li>
+							<a href="<c:url value="/statistics"/>">刷新</a>
+						</li>
+						</sec:authorize>
 						<li>
 							<a href="<c:url value="/statistics/rank"/>">rank</a>
 						</li>
 						<li>
 							<a href="<c:url value="/statistics/scoreLine"/>">个人战绩</a>
 						</li>
+						<!-- 
 						<li>
 							<a href="#">更多设置</a>
 						</li>
@@ -46,6 +52,7 @@
 						<li>
 							<a href="#">分割线</a>
 						</li>
+						 -->
 					</ul>
 				</li>
 				<li class="logout pull-right">

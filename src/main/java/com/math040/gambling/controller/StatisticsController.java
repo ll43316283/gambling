@@ -17,8 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller; 
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestMethod; 
 import org.springframework.web.servlet.ModelAndView;
 
 import com.math040.gambling.GamblingException;
@@ -66,7 +65,10 @@ public class StatisticsController extends BaseController{
 		} catch (IOException e) {
 			throw new GamblingException(GamblingException.JACKSON_TRANSFER_ERROR);
 		} 
-		return new ModelAndView("rank","ranks",json);
+		Map<String,Object> model = new HashMap<String,Object>();
+		model.put("ranks",json);
+		model.put("usList",usList);
+		return new ModelAndView("rank",model);
 	}
 	
 	private UserScores getUserScoreByUserName(List<UserScores> userScoresList,UserScores user){
@@ -152,16 +154,7 @@ public class StatisticsController extends BaseController{
 		return userScoresList;
 	}
 	
-	@RequestMapping(value="rank.json", method = RequestMethod.GET) 
-	@ResponseBody
-	public List<Rank>  rankJson() throws GamblingException{ 
-		List<UserStatistics> usList = statisticsService.findAllInCurrentSeasonOrderByRanking();
-		List<Rank> ranks = new ArrayList<>();
-		for(UserStatistics us : usList){
-			ranks.add(new Rank(us));
-		}
-		return ranks;
-	}
+	 
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String doStatistics() throws GamblingException{
