@@ -45,32 +45,34 @@
 <body>
 <c:set var="menu" scope="request" value="statistics"/>  
  <div class="container-fluid">
-	<div class="row">
-		<div class="col col-md-12 col-sm-12">
+	<div class="row"> 
 		 <jsp:include page="menu.jsp" flush="true">
 				 	<jsp:param name="menu" value="${menu}"/> 
 		</jsp:include> 
+			 
 			
-			<div class="row">
 			
-		<div class="col-md-4 col-sm-4 pull-right  "> 
-				<div class="padding-top"></div>
-				<div class="btn-group-vertical" id="usernameButtons" data-toggle="buttons">
-				 
-				  <c:forEach var="nm"  items="${nameList}" >
-					  <label class="btn btn-default">
-					     <input type="checkbox" name="usernames"   value="${nm }" autocomplete="off" >${nm }
-					  </label>
-				   </c:forEach>
-				</div>
-		</div>
-		<div class="col-md-8 col-sm-8"> 
-		    <div style="width:100%;">
-		        <canvas id="canvas"></canvas>
-		    </div> 
-		</div>
+			<div class="col-md-10 col-sm-10 col-xs-10 "> 
+			    <div style="width:100%;">
+			        <canvas id="canvas"></canvas>
+			    </div> 
+			</div>
+			
+			<div class="col-md-2 col-sm-2 col-xs-2 "> 
+					<div class="padding-top"></div>
+					<div class="btn-group-vertical" id="usernameButtons" data-toggle="buttons">
+					 
+					  <c:forEach var="nm"  items="${nameList}" >
+						  <label class="btn btn-default">
+						     <input type="checkbox" name="usernames"   value="${nm }" autocomplete="off" >${nm }
+						  </label>
+					   </c:forEach>
+					</div>
+			</div>
 	</div>
 </div>
+
+
     <script>
          
         
@@ -263,7 +265,7 @@
        };
                 
          
-				$(document).ready(function(){ 
+	    $(document).ready(function(){ 
 					 
 					
             var selectedNames = names; 
