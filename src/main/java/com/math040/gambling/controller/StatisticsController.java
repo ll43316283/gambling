@@ -147,7 +147,7 @@ public class StatisticsController extends BaseController{
 					userScoresList.add(user);
 				}
 				BetScore betscore = new BetScore(
-						trans.getDebt().getId(),trans.getDebt().getTitle(), trans.getAmount());
+						trans.getDebt().getId(),trans.getDebt().getTitle(), trans.getWinAmount());
 				user.getDatasets().add(betscore);
 			}
 		}
