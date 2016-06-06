@@ -122,7 +122,7 @@ public class UserStatisticsServiceImpl implements UserStatisticsService {
 	private void doStatisticsTitles(int season,List<UserStatistics> usList) {  
 		for(UserStatistics us:usList){
 			if(!CollectionUtils.isEmpty(us.getTitles())){
-				us.setTitles(new ArrayList<>());
+				us.setTitles(new ArrayList<Title>());
 			} 
 		} 
 		setHighestAmountTitle(usList); 

@@ -42,11 +42,12 @@
                                 <label>Password</label>
                                 <input type="password" class="form-control" name="password" placeholder="Password" />
                             </div>
-
+<!-- 
                             <div class="form-group"> 
 						        <input type="checkbox" name="remember-me" value="true" th:checked="checked"/>Remember me
 						        	
 						   </div>
+						    -->
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary">Login</button>
                             </div>
