@@ -268,7 +268,7 @@
 	    $(document).ready(function(){ 
 					 
 					
-            var selectedNames = names; 
+            var selectedNames = []; 
             generateConfigs(selectedNames); 
             
 		      var ctx = document.getElementById("canvas").getContext("2d");

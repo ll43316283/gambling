@@ -9,5 +9,5 @@ import com.math040.gambling.vo.Debt;
 
 @Transactional
 public interface DebtRepository extends JpaRepository<Debt, Long> {
-	List<Debt> findBySeasonAndStatusOrderByEndDateAsc(int season,String status);
+	List<Debt> findBySeasonAndStatusOrderByEndDateDesc(int season,String status);
 }
