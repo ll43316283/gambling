@@ -30,6 +30,7 @@ cursor: pointer
 			   <jsp:include page="menu.jsp" flush="true">
 				 	<jsp:param name="menu" value="${menu}"/> 
 				 </jsp:include>  
+				 
 			  <c:if test="${debts.size()==0 }">
 			  	<h3 contenteditable="true">好萧条啊， 连盘口都没有。。。你们蛀虫都不当了？</h3>
 			  </c:if>
@@ -50,7 +51,7 @@ cursor: pointer
 									<input type="hidden" class="debt-id" value="${debt.id}"/>
 								</td>
 								<td>${debt.deadline} </td> 
-								<td>${debt.dealer.userName} </td> 
+								<td><img class="img-responsive" width="40px" height="40px" src="<c:url value='/user/pic/${debt.dealer.userName}'/>"/> ${debt.dealer.userName}  </td> 
 							</tr> 
 						</c:forEach>
 					</tbody>

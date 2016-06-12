@@ -8,4 +8,5 @@ public interface UserService {
 	public User save(User user); 
 	public User findByUserName(String userName );
 	public User getCurrent();
+	public void updateAvatar(byte[] image);
 }

@@ -55,13 +55,13 @@ public class JpaConfig {
 		   
 		  dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 		    
-			  dataSource.setUrl("jdbc:mysql://w.rdc.sae.sina.com.cn:3307/app_gambling");
-			  dataSource.setUsername(SaeUserInfo.getAccessKey());
-			  dataSource.setPassword(SaeUserInfo.getSecretKey());
+//			  dataSource.setUrl("jdbc:mysql://w.rdc.sae.sina.com.cn:3307/app_gambling");
+//			  dataSource.setUsername(SaeUserInfo.getAccessKey());
+//			  dataSource.setPassword(SaeUserInfo.getSecretKey());
 	 
-//			  dataSource.setUrl("jdbc:mysql://localhost:3306/gambling?characterEncoding=UTF-8");
-//			  dataSource.setUsername("root");
-//			  dataSource.setPassword("admin");
+			  dataSource.setUrl("jdbc:mysql://localhost:3306/gambling?characterEncoding=UTF-8");
+			  dataSource.setUsername("root");
+			  dataSource.setPassword("admin");
 		   
 		  return dataSource;
 	  }

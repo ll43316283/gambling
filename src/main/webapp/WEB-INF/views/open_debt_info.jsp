@@ -75,8 +75,14 @@ cursor: pointer
 							<input type="hidden" class="isDealer" value="<c:out value='${trans.isDealer }'/>"/> 
 							<input type="hidden" class="predict" value="<c:out value='${trans.predict }'/>"/>
 							<span class="label label-as-badge pull-right">
-							<c:out value="${trans.amount }"/></span>
-							<c:out value="${trans.gambler.userName }"/>
+								<c:out value="${trans.amount }"/>
+							</span>
+							<span class=" pull-left">
+								<c:out value="${trans.gambler.userName }"/>
+							</span>
+							<span class="list-inline"> 
+								<img class="img-responsive" width="80px" height="80px" src="<c:url value='/user/pic/${trans.gambler.userName }'/>"/> 
+							</span>
 						</div>
 					</c:forEach> 
 				</div>

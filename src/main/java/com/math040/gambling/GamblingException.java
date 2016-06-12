@@ -48,4 +48,7 @@ public class GamblingException extends Exception {
 	public final static String TITLE_TITLE_CODE_SHOULD_BE_UNIQUE="THIS TITLE CODE HAS BEEN ALREADY EXISTED.PLEASE INPUT A NEW ONE ";  
 
 	public final static String JACKSON_TRANSFER_ERROR="JACKSON TRANSFER ERROR"; 
+	
+	public final static String USER_NOT_CURRENT_USER="NOT CURRENT USER";
+	public final static String USER_AVATAR_UPLOAD_FAILED="AVATAR UPLOAD FAILED";
 }

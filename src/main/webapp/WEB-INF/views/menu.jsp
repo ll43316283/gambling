@@ -43,6 +43,9 @@
 						<li>
 							<a href="<c:url value="/statistics/scoreLine"/>">个人战绩</a>
 						</li>
+						<li>
+							<a href="<c:url value="/user/"/><sec:authentication property='principal.username' />  "><sec:authentication property='principal.username' />个人设置</a>
+						</li>
 						<!-- 
 						<li>
 							<a href="#">更多设置</a>
@@ -55,8 +58,11 @@
 						 -->
 					</ul>
 				</li>
+				<li class="img-responsive   pull-right">
+					<img src="<c:url value='/user/pic/'/><sec:authentication property="principal.username" />"  class="img-responsive " width="80px" height="80px" />  
+				</li>
 				<li class="logout pull-right">
-					<a href='<c:url value='/j_spring_security_logout' />'><sec:authentication property="principal.username" />     Logout</a>
+					<a href='<c:url value='/j_spring_security_logout' />'> <sec:authentication property="principal.username" />     Logout</a>
 				</li>
 			</ul>
 		<script type="text/javascript">
