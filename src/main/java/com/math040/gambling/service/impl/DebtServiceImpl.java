@@ -10,12 +10,12 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import com.math040.gambling.GamblingException;
-import com.math040.gambling.dto.Debt;
-import com.math040.gambling.dto.Season;
 import com.math040.gambling.repository.DebtRepository;
 import com.math040.gambling.service.DebtService;
 import com.math040.gambling.service.SeasonService;
 import com.math040.gambling.service.TransactionService;
+import com.math040.gambling.vo.Debt;
+import com.math040.gambling.vo.Season;
 
 @Service
 @Transactional
@@ -86,19 +86,19 @@ public class DebtServiceImpl implements DebtService {
 	@Override
 	public List<Debt> findCurrentSeasonInProcss() throws GamblingException {
 		Season season = seasonService.getCurrent(); 
-		return debtDao.findBySeasonAndStatus(season.getSeason(), Debt.STATUS_OPEN);
+		return debtDao.findBySeasonAndStatusOrderByEndDateDesc(season.getSeason(), Debt.STATUS_OPEN);
 	}
 	
 	
 	@Override
 	public List<Debt> findCurrentSeasonEnded() throws GamblingException {
 		Season season = seasonService.getCurrent(); 
-		return debtDao.findBySeasonAndStatus(season.getSeason(), Debt.STATUS_CLOSE);
+		return debtDao.findBySeasonAndStatusOrderByEndDateDesc(season.getSeason(), Debt.STATUS_CLOSE);
 	}
 	
 	@Override
 	public List<Debt> findCurrentSeasonCanceled() throws GamblingException {
 		Season season = seasonService.getCurrent(); 
-		return debtDao.findBySeasonAndStatus(season.getSeason(), Debt.STATUS_CLOSE);
+		return debtDao.findBySeasonAndStatusOrderByEndDateDesc(season.getSeason(), Debt.STATUS_CANCEL);
 	}
 }

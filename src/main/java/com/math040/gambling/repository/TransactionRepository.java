@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.math040.gambling.dto.Debt;
-import com.math040.gambling.dto.Transaction;
-import com.math040.gambling.dto.User; 
+import com.math040.gambling.vo.Debt;
+import com.math040.gambling.vo.Transaction;
+import com.math040.gambling.vo.User; 
 
 @Transactional
 public interface TransactionRepository extends JpaRepository<Transaction, Long> { 
@@ -18,6 +18,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 	List<Transaction> findByDebt_idAndGambler_id(Long debtId,Long userId);
 	List<Transaction> findByDebtOrderByPredictDesc(Debt debt);
 	List<Transaction> findByDebtOrderByAmountDesc(Debt debt);
+	List<Transaction> findByDebt_seasonAndDebt_statusOrderByGambler_idAsc(int season,String status);
 	
 	@Modifying(clearAutomatically=true)
 	@Query("update Transaction trans set trans.winAmount=trans.amount where trans.debt=:debt and trans.predict=:predict")

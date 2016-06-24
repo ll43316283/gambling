@@ -15,8 +15,8 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.transaction.annotation.Transactional;
 
 import com.math040.gambling.GamblingException;
-import com.math040.gambling.dto.Season;
 import com.math040.gambling.repository.SeasonRepository;
+import com.math040.gambling.vo.Season;
 
 import config.TestBasedConfig;
 import config.TestJpaConfig;

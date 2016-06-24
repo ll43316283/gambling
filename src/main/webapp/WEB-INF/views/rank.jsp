@@ -35,6 +35,12 @@
       width: 10px;
       height: 10px;
     }
+    .star-color{
+         color: #FFCC33
+        }
+    .b-color{
+         color: red
+     }
     </style>
 </head>
 <body>
@@ -45,26 +51,92 @@
 		 <jsp:include page="menu.jsp" flush="true">
 				 	<jsp:param name="menu" value="${menu}"/> 
 		</jsp:include> 
-			
-			<div class="row" style="margin-top:20px">
-				<div class="col-sm-offset-1 col-sm-10 col-md-offset-1 col-md-10">
-					<button id="refresh" class="btn-primary">实时刷新</button>
-				</div>
-			</div>
-			<div class="row">
-				    <div id="container" class="col-sm-offset-1 col-sm-10 col-md-offset-1 col-md-10" >
-				        <canvas id="canvas"  ></canvas>
-				    </div> 
-			</div>
+		
+		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+				  <div class="panel panel-default">
+				    <div class="panel-heading" role="tab" id="headingOne">
+				      <h4 class="panel-title">
+				        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+				          	 冒泡图
+				        </a>
+				      </h4>
+				    </div>
+				    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+				       <div  class="panel-body " >
+						 	<canvas id="canvas"  ></canvas>
+						</div>
+				    </div>
+				  </div>
+				  <div class="panel panel-default">
+				    <div class="panel-heading" role="tab" id="headingTwo">
+				      <h4 class="panel-title">
+				        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+				          	 表格
+				        </a>
+				      </h4>
+				    </div>
+				    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+				      <div class="panel-body">
+				        <table class="table table-hover" contenteditable="true">
+								<thead>
+									<tr> 
+										<th>赌客</th>
+										<th>筹码</th>
+										<th>胜率</th> 
+									</tr>
+								</thead>
+							
+								<tbody > 
+									 <c:forEach var="us"  items="${usList}" >
+										<tr class="cursor-point">  
+											<td>
+												<c:forEach var="title"  items="${us.titles}" >
+												<c:if test='${title.code=="RP" }'>
+													<span class="glyphicon glyphicon-star-empty star-color" 
+													  aria-hidden="true" 
+													  data-toggle="collapse" href="#richPerson" aria-expanded="false" aria-controls="richPerson">
+													</span>
+													 <div class="collapse" id="richPerson">
+													  <div class="well">
+													   ${title.description }
+													  </div>
+												 </div>
+												</c:if> 
+												<c:if test='${title.code=="HR" }'>
+												 <span class="glyphicon glyphicon-bitcoin b-color" 
+												  aria-hidden="true"
+												  data-toggle="collapse" href="#hierRate" aria-expanded="false" aria-controls="hierRate"
+												  > 
+												</span>
+												<div class="collapse" id="hierRate">
+													  <div class="well">
+													   ${title.description }
+													  </div>
+												 </div>
+												</c:if>
+												</c:forEach>
+												${us.gambler.userName}  
+												
+												 
+											
+											</td>
+											<td>${us.amount} </td> 
+											<td>${us.winningRate} </td> 
+										</tr> 
+									</c:forEach>
+								</tbody>
+						 </table>
+						
+						 
+				       </div>
+				    </div>
+				  </div> 
+			</div> 
 		</div>
 	</div>
  </div>
     <script> 
-    	$(document).ready(function(){
-    		$("#refresh").on("click",function(){
-    			window.location.href = "<%=request.getContextPath()%>/statistics";
-    		});
-    	});
+     
  		
         var randomColorFactor = function() {
             return Math.round(Math.random() * 255);
@@ -73,48 +145,21 @@
             return 'rgba(' + randomColorFactor() + ',' + randomColorFactor() + ',' + randomColorFactor() + ',.7)';
         };
         
-    	 var rank_r={
-    	 							1:30,
-    	 							2:20,
-    	 							3:15,
-    	 							4:10,
-    	 							5:9
-    	 						}
+    	 var rankAndradiusMap = { 
+    	 							1:30, 2:20, 3:15, 4:10, 5:9, 6:8, 7:7,
+    	 							8:6, 9:5, 10:4, 11:3, 12:2, 13:1
+    	 						};
+    	 
+    	 var getRadius = function( rank){
+    		 var result = 1;
+    		 if(rankAndradiusMap[rank]){
+    			 result = rankAndradiusMap[rank];
+    		 }
+    		 console.log(result);
+    		 return result;
+    	 };
     	
-    	 var mydata ={
-    	 								datasets: [
-	    	 													{
-	    	 														name:'gang',
-	    	 														rate:50,
-	    	 													  score:314,
-	    	 													  rank:1	
-	    	 													},
-	    	 													{
-	    	 														name:'song',
-	    	 														rate:75.5,
-	    	 														score:276,
-	    	 														rank:2
-	    	 													},
-	    	 													{
-	    	 														name:'liang',
-	    	 														rate:68,
-	    	 														score:244,
-	    	 														rank:3
-	    	 													},
-	    	 													{
-	    	 														name:'zhantang',
-	    	 														rate:45,
-	    	 														score:35,
-	    	 														rank:4
-	    	 													},
-	    	 													{
-	    	 														name:'everest',
-	    	 														rate:13,
-	    	 														score:-54,
-	    	 														rank:5
-	    	 													}
-    	 													]
-    	 						 };
+    	datasets=  <c:out value='${ranks}' escapeXml="false"/>;
     	  
     	 var bubbleChartData = {
             animation: {
@@ -123,9 +168,9 @@
             datasets: [ ] 
         };
         
-    	  for(var i=0;i<mydata.datasets.length;i++){
+    	  for(var i=0;i<datasets.length;i++){
     	  
-	    	  var tempdata = mydata.datasets[i];
+	    	  var tempdata = datasets[i];
 	    	  
 	    	  var dataset={
 	    	     label : 	tempdata.name,
@@ -134,7 +179,7 @@
 	    	     						{
 	    	     							y:	tempdata.score,
 	    	     							x:  tempdata.rate,
-	    	     							r:  rank_r[tempdata.rank]
+	    	     							r:  getRadius(tempdata.rank)
 	    	     						}
 	    	     				  ]
 	    	  }; 
@@ -221,9 +266,9 @@
 				      });
     };
 			  
-				function testclick(obj){
-						console.log(obj);
-				}
+	function testclick(obj){
+			console.log(obj);
+	}
         window.onload = function() {
             var ctx = document.getElementById("canvas").getContext("2d");
             window.myChart = new Chart(ctx, {
@@ -239,7 +284,7 @@
                     	position:'bottom'
                     },
                     
-                    onclick: testclick,
+                    onClick: testclick,
                      tooltips: {
                      	  enabled: false,
                      		custom:customTooltips,

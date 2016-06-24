@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import com.math040.gambling.GamblingException;
-import com.math040.gambling.dto.Season;
 import com.math040.gambling.repository.SeasonRepository;
-import com.math040.gambling.service.SeasonService; 
+import com.math040.gambling.service.SeasonService;
+import com.math040.gambling.vo.Season; 
 
 @Service
 public class SeasonServiceImpl implements SeasonService {

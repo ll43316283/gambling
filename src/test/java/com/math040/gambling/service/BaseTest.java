@@ -17,11 +17,11 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.transaction.annotation.Transactional;
 
 import com.math040.gambling.GamblingException;
-import com.math040.gambling.dto.Debt;
-import com.math040.gambling.dto.Season;
-import com.math040.gambling.dto.User;
 import com.math040.gambling.repository.SeasonRepository;
 import com.math040.gambling.util.DateUtil;
+import com.math040.gambling.vo.Debt;
+import com.math040.gambling.vo.Season;
+import com.math040.gambling.vo.User;
 
 import config.TestBasedConfig;
 import config.TestJpaConfig;

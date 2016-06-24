@@ -1,7 +1,9 @@
-package com.math040.gambling.dto;
+package com.math040.gambling.vo;
 
 import javax.persistence.Column;
-import javax.persistence.Entity; 
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,6 +20,10 @@ public class User extends BaseDto{
 	 
 	@Column(length=20)
 	private String role;
+	
+	@OneToOne
+	@JoinColumn(name="avatar_id", nullable=true, updatable=true) 
+	private Avatar avatar;
  
 	public String getUserName() {
 		return userName;
@@ -41,6 +47,13 @@ public class User extends BaseDto{
 
 	public void setRole(String role) {
 		this.role = role;
-	} 
-	
+	}
+
+	public Avatar getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(Avatar avatar) {
+		this.avatar = avatar;
+	}  
 }

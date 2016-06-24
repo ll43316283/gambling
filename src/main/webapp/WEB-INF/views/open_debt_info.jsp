@@ -75,8 +75,14 @@ cursor: pointer
 							<input type="hidden" class="isDealer" value="<c:out value='${trans.isDealer }'/>"/> 
 							<input type="hidden" class="predict" value="<c:out value='${trans.predict }'/>"/>
 							<span class="label label-as-badge pull-right">
-							<c:out value="${trans.amount }"/></span>
-							<c:out value="${trans.gambler.userName }"/>
+								<c:out value="${trans.amount }"/>
+							</span>
+							<span class=" pull-left">
+								<c:out value="${trans.gambler.userName }"/>
+							</span>
+							<span class="list-inline"> 
+								<img class="img-responsive" width="80px" height="80px" src="<c:url value='/user/pic/${trans.gambler.userName }'/>"/> 
+							</span>
 						</div>
 					</c:forEach> 
 				</div>
@@ -115,8 +121,7 @@ cursor: pointer
 			</c:if>
 			<br/><br/><br/>
 			<div class="clearfix"></div>
-			<sec:authorize access="hasRole('ROLE_ADMIN')">
-			<c:if test='${"wager"==viewModel }'>
+			<sec:authorize access="hasRole('ROLE_ADMIN')"> 
 				 <form class="form-horizontal" id="endDebtForm" role="form" method="post" action='<c:url value="/debt/${debt.id}/end"/>'  >
 				   <input type="hidden" name="debt.id" value='<c:out value="${debt.id }"/>'/> 
 				   <div class="form-group">
@@ -136,8 +141,7 @@ cursor: pointer
 				      	<button type="submit" class="btn btn-primary">结束本次盘口</button> 
 				      </div>
 				   </div> 
-		    	</form>
-		    </c:if>
+		    	</form> 
 			</sec:authorize>
    			<form id="cancelDebtForm" role="form" method="post" action='<c:url value="/debt/${debt.id}/close"/>'>
    				 <input type="hidden" name="debt.id" value='<c:out value="${debt.id }"/>'/> 

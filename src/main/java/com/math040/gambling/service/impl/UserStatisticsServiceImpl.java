@@ -16,14 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import com.math040.gambling.GamblingException;
-import com.math040.gambling.dto.Title;
-import com.math040.gambling.dto.UserStatistics;
 import com.math040.gambling.repository.TitleRepository;
 import com.math040.gambling.repository.TransactionRepository;
 import com.math040.gambling.repository.UserRepository;
 import com.math040.gambling.repository.UserStatisticsRepository;
 import com.math040.gambling.service.SeasonService;
 import com.math040.gambling.service.UserStatisticsService;
+import com.math040.gambling.vo.Title;
+import com.math040.gambling.vo.UserStatistics;
 
 @Service 
 @Transactional
@@ -50,12 +50,21 @@ public class UserStatisticsServiceImpl implements UserStatisticsService {
 	public void doStatistics() throws GamblingException{
 		int season = seasonService.getCurrent().getSeason();
 	    doStatisticsAmounts(season);
-	    List<UserStatistics> usList = usDao.findBySeason(season); 
+	    List<UserStatistics> usList = usDao.findBySeasonOrderByAmountDescWinningRateAsc(season); 
 		if(CollectionUtils.isEmpty(usList)){
 			return;
 		}
 	    doStatisticsWinRate(season,usList);
 	    doStatisticsTitles(season,usList);
+	    doRank(season);
+	}
+	
+	@Transactional(propagation=Propagation.MANDATORY)
+	private void doRank(int season) {
+		List<UserStatistics> usList = usDao.findBySeasonOrderByAmountDescWinningRateAsc(season);
+		for(int i=0;i<usList.size();i++){
+			usList.get(i).setRanking(i+1);
+		} 
 	}
 
 	@Transactional(propagation=Propagation.MANDATORY)
@@ -113,7 +122,7 @@ public class UserStatisticsServiceImpl implements UserStatisticsService {
 	private void doStatisticsTitles(int season,List<UserStatistics> usList) {  
 		for(UserStatistics us:usList){
 			if(!CollectionUtils.isEmpty(us.getTitles())){
-				us.setTitles(new ArrayList<>());
+				us.setTitles(new ArrayList<Title>());
 			} 
 		} 
 		setHighestAmountTitle(usList); 
@@ -185,6 +194,16 @@ public class UserStatisticsServiceImpl implements UserStatisticsService {
 			}while( !end && i< max-1);
 		}
 	
+	}
+
+	@Override
+	public List<UserStatistics> findAllInCurrentSeason() throws GamblingException { 
+		return usDao.findBySeasonOrderByAmountDescWinningRateAsc(seasonService.getCurrent().getSeason());
+	}
+
+	@Override
+	public List<UserStatistics> findAllInCurrentSeasonOrderByRanking() throws GamblingException {
+		return usDao.findBySeasonOrderByRankingAsc(seasonService.getCurrent().getSeason());
 	}
 
 

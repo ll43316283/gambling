@@ -1,4 +1,4 @@
-package com.math040.gambling.dto;
+package com.math040.gambling.vo;
 
 import java.util.Date;
 

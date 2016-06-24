@@ -3,6 +3,8 @@ package com.math040.gambling.dto;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.math040.gambling.vo.Transaction;
+
 import junit.framework.TestCase;
 
 public class TransactionTest  extends TestCase {

@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
  
 		http.logout().logoutUrl("/j_spring_security_logout").logoutSuccessUrl("/login")  
         .invalidateHttpSession(true);  
-		http.rememberMe();
+		http.rememberMe().disable();
 		
 	}
 	
@@ -64,5 +64,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	 public UserDetailsService getUserDetailService(){
 		 return new GamblingUserDetailServiceImpl(userService); 
 	 }
+	 
+	 
+//	 @Override
+//     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//         auth
+//              .inMemoryAuthentication()
+//                   .withUser("liang")
+//                        .password("liang")
+//                        .roles("USER");
+//     }
 	 
 }

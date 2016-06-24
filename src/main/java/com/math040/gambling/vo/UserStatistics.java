@@ -1,4 +1,4 @@
-package com.math040.gambling.dto;
+package com.math040.gambling.vo;
  
  
 
@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -19,7 +20,7 @@ import javax.persistence.Table;
 @Table(name = "TR_USER_STATISTICS") 
 public class UserStatistics extends BaseDto{  
 	 
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="user_id", nullable=false, updatable=false) 
 	private User gambler;
 	
@@ -33,10 +34,13 @@ public class UserStatistics extends BaseDto{
 	@Column(name="update_date")
 	private Date updateDate;
 	
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(name="TR_USERSTAT_TITLE_MAP", joinColumns=@JoinColumn(name="us_id"),
 	inverseJoinColumns=@JoinColumn(name="title_id"))
 	List<Title> titles = new ArrayList<>();
+	
+	@Column(name="ranking")
+	private Integer ranking;
 	
 	public User getGambler() {
 		return gambler;
@@ -91,8 +95,13 @@ public class UserStatistics extends BaseDto{
 	public void setTitles(List<Title> titles) {
 		this.titles = titles;
 	}
-	
-	
-  
+
+	public Integer getRanking() {
+		return ranking;
+	}
+
+	public void setRanking(Integer ranking) {
+		this.ranking = ranking;
+	} 
 	
 }
